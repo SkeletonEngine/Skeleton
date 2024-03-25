@@ -12,3 +12,5 @@ add_executable(${PROJECT_NAME} ${SKELETON_SRC_FILES})
 
 add_subdirectory(src/Extern/glfw)
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
+add_subdirectory(src/Extern/Fractal)
+target_link_libraries(${PROJECT_NAME} PRIVATE FractalVulkan)

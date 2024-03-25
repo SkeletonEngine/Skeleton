@@ -1,5 +1,7 @@
 import subprocess, platform
 
+subprocess.run(['git', 'submodule', 'update', '--init', '--remote', '--recursive'])
+
 if platform.system() == 'Windows':
   subprocess.run(['cmake', '-B build/Windows'])
 

@@ -1,3 +1,6 @@
 [submodule "src/Extern/glfw"]
 	path = src/Extern/glfw
 	url = https://github.com/glfw/glfw
+[submodule "src/Extern/Fractal"]
+	path = src/Extern/Fractal
+	url = https://github.com/SkeletonEngine/Fractal
