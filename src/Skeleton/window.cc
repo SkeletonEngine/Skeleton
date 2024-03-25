@@ -14,6 +14,7 @@ void Create() {
 
 void Destroy() {
   glfwDestroyWindow(window);
+  glfwTerminate();
 }
 
 bool IsOpen() {
