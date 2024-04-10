@@ -21,5 +21,9 @@ bool IsOpen() {
   return !glfwWindowShouldClose(window);
 }
 
+GLFWwindow* Get() {
+  return window;
+}
+
 }
 }
