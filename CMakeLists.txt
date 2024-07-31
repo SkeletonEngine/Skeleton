@@ -10,14 +10,19 @@ source_group("src/skeleton" FILES ${SKELETON_SRC_FILES})
 
 set(SKELETON_SRC_RENDERER_FILES
   src/skeleton/renderer/renderer.h
-  src/skeleton/renderer/renderer.cc
-  src/skeleton/renderer/renderer_backend.h
 )
 source_group("src/skeleton/renderer" FILES ${SKELETON_SRC_RENDERER_FILES})
+
+set(SKELETON_SRC_RENDERER_OPENGL_FILES
+  src/skeleton/renderer/opengl/opengl_renderer.h
+  src/skeleton/renderer/opengl/opengl_renderer.cc
+)
+source_group("src/skeleton/renderer/opengl" FILES ${SKELETON_SRC_RENDERER_OPENGL_FILES})
 
 add_executable(Skeleton
   ${SKELETON_SRC_FILES}
   ${SKELETON_SRC_RENDERER_FILES}
+  ${SKELETON_SRC_RENDERER_OPENGL_FILES}
 )
 
 add_subdirectory(src/lib/glfw)

@@ -1,4 +1,4 @@
-#include "renderer.h"
+#include "opengl_renderer.h"
 
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
@@ -6,10 +6,11 @@
 namespace Skeleton {
 namespace Renderer {
 
-void Init(Backend backend) {
-}
+static GLFWwindow* window;
 
-void Shutdown() {
+void RenderScene() {
+  glClear(GL_COLOR_BUFFER_BIT);
+  glfwSwapBuffers(window);
 }
 
 }
@@ -23,9 +24,12 @@ void ApplyGlfwWindowHints() {
   glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 }
 
-void CreateContext(GLFWwindow* window) {
+void CreateContext(GLFWwindow* glfw_window) {
+  window = glfw_window;
   glfwMakeContextCurrent(window);
   gladLoadGL(glfwGetProcAddress);
+  
+  glClearColor(0.2, 0.4, 0.6, 1.0);
 }
 
 }
