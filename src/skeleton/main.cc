@@ -1,5 +1,9 @@
-#include <cstdio>
+#include "window.h"
 
 int main() {
-  printf("hello\n");
+  Skeleton::Window window;
+
+  while (window.IsOpen()) {
+    window.PollEvents();
+  }
 }
