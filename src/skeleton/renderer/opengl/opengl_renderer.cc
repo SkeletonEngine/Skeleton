@@ -29,6 +29,7 @@ void CreateContext(GLFWwindow* glfw_window) {
   glfwMakeContextCurrent(window);
   gladLoadGL(glfwGetProcAddress);
   
+  glfwSwapInterval(1);
   glClearColor(0.2, 0.4, 0.6, 1.0);
 }
 

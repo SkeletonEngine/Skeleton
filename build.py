@@ -1,6 +1,9 @@
 import os, platform, subprocess
 
-submodule_paths = ['src/lib/glfw']
+submodule_paths = [
+  'src/lib/glfw',
+  'src/lib/imgui/imgui'
+]
 any_submodule_dirs_empty = False
 for path in submodule_paths:
   if len(os.listdir(path) ) == 0:

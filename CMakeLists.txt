@@ -30,3 +30,6 @@ target_link_libraries(Skeleton PRIVATE glfw)
 
 add_subdirectory(src/lib/glad)
 target_link_libraries(Skeleton PRIVATE glad)
+
+add_subdirectory(src/lib/imgui)
+target_link_libraries(Skeleton PRIVATE imgui)
