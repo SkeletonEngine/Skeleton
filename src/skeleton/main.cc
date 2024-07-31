@@ -8,4 +8,6 @@ int main() {
   while (window.IsOpen()) {
     window.PollEvents();
   }
+  
+  Skeleton::Renderer::Shutdown();
 }
