@@ -1,14 +1,25 @@
 #pragma once
 
+#include "renderer_backend.h"
+
 struct GLFWwindow;
 
 namespace Skeleton {
 namespace Renderer {
 
-void Init(GLFWwindow* window);
+void Init(Backend backend);
 void Shutdown();
 
-void RenderScene();
+}
+}
 
+namespace Skeleton {
+namespace Renderer {
+namespace Internal {
+
+void ApplyGlfwWindowHints();
+void CreateContext(GLFWwindow* window);
+
+}
 }
 }

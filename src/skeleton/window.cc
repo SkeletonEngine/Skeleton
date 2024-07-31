@@ -7,9 +7,9 @@ namespace Skeleton {
 
 Window::Window() {
   glfwInit();
-  glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
+  Renderer::Internal::ApplyGlfwWindowHints();
   window = glfwCreateWindow(1280, 720, "Test", nullptr, nullptr);
-  Renderer::Init(window);
+  Renderer::Internal::CreateContext(window);
 }
 
 Window::~Window() {

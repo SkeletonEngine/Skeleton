@@ -11,6 +11,7 @@ source_group("src/skeleton" FILES ${SKELETON_SRC_FILES})
 set(SKELETON_SRC_RENDERER_FILES
   src/skeleton/renderer/renderer.h
   src/skeleton/renderer/renderer.cc
+  src/skeleton/renderer/renderer_backend.h
 )
 source_group("src/skeleton/renderer" FILES ${SKELETON_SRC_RENDERER_FILES})
 
