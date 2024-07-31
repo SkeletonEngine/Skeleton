@@ -25,6 +25,8 @@ add_executable(Skeleton
   ${SKELETON_SRC_RENDERER_OPENGL_FILES}
 )
 
+target_compile_features(Skeleton PRIVATE cxx_std_17)
+
 add_subdirectory(src/lib/glfw)
 target_link_libraries(Skeleton PRIVATE glfw)
 

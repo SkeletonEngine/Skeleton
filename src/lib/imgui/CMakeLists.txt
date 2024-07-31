@@ -1,6 +1,13 @@
 cmake_minimum_required(VERSION 3.10)
 project(imgui)
 
+set(IMGUI_OPENGL_FILES
+  imgui/backends/imgui_impl_opengl3.h
+  imgui/backends/imgui_impl_opengl3.cpp
+  imgui/backends/imgui_impl_glfw.h
+  imgui/backends/imgui_impl_glfw.cpp
+)
+
 add_library(imgui
   imgui/imgui_demo.cpp
   imgui/imgui_draw.cpp
@@ -12,8 +19,13 @@ add_library(imgui
   imgui/imstb_rectpack.h
   imgui/imstb_textedit.h
   imgui/imstb_truetype.h
+
+  ${IMGUI_OPENGL_FILES}
 )
 
 target_compile_features(imgui PRIVATE cxx_std_17)
 
-target_include_directories(imgui PUBLIC ./..)
+target_include_directories(imgui PUBLIC .)
+target_include_directories(imgui PUBLIC ./imgui)
+
+target_link_libraries(imgui PRIVATE glfw)
