@@ -8,7 +8,19 @@ set(SKELETON_SRC_FILES
 )
 source_group("src/skeleton" FILES ${SKELETON_SRC_FILES})
 
-add_executable(Skeleton ${SKELETON_SRC_FILES})
+set(SKELETON_SRC_RENDERER_FILES
+  src/skeleton/renderer/renderer.h
+  src/skeleton/renderer/renderer.cc
+)
+source_group("src/skeleton/renderer" FILES ${SKELETON_SRC_RENDERER_FILES})
+
+add_executable(Skeleton
+  ${SKELETON_SRC_FILES}
+  ${SKELETON_SRC_RENDERER_FILES}
+)
 
 add_subdirectory(src/lib/glfw)
 target_link_libraries(Skeleton PRIVATE glfw)
+
+add_subdirectory(src/lib/glad)
+target_link_libraries(Skeleton PRIVATE glad)
