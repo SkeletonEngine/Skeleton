@@ -6,7 +6,7 @@ submodule_paths = [
 ]
 any_submodule_dirs_empty = False
 for path in submodule_paths:
-  if len(os.listdir(path) ) == 0:
+  if len(os.listdir(path)) == 0:
     any_submodule_dirs_empty = True
     break
 

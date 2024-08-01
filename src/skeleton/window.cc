@@ -8,7 +8,7 @@ namespace Skeleton {
 Window::Window() {
   glfwInit();
   Renderer::Internal::ApplyGlfwWindowHints();
-  window = glfwCreateWindow(1280, 720, "Test", nullptr, nullptr);
+  window = glfwCreateWindow(1280, 720, "Skeleton", nullptr, nullptr);
   Renderer::Internal::CreateContext(window);
 }
 

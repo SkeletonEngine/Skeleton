@@ -8,6 +8,16 @@ set(SKELETON_SRC_FILES
 )
 source_group("src/skeleton" FILES ${SKELETON_SRC_FILES})
 
+set(SKELETON_SRC_UI_FILES
+  src/skeleton/ui/ui.h
+  src/skeleton/ui/ui.cc
+  src/skeleton/ui/viewport.h
+  src/skeleton/ui/viewport.cc
+  src/skeleton/ui/scene_graph.h
+  src/skeleton/ui/scene_graph.cc
+)
+source_group("src/skeleton/ui" FILES ${SKELETON_SRC_UI_FILES})
+
 set(SKELETON_SRC_RENDERER_FILES
   src/skeleton/renderer/renderer.h
 )
@@ -21,6 +31,7 @@ source_group("src/skeleton/renderer/opengl" FILES ${SKELETON_SRC_RENDERER_OPENGL
 
 add_executable(Skeleton
   ${SKELETON_SRC_FILES}
+  ${SKELETON_SRC_UI_FILES}
   ${SKELETON_SRC_RENDERER_FILES}
   ${SKELETON_SRC_RENDERER_OPENGL_FILES}
 )
