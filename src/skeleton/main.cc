@@ -24,7 +24,8 @@ int main() {
     0, 1, 3,  // first triangle
     1, 2, 3   // second triangle
   };
-  // e.AddMeshComponent(vertices, 12, indices, 6);
+  Skeleton::Mesh mesh(vertices, 12, indices, 6);
+  e.AddComponent<Skeleton::MeshComponent>(mesh);
 
   while (window.IsOpen()) {
     window.PollEvents();
@@ -32,7 +33,7 @@ int main() {
     Skeleton::Renderer::BeginFrame();
     Skeleton::Renderer::RenderScene();
     Skeleton::Renderer::BeginImGui();
-    Skeleton::Ui::Draw();
+    // Skeleton::Ui::Draw();
     // ImGui::ShowDemoWindow();
     Skeleton::Renderer::EndImGui();
     Skeleton::Renderer::EndFrame();

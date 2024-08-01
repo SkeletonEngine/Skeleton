@@ -29,6 +29,10 @@ set(SKELETON_SRC_RENDERER_OPENGL_FILES
   src/skeleton/renderer/opengl/opengl_renderer.cc
   src/skeleton/renderer/opengl/opengl_mesh.h
   src/skeleton/renderer/opengl/opengl_mesh.cc
+  src/skeleton/renderer/opengl/opengl_shader.h
+  src/skeleton/renderer/opengl/opengl_shader.cc
+  src/skeleton/renderer/opengl/opengl_entity_shader.h
+  src/skeleton/renderer/opengl/opengl_entity_shader.cc
 )
 source_group("src/skeleton/renderer/opengl" FILES ${SKELETON_SRC_RENDERER_OPENGL_FILES})
 

@@ -2,6 +2,8 @@
 
 #include <entt/entity/registry.hpp>
 
+#include "components.h"
+
 namespace Skeleton {
 
 class Entity {
@@ -32,7 +34,7 @@ public:
 
 		template<typename T>
 		bool HasComponent() {
-			return registry.has<T>(entity);
+			return registry.all_of<T>(entity);
 		}
 
 		template<typename T>

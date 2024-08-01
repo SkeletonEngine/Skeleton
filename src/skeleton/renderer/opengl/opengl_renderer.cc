@@ -8,11 +8,13 @@
 
 #include "scene/scene.h"
 #include "opengl_mesh.h"
+#include "opengl_entity_shader.h"
 
 namespace Skeleton {
 namespace Renderer {
 
 static GLFWwindow* window;
+static EntityShader entity_shader;
 
 void BeginFrame() {
 }
@@ -23,10 +25,16 @@ void EndFrame() {
 
 void RenderScene() {
   glClear(GL_COLOR_BUFFER_BIT);
+  
+  entity_shader.Bind();
 
-  // for (Entity* e : scene.GetEntities()) {
-  //   e->GetMeshComponent()->Draw();
-  // }
+  auto view = gScene.Registry().view<MeshComponent>();
+  for (auto& e : view) {
+    auto& mesh = view.get<MeshComponent>(e);
+    mesh.mesh.Draw();
+  }
+  
+  entity_shader.Unbind();
 }
 
 void BeginImGui() {
@@ -64,6 +72,8 @@ void CreateContext(GLFWwindow* glfw_window) {
   
   glfwSwapInterval(1);
   glClearColor(0.2f, 0.4f, 0.6f, 1.0f);
+  
+  entity_shader.Compile();
 }
 
 void InitImGui() {
