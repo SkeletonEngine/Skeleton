@@ -6,6 +6,9 @@
 #include <imgui/backends/imgui_impl_opengl3.h>
 #include <imgui/backends/imgui_impl_glfw.h>
 
+#include "scene/scene.h"
+#include "opengl_mesh.h"
+
 namespace Skeleton {
 namespace Renderer {
 
@@ -20,6 +23,10 @@ void EndFrame() {
 
 void RenderScene() {
   glClear(GL_COLOR_BUFFER_BIT);
+
+  // for (Entity* e : scene.GetEntities()) {
+  //   e->GetMeshComponent()->Draw();
+  // }
 }
 
 void BeginImGui() {
@@ -43,9 +50,9 @@ namespace Internal {
 void ApplyGlfwWindowHints() {
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #ifdef __APPLE__
   glfwWindowHint (GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-  glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #endif
   glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 }
@@ -56,7 +63,7 @@ void CreateContext(GLFWwindow* glfw_window) {
   gladLoadGL(glfwGetProcAddress);
   
   glfwSwapInterval(1);
-  glClearColor(0.2, 0.4, 0.6, 1.0);
+  glClearColor(0.2f, 0.4f, 0.6f, 1.0f);
 }
 
 void InitImGui() {

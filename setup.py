@@ -1,6 +1,7 @@
 import os, platform, subprocess
 
 submodule_paths = [
+  'src/lib/entt',
   'src/lib/glfw',
   'src/lib/imgui/imgui'
 ]
