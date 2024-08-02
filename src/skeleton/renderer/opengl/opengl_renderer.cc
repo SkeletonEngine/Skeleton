@@ -26,6 +26,7 @@ void EndFrame() {
 
 void RenderScene(const Framebuffer& framebuffer) {
   framebuffer.Bind();
+  glViewport(0, 0, framebuffer.GetWidth(), framebuffer.GetHeight());
   RenderScene();
 }
 
