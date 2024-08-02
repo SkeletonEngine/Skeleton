@@ -10,25 +10,67 @@
 namespace Skeleton {
 namespace Ui {
 
-void Init() {
+static void InitDockspace() {
   ImGuiID dockspace = ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport());
 
-	ImGuiViewport* viewport = ImGui::GetMainViewport();
-	static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
+  ImGuiViewport* viewport = ImGui::GetMainViewport();
+  static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
   ImGui::DockBuilderRemoveNode(dockspace); // clear any previous layout
-	ImGui::DockBuilderAddNode(dockspace, dockspace_flags | ImGuiDockNodeFlags_DockSpace);
-	ImGui::DockBuilderSetNodeSize(dockspace, viewport->Size);
+  ImGui::DockBuilderAddNode(dockspace, dockspace_flags | ImGuiDockNodeFlags_DockSpace);
+  ImGui::DockBuilderSetNodeSize(dockspace, viewport->Size);
 
   ImGuiID dock_right = ImGui::DockBuilderSplitNode(dockspace, ImGuiDir_Right, 0.25f, nullptr, &dockspace);
 
   ImGui::DockBuilderDockWindow("Viewport", dockspace);
   ImGui::DockBuilderDockWindow("Scene Graph", dock_right);
   ImGui::DockBuilderDockWindow("Docs", dockspace);
+}
 
+void Init() {
+  InitDockspace();
   InitViewport();
+  LoadDocs();
+  
+  // TEMP
+  gViewportWindowOpen = false;
+  gSceneGraphWindowOpen = false;
+  gDocsWindowOpen = true;
 }
 
 void Draw() {
+  ImGui::BeginMainMenuBar();
+  if (ImGui::BeginMenu("View")) {
+    if (ImGui::BeginMenu("Perspective")) {
+      if (ImGui::MenuItem("Editor")) {
+        InitDockspace();
+        gViewportWindowOpen = true;
+        gSceneGraphWindowOpen = true;
+        gDocsWindowOpen = false;
+      }
+      if (ImGui::MenuItem("Docs")) {
+        InitDockspace();
+        gViewportWindowOpen = false;
+        gSceneGraphWindowOpen = false;
+        gDocsWindowOpen = true;
+      }
+      ImGui::EndMenu();
+    }
+    if (ImGui::BeginMenu("Window")) {
+      if (ImGui::MenuItem("Viewport", nullptr, gViewportWindowOpen)) {
+        gViewportWindowOpen = !gViewportWindowOpen;
+      }
+      if (ImGui::MenuItem("Scene Graph", nullptr, gSceneGraphWindowOpen)) {
+        gSceneGraphWindowOpen = !gSceneGraphWindowOpen;
+      }
+      if (ImGui::MenuItem("Docs", nullptr, gDocsWindowOpen)) {
+        gDocsWindowOpen = !gDocsWindowOpen;
+      }
+      ImGui::EndMenu();
+    }
+    ImGui::EndMenu();
+  }
+  ImGui::EndMainMenuBar();
+  
   ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport());
 
   DrawViewport();

@@ -72,3 +72,7 @@ target_link_libraries(Skeleton PRIVATE imgui)
 
 add_subdirectory(src/lib/entt)
 target_link_libraries(Skeleton PRIVATE EnTT)
+
+if(APPLE)
+  set_target_properties(Skeleton PROPERTIES  XCODE_GENERATE_SCHEME TRUE XCODE_SCHEME_WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+endif()

@@ -8,6 +8,11 @@ set(IMGUI_OPENGL_FILES
   imgui/backends/imgui_impl_glfw.cpp
 )
 
+set(IMGUI_MISC_FILES
+  imgui/misc/cpp/imgui_stdlib.h
+  imgui/misc/cpp/imgui_stdlib.cpp
+)
+
 add_library(imgui
   imgui/imgui_demo.cpp
   imgui/imgui_draw.cpp
@@ -21,6 +26,7 @@ add_library(imgui
   imgui/imstb_truetype.h
 
   ${IMGUI_OPENGL_FILES}
+  ${IMGUI_MISC_FILES}
 )
 
 target_compile_features(imgui PRIVATE cxx_std_17)

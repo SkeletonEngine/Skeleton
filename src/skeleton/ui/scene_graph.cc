@@ -7,8 +7,12 @@
 namespace Skeleton {
 namespace Ui {
 
+bool gSceneGraphWindowOpen = true;
+
 void DrawSceneGraph() {
-  ImGui::Begin("Scene Graph");
+  if (!gSceneGraphWindowOpen) return;
+  
+  ImGui::Begin("Scene Graph", &gSceneGraphWindowOpen);
 
   auto view = gScene.Registry().view<NameComponent>();
   for (auto& e : view) {
