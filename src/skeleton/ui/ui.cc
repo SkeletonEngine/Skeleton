@@ -3,6 +3,7 @@
 #include <imgui/imgui.h>
 #include <imgui/imgui_internal.h>
 
+#include "docs.h"
 #include "scene_graph.h"
 #include "viewport.h"
 
@@ -22,14 +23,17 @@ void Init() {
 
   ImGui::DockBuilderDockWindow("Viewport", dockspace);
   ImGui::DockBuilderDockWindow("Scene Graph", dock_right);
+  ImGui::DockBuilderDockWindow("Docs", dockspace);
 
   InitViewport();
 }
 
 void Draw() {
   ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport());
+
   DrawViewport();
   DrawSceneGraph();
+  DrawDocs();
 }
 
 }

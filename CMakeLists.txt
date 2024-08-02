@@ -15,6 +15,8 @@ set(SKELETON_SRC_UI_FILES
   src/skeleton/ui/viewport.cc
   src/skeleton/ui/scene_graph.h
   src/skeleton/ui/scene_graph.cc
+  src/skeleton/ui/docs.h
+  src/skeleton/ui/docs.cc
 )
 source_group("src/skeleton/ui" FILES ${SKELETON_SRC_UI_FILES})
 
