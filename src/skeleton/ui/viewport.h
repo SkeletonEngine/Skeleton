@@ -1,9 +1,11 @@
 #pragma once
 
+#include "renderer/framebuffer.h"
+
 namespace Skeleton {
 namespace Ui {
 
-void DrawViewport();
+void DrawViewport(const Framebuffer& framebuffer);
 
 }
 }

@@ -8,7 +8,7 @@ public:
   void Unbind() const;
   
 protected:
-  void CompileSource(const char* vert_code, const char* frag_code);
+  void Compile(const char* vert_code, const char* frag_code);
   
 private:
   unsigned int shader_program;

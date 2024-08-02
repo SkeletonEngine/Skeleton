@@ -4,20 +4,23 @@ namespace Skeleton {
 
 const char* vert_code =
   "#version 330 core\n"
-  "layout (location = 0) in vec3 aPos;\n"
+  "layout (location = 0) in vec3 a_pos;\n"
+  "out vec3 v_pos;\n"
   "void main() {\n"
-  " gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+  "  gl_Position = vec4(a_pos, 1.0);\n"
+  "  v_pos = a_pos + vec3(0.5, 0.5, 0.5);\n"
   "}\0";
 
 const char* frag_code =
   "#version 330 core\n"
-  "out vec4 FragColor;\n"
+  "in vec3 v_pos;\n"
+  "out vec4 o_color;\n"
   "void main() {\n"
-  " FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+  " o_color = vec4(v_pos, 1.0f);\n"
   "}\n\0";
 
-void EntityShader::Compile() {
-  CompileSource(vert_code, frag_code);
+EntityShader::EntityShader() {
+  Compile(vert_code, frag_code);
 }
 
 }

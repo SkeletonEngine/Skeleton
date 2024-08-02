@@ -24,9 +24,9 @@ void InitDockspace() {
   ImGui::DockBuilderDockWindow("Scene Graph", dock_right);
 }
 
-void Draw() {
+void Draw(const Framebuffer& framebuffer) {
   ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport());
-  DrawViewport();
+  DrawViewport(framebuffer);
   DrawSceneGraph();
 }
 

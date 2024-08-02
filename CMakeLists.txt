@@ -21,6 +21,7 @@ source_group("src/skeleton/ui" FILES ${SKELETON_SRC_UI_FILES})
 set(SKELETON_SRC_RENDERER_FILES
   src/skeleton/renderer/renderer.h
   src/skeleton/renderer/mesh.h
+  src/skeleton/renderer/framebuffer.h
 )
 source_group("src/skeleton/renderer" FILES ${SKELETON_SRC_RENDERER_FILES})
 
@@ -33,6 +34,8 @@ set(SKELETON_SRC_RENDERER_OPENGL_FILES
   src/skeleton/renderer/opengl/opengl_shader.cc
   src/skeleton/renderer/opengl/opengl_entity_shader.h
   src/skeleton/renderer/opengl/opengl_entity_shader.cc
+  src/skeleton/renderer/opengl/opengl_framebuffer.h
+  src/skeleton/renderer/opengl/opengl_framebuffer.cc
 )
 source_group("src/skeleton/renderer/opengl" FILES ${SKELETON_SRC_RENDERER_OPENGL_FILES})
 

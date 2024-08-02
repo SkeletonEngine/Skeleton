@@ -9,12 +9,13 @@
 #include "scene/scene.h"
 #include "opengl_mesh.h"
 #include "opengl_entity_shader.h"
+#include "opengl_framebuffer.h"
 
 namespace Skeleton {
 namespace Renderer {
 
 static GLFWwindow* window;
-static EntityShader entity_shader;
+static EntityShader* entity_shader;
 
 void BeginFrame() {
 }
@@ -23,10 +24,15 @@ void EndFrame() {
   glfwSwapBuffers(window);
 }
 
+void RenderScene(const Framebuffer& framebuffer) {
+  framebuffer.Bind();
+  RenderScene();
+}
+
 void RenderScene() {
   glClear(GL_COLOR_BUFFER_BIT);
   
-  entity_shader.Bind();
+  entity_shader->Bind();
 
   auto view = gScene.Registry().view<MeshComponent>();
   for (auto& e : view) {
@@ -34,10 +40,12 @@ void RenderScene() {
     mesh.mesh.Draw();
   }
   
-  entity_shader.Unbind();
+  entity_shader->Unbind();
 }
 
 void BeginImGui() {
+  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();
   ImGui::NewFrame();
@@ -73,7 +81,7 @@ void CreateContext(GLFWwindow* glfw_window) {
   glfwSwapInterval(1);
   glClearColor(0.2f, 0.4f, 0.6f, 1.0f);
   
-  entity_shader.Compile();
+  entity_shader = new EntityShader();
 }
 
 void InitImGui() {

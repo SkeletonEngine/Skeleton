@@ -6,7 +6,7 @@ namespace Skeleton {
 
 class EntityShader : public Shader {
 public:
-  void Compile();
+  EntityShader();
 };
 
 }

@@ -14,7 +14,7 @@ void Shader::Unbind() const {
   glUseProgram(0);
 }
 
-void Shader::CompileSource(const char* vert_code, const char* frag_code) {
+void Shader::Compile(const char* vert_code, const char* frag_code) {
   // vertex shader
   unsigned int vert_module = glCreateShader(GL_VERTEX_SHADER);
   glShaderSource(vert_module, 1, &vert_code, nullptr);
