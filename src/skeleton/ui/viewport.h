@@ -5,7 +5,9 @@
 namespace Skeleton {
 namespace Ui {
 
-void DrawViewport(const Framebuffer& framebuffer);
+void InitViewport();
+void DrawViewport();
+Framebuffer& GetViewportFramebuffer();
 
 }
 }

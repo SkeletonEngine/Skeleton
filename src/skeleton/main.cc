@@ -4,6 +4,7 @@
 #include "renderer/renderer.h"
 #include "scene/scene.h"
 #include "ui/ui.h"
+#include "ui/viewport.h"
 #include "window.h"
 
 int main() {
@@ -11,7 +12,7 @@ int main() {
   Skeleton::Renderer::Internal::InitImGui();
 
   Skeleton::Renderer::BeginImGui();
-  Skeleton::Ui::InitDockspace();
+  Skeleton::Ui::Init();
   Skeleton::Renderer::EndImGui();
 
   Skeleton::Entity e = Skeleton::gScene.CreateEntity();
@@ -28,15 +29,13 @@ int main() {
   Skeleton::Mesh mesh(vertices, sizeof(vertices) / sizeof(float), indices, sizeof(indices) / sizeof(unsigned short));
   e.AddComponent<Skeleton::MeshComponent>(mesh);
 
-  Skeleton::Framebuffer scene_framebuffer;
-
   while (window.IsOpen()) {
     window.PollEvents();
     
     Skeleton::Renderer::BeginFrame();
-    Skeleton::Renderer::RenderScene(scene_framebuffer);
+    Skeleton::Renderer::RenderScene(Skeleton::Ui::GetViewportFramebuffer());
     Skeleton::Renderer::BeginImGui();
-    Skeleton::Ui::Draw(scene_framebuffer);
+    Skeleton::Ui::Draw();
     // ImGui::ShowDemoWindow();
     Skeleton::Renderer::EndImGui();
     Skeleton::Renderer::EndFrame();

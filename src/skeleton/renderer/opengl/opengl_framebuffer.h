@@ -4,7 +4,7 @@ namespace Skeleton {
 
 class Framebuffer {
 public:
-  Framebuffer();
+  Framebuffer(int width, int height);
   ~Framebuffer();
 
 public:

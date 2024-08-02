@@ -9,7 +9,7 @@
 namespace Skeleton {
 namespace Ui {
 
-void InitDockspace() {
+void Init() {
   ImGuiID dockspace = ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport());
 
 	ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -22,11 +22,13 @@ void InitDockspace() {
 
   ImGui::DockBuilderDockWindow("Viewport", dockspace);
   ImGui::DockBuilderDockWindow("Scene Graph", dock_right);
+
+  InitViewport();
 }
 
-void Draw(const Framebuffer& framebuffer) {
+void Draw() {
   ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport());
-  DrawViewport(framebuffer);
+  DrawViewport();
   DrawSceneGraph();
 }
 
