@@ -3,7 +3,7 @@
 namespace Skeleton {
 namespace Ui {
 
-void DrawSceneGraph();
+void DrawSceneGraphPanel();
 
 }
 }

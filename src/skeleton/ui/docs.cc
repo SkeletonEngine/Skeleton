@@ -11,7 +11,7 @@ namespace Ui {
 
 static std::string buf;
 
-void LoadDocs() {
+void InitDocsPanel() {
   std::ifstream in_file("res/docs/todo.txt");
   if (!in_file.is_open()) {
     fprintf(stderr, "Failed to open todo file\n");
@@ -26,7 +26,7 @@ static void SaveDocs() {
   out_file << buf;
 }
 
-void DrawDocs() {
+void DrawDocsPanel() {
   if (!gPanelsOpen[Panel::kDocs]) return;
   
   ImGui::Begin("Docs", &gPanelsOpen[Panel::kDocs]);

@@ -3,12 +3,13 @@
 #include <imgui/imgui.h>
 
 #include "panel_info.h"
+#include "properties.h"
 #include "scene/scene.h"
 
 namespace Skeleton {
 namespace Ui {
 
-void DrawSceneGraph() {
+void DrawSceneGraphPanel() {
   if (!gPanelsOpen[Panel::kSceneGraph]) return;
   
   ImGui::Begin("Scene Graph", &gPanelsOpen[Panel::kSceneGraph]);
@@ -16,7 +17,10 @@ void DrawSceneGraph() {
   auto view = gScene.Registry().view<NameComponent>();
   for (auto& e : view) {
     auto& name = view.get<NameComponent>(e);
-    ImGui::Text("%s", name.name.c_str());
+    if (ImGui::TreeNode(name.name.c_str())) {
+      SetPropertiesPanelFocus(e);
+      ImGui::TreePop();
+    }
   }
 
   ImGui::End();

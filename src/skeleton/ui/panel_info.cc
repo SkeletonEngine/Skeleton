@@ -14,6 +14,7 @@ void ShowPerspective(Perspective perspective) {
   case Perspective::kEditor:
     gPanelsOpen[Panel::kViewport] = true;
     gPanelsOpen[Panel::kSceneGraph] = true;
+    gPanelsOpen[Panel::kProperties] = true;
     break;
   case Perspective::kDocs:
     gPanelsOpen[Panel::kDocs] = true;

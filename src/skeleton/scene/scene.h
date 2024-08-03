@@ -1,15 +1,17 @@
 #pragma once
 
 #include <entt/entity/registry.hpp>
-
-#include "entity.h"
 #include "components.h"
 
 namespace Skeleton {
 
 class Scene {
 public:
-  Entity CreateEntity();
+  inline entt::entity CreateEntity() {
+    entt::entity e = registry.create();
+	  registry.emplace<NameComponent>(e, "Entity");
+    return e;
+  }
 
 public:
   entt::registry& Registry() { return registry; };

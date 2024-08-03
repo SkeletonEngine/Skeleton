@@ -3,8 +3,8 @@
 namespace Skeleton {
 namespace Ui {
 
-void LoadDocs();
-void DrawDocs();
+void InitDocsPanel();
+void DrawDocsPanel();
 
 }
 }

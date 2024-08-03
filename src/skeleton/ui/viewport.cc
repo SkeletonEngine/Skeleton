@@ -10,11 +10,11 @@ namespace Ui {
 
 static std::unique_ptr<Framebuffer> framebuffer;
 
-void InitViewport() {
+void InitViewportPanel() {
   framebuffer = std::make_unique<Framebuffer>(1280, 720);
 }
 
-void DrawViewport() {
+void DrawViewportPanel() {
   if (!gPanelsOpen[Panel::kViewport]) return;
   
   ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 0 });

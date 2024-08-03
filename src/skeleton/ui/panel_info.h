@@ -6,6 +6,7 @@ namespace Ui {
 enum Panel {
   kViewport,
   kSceneGraph,
+  kProperties,
   kDocs,
   PANEL_ENUM_SIZE,
 };

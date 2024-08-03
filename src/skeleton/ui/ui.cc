@@ -5,6 +5,7 @@
 
 #include "docs.h"
 #include "panel_info.h"
+#include "properties.h"
 #include "scene_graph.h"
 #include "viewport.h"
 
@@ -21,16 +22,19 @@ static void InitDockspace() {
   ImGui::DockBuilderSetNodeSize(dockspace, viewport->Size);
 
   ImGuiID dock_right = ImGui::DockBuilderSplitNode(dockspace, ImGuiDir_Right, 0.25f, nullptr, &dockspace);
+  ImGuiID dock_right_bottom = ImGui::DockBuilderSplitNode(dock_right, ImGuiDir_Down, 0.5f, nullptr, &dock_right);
 
   ImGui::DockBuilderDockWindow("Viewport", dockspace);
   ImGui::DockBuilderDockWindow("Scene Graph", dock_right);
+  ImGui::DockBuilderDockWindow("Properties", dock_right_bottom);
+
   ImGui::DockBuilderDockWindow("Docs", dockspace);
 }
 
 void Init() {
   InitDockspace();
-  InitViewport();
-  LoadDocs();
+  InitViewportPanel();
+  InitDocsPanel();
   
   ShowPerspective(Perspective::kEditor);
 }
@@ -65,9 +69,10 @@ void Draw() {
   
   ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport());
 
-  DrawViewport();
-  DrawSceneGraph();
-  DrawDocs();
+  DrawViewportPanel();
+  DrawSceneGraphPanel();
+  DrawPropertiesPanel();
+  DrawDocsPanel();
 }
 
 }

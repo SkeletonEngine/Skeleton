@@ -17,6 +17,8 @@ set(SKELETON_SRC_UI_FILES
   src/skeleton/ui/viewport.cc
   src/skeleton/ui/scene_graph.h
   src/skeleton/ui/scene_graph.cc
+  src/skeleton/ui/properties.h
+  src/skeleton/ui/properties.cc
   src/skeleton/ui/docs.h
   src/skeleton/ui/docs.cc
 )
@@ -47,7 +49,6 @@ set(SKELETON_SRC_SCENE_FILES
   src/skeleton/scene/scene.h
   src/skeleton/scene/scene.cc
   src/skeleton/scene/entity.h
-  src/skeleton/scene/entity.cc
   src/skeleton/scene/components.h
 )
 source_group("src/skeleton/scene" FILES ${SKELETON_SRC_SCENE_FILES})

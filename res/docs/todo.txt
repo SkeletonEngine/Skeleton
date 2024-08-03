@@ -1,2 +1,1 @@
-Finish the core features
-That would be a good idea I think
+Make renaming entities not crash the editor

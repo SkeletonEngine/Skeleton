@@ -1,7 +1,9 @@
 #include <imgui/imgui.h>
 
 #include "renderer/framebuffer.h"
+#include "renderer/mesh.h"
 #include "renderer/renderer.h"
+#include "scene/entity.h"
 #include "scene/scene.h"
 #include "ui/ui.h"
 #include "ui/viewport.h"
@@ -15,7 +17,7 @@ int main() {
   Skeleton::Ui::Init();
   Skeleton::Renderer::EndImGui();
 
-  Skeleton::Entity e = Skeleton::gScene.CreateEntity();
+  entt::entity e = Skeleton::gScene.CreateEntity();
   float vertices[] = {
     0.5f,  0.5f, 0.0f,  // top right
     0.5f, -0.5f, 0.0f,  // bottom right
@@ -27,7 +29,7 @@ int main() {
     1, 2, 3   // second triangle
   };
   Skeleton::Mesh mesh(vertices, sizeof(vertices) / sizeof(float), indices, sizeof(indices) / sizeof(unsigned short));
-  e.AddComponent<Skeleton::MeshComponent>(mesh);
+  Skeleton::Entity::AddComponent<Skeleton::MeshComponent>(e, mesh);
 
   while (window.IsOpen()) {
     window.PollEvents();
