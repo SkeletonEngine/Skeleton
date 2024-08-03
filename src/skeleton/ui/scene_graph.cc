@@ -2,17 +2,16 @@
 
 #include <imgui/imgui.h>
 
+#include "panel_info.h"
 #include "scene/scene.h"
 
 namespace Skeleton {
 namespace Ui {
 
-bool gSceneGraphWindowOpen = true;
-
 void DrawSceneGraph() {
-  if (!gSceneGraphWindowOpen) return;
+  if (!gPanelsOpen[Panel::kSceneGraph]) return;
   
-  ImGui::Begin("Scene Graph", &gSceneGraphWindowOpen);
+  ImGui::Begin("Scene Graph", &gPanelsOpen[Panel::kSceneGraph]);
 
   auto view = gScene.Registry().view<NameComponent>();
   for (auto& e : view) {

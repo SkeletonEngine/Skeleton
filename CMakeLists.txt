@@ -11,6 +11,8 @@ source_group("src/skeleton" FILES ${SKELETON_SRC_FILES})
 set(SKELETON_SRC_UI_FILES
   src/skeleton/ui/ui.h
   src/skeleton/ui/ui.cc
+  src/skeleton/ui/panel_info.h
+  src/skeleton/ui/panel_info.cc
   src/skeleton/ui/viewport.h
   src/skeleton/ui/viewport.cc
   src/skeleton/ui/scene_graph.h
@@ -73,6 +75,9 @@ target_link_libraries(Skeleton PRIVATE imgui)
 add_subdirectory(src/lib/entt)
 target_link_libraries(Skeleton PRIVATE EnTT)
 
+if (WIN32)
+  set_target_properties(Skeleton PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+endif()
 if(APPLE)
   set_target_properties(Skeleton PROPERTIES  XCODE_GENERATE_SCHEME TRUE XCODE_SCHEME_WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 endif()

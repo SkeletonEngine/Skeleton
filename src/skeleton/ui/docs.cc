@@ -4,11 +4,10 @@
 #include <sstream>
 #include <imgui/imgui.h>
 #include <imgui/misc/cpp/imgui_stdlib.h>
+#include "panel_info.h"
 
 namespace Skeleton {
 namespace Ui {
-
-bool gDocsWindowOpen = false;
 
 static std::string buf;
 
@@ -28,9 +27,9 @@ static void SaveDocs() {
 }
 
 void DrawDocs() {
-  if (!gDocsWindowOpen) return;
+  if (!gPanelsOpen[Panel::kDocs]) return;
   
-  ImGui::Begin("Docs", &gDocsWindowOpen);
+  ImGui::Begin("Docs", &gPanelsOpen[Panel::kDocs]);
   if (ImGui::InputTextMultiline("##Notes", &buf, ImGui::GetContentRegionAvail())) {
     SaveDocs();
   }

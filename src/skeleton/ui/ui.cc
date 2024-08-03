@@ -4,6 +4,7 @@
 #include <imgui/imgui_internal.h>
 
 #include "docs.h"
+#include "panel_info.h"
 #include "scene_graph.h"
 #include "viewport.h"
 
@@ -31,10 +32,7 @@ void Init() {
   InitViewport();
   LoadDocs();
   
-  // TEMP
-  gViewportWindowOpen = false;
-  gSceneGraphWindowOpen = false;
-  gDocsWindowOpen = true;
+  ShowPerspective(Perspective::kEditor);
 }
 
 void Draw() {
@@ -42,28 +40,22 @@ void Draw() {
   if (ImGui::BeginMenu("View")) {
     if (ImGui::BeginMenu("Perspective")) {
       if (ImGui::MenuItem("Editor")) {
-        InitDockspace();
-        gViewportWindowOpen = true;
-        gSceneGraphWindowOpen = true;
-        gDocsWindowOpen = false;
+        ShowPerspective(Perspective::kEditor);
       }
       if (ImGui::MenuItem("Docs")) {
-        InitDockspace();
-        gViewportWindowOpen = false;
-        gSceneGraphWindowOpen = false;
-        gDocsWindowOpen = true;
+        ShowPerspective(Perspective::kDocs);
       }
       ImGui::EndMenu();
     }
     if (ImGui::BeginMenu("Window")) {
-      if (ImGui::MenuItem("Viewport", nullptr, gViewportWindowOpen)) {
-        gViewportWindowOpen = !gViewportWindowOpen;
+      if (ImGui::MenuItem("Viewport", nullptr, gPanelsOpen[Panel::kViewport])) {
+        gPanelsOpen[Panel::kViewport] = !gPanelsOpen[Panel::kViewport];
       }
-      if (ImGui::MenuItem("Scene Graph", nullptr, gSceneGraphWindowOpen)) {
-        gSceneGraphWindowOpen = !gSceneGraphWindowOpen;
+      if (ImGui::MenuItem("Scene Graph", nullptr, gPanelsOpen[Panel::kSceneGraph])) {
+        gPanelsOpen[Panel::kSceneGraph] = !gPanelsOpen[Panel::kSceneGraph];
       }
-      if (ImGui::MenuItem("Docs", nullptr, gDocsWindowOpen)) {
-        gDocsWindowOpen = !gDocsWindowOpen;
+      if (ImGui::MenuItem("Docs", nullptr, gPanelsOpen[Panel::kDocs])) {
+        gPanelsOpen[Panel::kDocs] = !gPanelsOpen[Panel::kDocs];
       }
       ImGui::EndMenu();
     }
