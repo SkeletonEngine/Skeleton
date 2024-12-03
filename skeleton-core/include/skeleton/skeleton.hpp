@@ -1,7 +1,9 @@
 #pragma once
 
+#include "skeleton/application_settings.hpp"
+
 namespace Skeleton {
 
-void DoSomething();
+void StartApplication(const ApplicationSettings& settings = {});
 
 }
