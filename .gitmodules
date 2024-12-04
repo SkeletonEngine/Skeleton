@@ -1,3 +1,6 @@
 [submodule "skeleton-core/vendor/glfw/glfw"]
 	path = skeleton-core/vendor/glfw/glfw
 	url = https://github.com/glfw/glfw
+[submodule "skeleton-core/vendor/zeux/volk"]
+	path = skeleton-core/vendor/zeux/volk
+	url = https://github.com/zeux/volk

@@ -1,7 +1,8 @@
 set(SKELETON_CORE_SRC_FILES
   include/skeleton/skeleton.hpp
-  include/skeleton/application_settings.hpp
   src/skeleton/skeleton.cpp
+  include/skeleton/application_settings.hpp
+  src/skeleton/platform.hpp
 )
 source_group("src/skeleton-core" FILES ${SKELETON_CORE_SRC_FILES})
 

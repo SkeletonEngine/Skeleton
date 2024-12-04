@@ -1,4 +1,6 @@
 set(SKELETON_CORE_RENDERER_VULKAN_FILES
+  src/skeleton/renderer/vulkan/vulkan_check.hpp
+  src/skeleton/renderer/vulkan/vulkan_check.cpp
   src/skeleton/renderer/vulkan/vulkan_renderer.hpp
   src/skeleton/renderer/vulkan/vulkan_renderer.cpp
 )
