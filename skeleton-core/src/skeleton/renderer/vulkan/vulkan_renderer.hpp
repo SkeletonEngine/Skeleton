@@ -12,8 +12,8 @@ public:
   ~VulkanRenderer();
   
 private:
-  VkAllocationCallbacks allocator;
-  VkInstance            instance;
+  VkAllocationCallbacks* allocator = VK_NULL_HANDLE;
+  VkInstance             instance  = VK_NULL_HANDLE;
 };
 
 }

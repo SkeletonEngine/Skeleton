@@ -22,3 +22,9 @@
 #else
 	#error "Unable to detect platform"
 #endif
+
+#ifndef NDEBUG
+  #define SK_BUILD_DEBUG
+#else
+  #define SK_PLATFORM_RELEASE
+#endif
