@@ -6,6 +6,7 @@ set(SKELETON_SRC_FILES
 source_group("src/skeleton" FILES ${SKELETON_SRC_FILES})
 
 set(SKELETON_SRC_CORE_FILES
+  include/skeleton/core/assert.hpp
   include/skeleton/core/build_configuration.hpp
   include/skeleton/core/core.hpp
   include/skeleton/core/platform.hpp

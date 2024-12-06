@@ -6,7 +6,7 @@
 namespace Skeleton {
 
 Window::Window(const ApplicationSettings& settings) {
-  glfwInit();
+  SK_CHECK(glfwInit());
   
   switch (settings.renderer.backend) {
     case RendererBackend::kOpenGl: {
@@ -25,6 +25,7 @@ Window::Window(const ApplicationSettings& settings) {
   }
   
   glfw_window = glfwCreateWindow(1280, 720, "Skeleton", NULL, NULL);
+  SK_ASSERT(glfw_window);
 }
 
 Window::~Window() {
