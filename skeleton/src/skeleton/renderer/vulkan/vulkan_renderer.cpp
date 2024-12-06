@@ -1,8 +1,7 @@
-#include "vulkan_renderer.hpp"
+#include "skeleton/renderer/vulkan/vulkan_renderer.hpp"
 
 #include <vector>
 #include <GLFW/glfw3.h>
-#include "skeleton/platform.hpp"
 #include "skeleton/renderer/vulkan/vulkan_check.hpp"
 
 namespace Skeleton {

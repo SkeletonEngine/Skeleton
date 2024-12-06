@@ -1,4 +1,5 @@
 #include "skeleton/window/window.hpp"
+#include "skeleton/core/core.hpp"
 
 #include <GLFW/glfw3.h>
 

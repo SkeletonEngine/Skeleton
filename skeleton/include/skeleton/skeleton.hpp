@@ -1,4 +1,5 @@
 #pragma once
+#include "skeleton/core/core.hpp"
 
 #include "skeleton/application_settings.hpp"
 

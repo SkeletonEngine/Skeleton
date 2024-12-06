@@ -1,4 +1,5 @@
 #include "skeleton/skeleton.hpp"
+#include "skeleton/core/core.hpp"
 
 #include "skeleton/renderer/opengl/opengl_renderer.hpp"
 #include "skeleton/renderer/vulkan/vulkan_renderer.hpp"

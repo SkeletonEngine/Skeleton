@@ -1,3 +1,5 @@
+#pragma once
+
 #ifdef _WIN32
   #define SK_PLATFORM_WINDOWS
 
@@ -21,10 +23,4 @@
 
 #else
 	#error "Unable to detect platform"
-#endif
-
-#ifndef NDEBUG
-  #define SK_BUILD_DEBUG
-#else
-  #define SK_PLATFORM_RELEASE
 #endif
