@@ -12,8 +12,13 @@ public:
   ~VulkanRenderer();
   
 private:
-  VkAllocationCallbacks* allocator = VK_NULL_HANDLE;
-  VkInstance             instance  = VK_NULL_HANDLE;
+  void CreateInstance();
+  void ChoosePhysicalDevice();
+  
+private:
+  VkAllocationCallbacks* allocator       = VK_NULL_HANDLE;
+  VkInstance             instance        = VK_NULL_HANDLE;
+  VkPhysicalDevice       physical_device = VK_NULL_HANDLE;
 };
 
 }
