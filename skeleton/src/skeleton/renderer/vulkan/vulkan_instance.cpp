@@ -22,32 +22,32 @@ void VulkanRenderer::CreateInstance() {
   const char** glfw_extensions;
   glfw_extensions = glfwGetRequiredInstanceExtensions(&glfw_extension_count);
   std::vector<const char*> instance_extensions(glfw_extensions, glfw_extensions + glfw_extension_count);
-  #ifdef SK_PLATFORM_MACOS
+#ifdef SK_PLATFORM_MACOS
   instance_extensions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
-  #endif
-  #ifdef SK_BUILD_DEBUG
+#endif
+#ifdef SK_BUILD_DEBUG
   instance_extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
-  #endif
+#endif
 
   /* Validation layers */
-  #ifdef SK_BUILD_DEBUG
+#ifdef SK_BUILD_DEBUG
   const std::vector<const char*> kValidationLayers = {
     "VK_LAYER_KHRONOS_validation"
   };
-  #endif
+#endif
 
   /* Create the VkInstance */
   VkInstanceCreateInfo instance_info { VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO };
   instance_info.pApplicationInfo        = &app_info;
   instance_info.enabledExtensionCount   = (uint32_t)instance_extensions.size();
   instance_info.ppEnabledExtensionNames = instance_extensions.data();
-  #ifdef SK_PLATFORM_MACOS
+#ifdef SK_PLATFORM_MACOS
   instance_info.flags                   = VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
-  #endif
-  #ifdef SK_BUILD_DEBUG
+#endif
+#ifdef SK_BUILD_DEBUG
   instance_info.enabledLayerCount       = (uint32_t)kValidationLayers.size();
   instance_info.ppEnabledLayerNames     = kValidationLayers.data();
-  #endif
+#endif
   VK_CHECK(vkCreateInstance(&instance_info, allocator, &instance));
   
   /* Load vulkan instance functions */
