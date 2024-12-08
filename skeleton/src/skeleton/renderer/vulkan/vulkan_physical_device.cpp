@@ -8,14 +8,14 @@
 
 namespace Skeleton::Vulkan {
 
-static bool DeviceMeetsBasicStandards(VkPhysicalDevice physical_device) {
+static bool DeviceMeetsBasicStandards(VkPhysicalDevice physical_device, VkSurfaceKHR surface) {
   /* Ensure the device supports graphics and presentation to a surface */
-  DeviceQueueFamilies queues(physical_device);
+  DeviceQueueFamilies queues(physical_device, surface);
   return queues.IsComplete();
 }
 
-static int RateDeviceSuitability(VkPhysicalDevice physical_device) {
-  if (!DeviceMeetsBasicStandards(physical_device)) return 0;
+static int RateDeviceSuitability(VkPhysicalDevice physical_device, VkSurfaceKHR surface) {
+  if (!DeviceMeetsBasicStandards(physical_device, surface)) return 0;
   
   int score = 0;
   
@@ -47,7 +47,7 @@ void VulkanRenderer::ChoosePhysicalDevice() {
   /* Rate all devices and sort candidates by descending score */
   std::multimap<int, VkPhysicalDevice> candidates;
   for (const auto& device : physical_devices) {
-    int score = RateDeviceSuitability(device);
+    int score = RateDeviceSuitability(device, surface);
     candidates.insert({ score, device });
   }
 

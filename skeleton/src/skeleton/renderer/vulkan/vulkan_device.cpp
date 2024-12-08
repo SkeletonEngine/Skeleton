@@ -9,7 +9,7 @@ namespace Skeleton::Vulkan {
 
 void VulkanRenderer::CreateDevice() {
   /* Query the physical device to find the indices of the graphics and present queues */
-  DeviceQueueFamilies queue_families(physical_device);
+  DeviceQueueFamilies queue_families(physical_device, surface);
 
   /* Priority of all queues will be 1 */
   float priority = 1.0f;
