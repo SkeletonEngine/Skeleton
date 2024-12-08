@@ -5,10 +5,12 @@ namespace Skeleton::Vulkan {
 VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings) {
   CreateInstance();
   ChoosePhysicalDevice();
+  CreateDevice();
 }
 
 VulkanRenderer::~VulkanRenderer() {
-  vkDestroyInstance(instance, allocator);
+  DestroyDevice();
+  DestroyInstance();
 }
 
 }

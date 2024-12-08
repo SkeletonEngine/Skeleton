@@ -11,6 +11,7 @@ public:
   DeviceQueueFamilies(VkPhysicalDevice physical_device);
 
 public:
+  uint32_t GraphicsFamilyIndex() const;
   bool IsComplete() const;
 
 private:

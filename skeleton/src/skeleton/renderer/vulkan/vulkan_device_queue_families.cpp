@@ -25,6 +25,10 @@ DeviceQueueFamilies::DeviceQueueFamilies(VkPhysicalDevice physical_device) {
   }
 }
 
+uint32_t DeviceQueueFamilies::GraphicsFamilyIndex() const {
+  return graphics_family.value();
+}
+
 bool DeviceQueueFamilies::IsComplete() const {
   return graphics_family.has_value();
 }

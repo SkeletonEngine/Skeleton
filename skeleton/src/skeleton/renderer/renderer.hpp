@@ -4,7 +4,8 @@
 namespace Skeleton {
 
 class Renderer {
-  
+public:
+  virtual ~Renderer() { }
 };
 
 }
