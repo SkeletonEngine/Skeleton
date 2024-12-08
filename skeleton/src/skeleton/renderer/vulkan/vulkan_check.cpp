@@ -52,6 +52,7 @@ const char* VkResultString(VkResult result) {
     case VK_ERROR_COMPRESSION_EXHAUSTED_EXT:                    return "VK_ERROR_COMPRESSION_EXHAUSTED_EXT";
     case VK_ERROR_INCOMPATIBLE_SHADER_BINARY_EXT:               return "VK_ERROR_INCOMPATIBLE_SHADER_BINARY_EXT";
     case VK_RESULT_MAX_ENUM:                                    return "VK_RESULT_MAX_ENUM";
+    default:                                                    return "Unknown VkResult";
   }
 }
 
