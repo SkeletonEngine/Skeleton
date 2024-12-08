@@ -1,6 +1,6 @@
 #include "skeleton/renderer/vulkan/vulkan_check.hpp"
 
-namespace Skeleton {
+namespace Skeleton::Vulkan {
 
 const char* VkResultString(VkResult result) {
   switch (result) {

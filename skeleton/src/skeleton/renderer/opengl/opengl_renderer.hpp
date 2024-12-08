@@ -4,7 +4,7 @@
 #include "skeleton/application_settings.hpp"
 #include "skeleton/renderer/renderer.hpp"
 
-namespace Skeleton {
+namespace Skeleton::OpenGl {
 
 class OpenGlRenderer : public Renderer {
 public:

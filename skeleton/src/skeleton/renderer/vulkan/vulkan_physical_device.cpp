@@ -5,7 +5,7 @@
 #include <vector>
 #include <volk.h>
 
-namespace Skeleton {
+namespace Skeleton::Vulkan {
 
 static bool DeviceMeetsBasicStandards(VkPhysicalDevice physical_device) {
   return true;

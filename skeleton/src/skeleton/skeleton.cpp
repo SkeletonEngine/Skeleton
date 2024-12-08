@@ -12,8 +12,8 @@ void StartApplication(const ApplicationSettings& settings) {
   
   Renderer* renderer;
   switch (settings.renderer.backend) {
-    case RendererBackend::kOpenGl: renderer = new OpenGlRenderer(settings); break;
-    case RendererBackend::kVulkan: renderer = new VulkanRenderer(settings); break;
+    case RendererBackend::kOpenGl: renderer = new OpenGl::OpenGlRenderer(settings); break;
+    case RendererBackend::kVulkan: renderer = new Vulkan::VulkanRenderer(settings); break;
   }
   
   while (window.IsOpen()) {

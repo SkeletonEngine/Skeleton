@@ -5,7 +5,7 @@
 #include <GLFW/glfw3.h>
 #include "skeleton/renderer/vulkan/vulkan_check.hpp"
 
-namespace Skeleton {
+namespace Skeleton::Vulkan {
 
 void VulkanRenderer::CreateInstance() {
   /* Load initial vulkan functions */
