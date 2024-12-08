@@ -32,6 +32,7 @@ private:
   VkPhysicalDevice       physical_device = VK_NULL_HANDLE;
   VkDevice               device          = VK_NULL_HANDLE;
   VkQueue                graphics_queue  = VK_NULL_HANDLE;
+  VkQueue                present_queue   = VK_NULL_HANDLE;
   VkSurfaceKHR           surface         = VK_NULL_HANDLE;
 };
 
