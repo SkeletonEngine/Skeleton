@@ -1,6 +1,8 @@
 set(SKELETON_RENDERER_VULKAN_FILES
   src/skeleton/renderer/vulkan/vulkan_check.hpp
   src/skeleton/renderer/vulkan/vulkan_check.cpp
+  src/skeleton/renderer/vulkan/vulkan_device_queue_families.hpp
+  src/skeleton/renderer/vulkan/vulkan_device_queue_families.cpp
   src/skeleton/renderer/vulkan/vulkan_instance.cpp
   src/skeleton/renderer/vulkan/vulkan_physical_device.cpp
   src/skeleton/renderer/vulkan/vulkan_renderer.hpp

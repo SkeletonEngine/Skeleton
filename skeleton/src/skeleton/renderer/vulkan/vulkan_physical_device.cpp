@@ -4,11 +4,14 @@
 #include <map>
 #include <vector>
 #include <volk.h>
+#include "skeleton/renderer/vulkan/vulkan_device_queue_families.hpp"
 
 namespace Skeleton::Vulkan {
 
 static bool DeviceMeetsBasicStandards(VkPhysicalDevice physical_device) {
-  return true;
+  /* Ensure the device supports graphics and presentation to a surface */
+  DeviceQueueFamilies queues(physical_device);
+  return queues.IsComplete();
 }
 
 static int RateDeviceSuitability(VkPhysicalDevice physical_device) {
