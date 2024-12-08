@@ -14,9 +14,10 @@ public:
   
 public:
   void PollEvents() const;
-  
-public:
   bool IsOpen() const;
+
+public:
+  GLFWwindow* GetGlfwWindowHandle() const;
 
 private:
   GLFWwindow* glfw_window;

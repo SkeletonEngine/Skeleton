@@ -41,4 +41,8 @@ bool Window::IsOpen() const {
   return !glfwWindowShouldClose(glfw_window);
 }
 
+GLFWwindow* Window::GetGlfwWindowHandle() const {
+  return glfw_window;
+}
+
 }

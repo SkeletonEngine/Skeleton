@@ -3,7 +3,7 @@
 
 namespace Skeleton::OpenGl {
 
-OpenGlRenderer::OpenGlRenderer(const ApplicationSettings& settings) {
+OpenGlRenderer::OpenGlRenderer(const ApplicationSettings& settings, Window* window) {
 }
 
 }
