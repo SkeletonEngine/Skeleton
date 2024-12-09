@@ -4,6 +4,8 @@ set(SKELETON_RENDERER_VULKAN_FILES
   src/skeleton/renderer/vulkan/vulkan_device.cpp
   src/skeleton/renderer/vulkan/vulkan_device_queue_families.hpp
   src/skeleton/renderer/vulkan/vulkan_device_queue_families.cpp
+  src/skeleton/renderer/vulkan/vulkan_extensions.hpp
+  src/skeleton/renderer/vulkan/vulkan_extensions.cpp
   src/skeleton/renderer/vulkan/vulkan_instance.cpp
   src/skeleton/renderer/vulkan/vulkan_renderer.hpp
   src/skeleton/renderer/vulkan/vulkan_renderer.cpp

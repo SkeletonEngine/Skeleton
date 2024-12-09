@@ -3,19 +3,14 @@
 
 #include <map>
 #include <set>
+#include <string>
 #include <vector>
 #include <volk.h>
 #include "skeleton/renderer/vulkan/vulkan_check.hpp"
 #include "skeleton/renderer/vulkan/vulkan_device_queue_families.hpp"
+#include "skeleton/renderer/vulkan/vulkan_extensions.hpp"
 
 namespace Skeleton::Vulkan {
-
-static const std::vector<const char*> kDeviceExtensions = {
-  VK_KHR_SWAPCHAIN_EXTENSION_NAME,
-#ifdef SK_PLATFORM_MACOS
-  "VK_KHR_portability_subset",
-#endif
-};
 
 static bool DeviceSupportsRequiredExtensions(VkPhysicalDevice physical_device) {
   /* Grab a list of all the extensions the device supports */
@@ -25,6 +20,7 @@ static bool DeviceSupportsRequiredExtensions(VkPhysicalDevice physical_device) {
   vkEnumerateDeviceExtensionProperties(physical_device, nullptr, &extension_count, available_extensions.data());
   
   /* Check each device extension we require is in the list of extensions that the device supports */
+  const std::vector<const char*> kDeviceExtensions = FindRequiredDeviceExtensions();
   std::set<std::string> required_extensions(kDeviceExtensions.begin(), kDeviceExtensions.end());
   for (const auto& extension : available_extensions) {
     required_extensions.erase(extension.extensionName);
@@ -114,6 +110,12 @@ void VulkanRenderer::CreateDevice() {
   /* We don't need any special device features for now */
   VkPhysicalDeviceFeatures device_features { };
 
+  /* Find required device extensions and validation layers */
+#ifdef SK_BUILD_DEBUG
+  const std::vector<const char*> kValidationLayers = FindRequiredValidationLayers();
+#endif
+  const std::vector<const char*> kDeviceExtensions = FindRequiredDeviceExtensions();
+
   /* Create the VkDevice */
   VkDeviceCreateInfo device_info { VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO };
   device_info.pQueueCreateInfos       = queue_infos.data();
@@ -121,6 +123,14 @@ void VulkanRenderer::CreateDevice() {
   device_info.pEnabledFeatures        = &device_features;
   device_info.ppEnabledExtensionNames = kDeviceExtensions.data();
   device_info.enabledExtensionCount   = (uint32_t)kDeviceExtensions.size();
+
+  /* Validation layers at the device level are ignored by up to date vulkan implementations,
+     but we set them here anyway to remain compatible with older versions. */
+#ifdef SK_BUILD_DEBUG
+  device_info.ppEnabledLayerNames     = kValidationLayers.data();
+  device_info.enabledLayerCount       = (uint32_t)kValidationLayers.size();
+#endif
+
   VK_CHECK(vkCreateDevice(physical_device, &device_info, allocator, &device));
 
   /* Retrieve graphics and present queue handles */
