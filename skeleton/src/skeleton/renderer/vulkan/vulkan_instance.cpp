@@ -28,8 +28,10 @@ void VulkanRenderer::CreateInstance() {
   int flags = 0;
 
   /* To use MoltenVk we must enable the portability extension and set the portability bit flag */
+  /* We also require VK_KHR_get_physical_device_properties2 as this is required by the VK_KHR_portability_subset device extension */
 #ifdef SK_PLATFORM_MACOS
   instance_extensions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
+  instance_extensions.push_back("VK_KHR_get_physical_device_properties2");
   flags |= VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
 #endif
 
