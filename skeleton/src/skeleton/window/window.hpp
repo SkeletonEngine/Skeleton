@@ -15,11 +15,15 @@ class Window {
   ~Window();
 
  public:
+  /* Should be called once per frame */
   void PollEvents() const;
+
+  /* Returns true if the window has not yet recieved a close event or platform equivalent */
   bool IsOpen() const;
 
- public:
   GLFWwindow* GetGlfwWindowHandle() const;
+  int GetFramebufferWidth() const;
+  int GetFramebufferHeight() const;
 
  private:
   GLFWwindow* glfw_window;

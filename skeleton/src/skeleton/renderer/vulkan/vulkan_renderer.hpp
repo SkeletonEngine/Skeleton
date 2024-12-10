@@ -23,10 +23,12 @@ class VulkanRenderer : public Renderer {
   void ChoosePhysicalDevice();
   void CreateDevice();
   void DestroyDevice();
+  void CreateSwapchain();
+  void DestroySwapchain();
 
  private:
   /* Non-owning pointer to the window */
-  Window* window;
+  Window* window_;
 
  private:
   /* Objects owned by the renderer */
@@ -37,6 +39,7 @@ class VulkanRenderer : public Renderer {
   VkQueue                graphics_queue_  = VK_NULL_HANDLE;
   VkQueue                present_queue_   = VK_NULL_HANDLE;
   VkSurfaceKHR           surface_         = VK_NULL_HANDLE;
+  bool                   vsync_           = true;
 };
 
 }  // namespace Skeleton::Vulkan

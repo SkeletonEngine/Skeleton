@@ -9,6 +9,7 @@ namespace Skeleton {
 
 struct RendererSettings {
   RendererBackend backend = RendererBackend::kVulkan;
+  bool            vsync   = true;
 };
 
 }  // namespace Skeleton

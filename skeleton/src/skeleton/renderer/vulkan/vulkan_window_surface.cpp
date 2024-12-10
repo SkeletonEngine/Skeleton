@@ -11,7 +11,7 @@ namespace Skeleton::Vulkan {
 void VulkanRenderer::CreateWindowSurface() {
   /* glfwCreateWindowSurface will call the appropriate surface creation function for the current platform, 
      e.g. vkCreateWin32SurfaceKHR */
-  VK_CHECK(glfwCreateWindowSurface(instance_, window->GetGlfwWindowHandle(), allocator_, &surface_));
+  VK_CHECK(glfwCreateWindowSurface(instance_, window_->GetGlfwWindowHandle(), allocator_, &surface_));
 }
 
 void VulkanRenderer::DestroyWindowSurface() {

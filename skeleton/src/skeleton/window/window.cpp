@@ -47,4 +47,16 @@ GLFWwindow* Window::GetGlfwWindowHandle() const {
   return glfw_window;
 }
 
+int Window::GetFramebufferWidth() const {
+  int width, height;
+  glfwGetFramebufferSize(glfw_window, &width, &height);
+  return width;
+}
+
+int Window::GetFramebufferHeight() const {
+  int width, height;
+  glfwGetFramebufferSize(glfw_window, &width, &height);
+  return height;
+}
+
 }  // namespace Skeleton

@@ -9,6 +9,7 @@ set(SKELETON_RENDERER_VULKAN_FILES
   src/skeleton/renderer/vulkan/vulkan_instance.cpp
   src/skeleton/renderer/vulkan/vulkan_renderer.hpp
   src/skeleton/renderer/vulkan/vulkan_renderer.cpp
+  src/skeleton/renderer/vulkan/vulkan_swapchain.cpp
   src/skeleton/renderer/vulkan/vulkan_swapchain_support.hpp
   src/skeleton/renderer/vulkan/vulkan_swapchain_support.cpp
   src/skeleton/renderer/vulkan/vulkan_window_surface.cpp
