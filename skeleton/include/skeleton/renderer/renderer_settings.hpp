@@ -1,3 +1,5 @@
+// Copyright 2024 SkeletonEngine
+
 #pragma once
 #include "skeleton/core/core.hpp"
 
@@ -9,4 +11,4 @@ struct RendererSettings {
   RendererBackend backend = RendererBackend::kVulkan;
 };
 
-}
+}  // namespace Skeleton

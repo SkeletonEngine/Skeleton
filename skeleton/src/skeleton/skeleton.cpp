@@ -1,3 +1,5 @@
+// Copyright 2024 SkeletonEngine
+
 #include "skeleton/skeleton.hpp"
 #include "skeleton/core/core.hpp"
 
@@ -9,7 +11,7 @@ namespace Skeleton {
 
 void StartApplication(const ApplicationSettings& settings) {
   Window window(settings);
-  
+
   Renderer* renderer;
   switch (settings.renderer.backend) {
     case RendererBackend::kOpenGl: renderer = new OpenGl::OpenGlRenderer(settings, &window); break;
@@ -18,12 +20,12 @@ void StartApplication(const ApplicationSettings& settings) {
       SK_DEBUGBREAK();
       return;
   }
-  
+
   while (window.IsOpen()) {
     window.PollEvents();
   }
-  
+
   delete renderer;
 }
 
-}
+}  // namespace Skeleton

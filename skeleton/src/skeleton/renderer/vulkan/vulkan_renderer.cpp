@@ -1,3 +1,5 @@
+// Copyright 2024 SkeletonEngine
+
 #include "skeleton/renderer/vulkan/vulkan_renderer.hpp"
 
 namespace Skeleton::Vulkan {
@@ -15,4 +17,4 @@ VulkanRenderer::~VulkanRenderer() {
   DestroyInstance();
 }
 
-}
+}  // namespace Skeleton::Vulkan

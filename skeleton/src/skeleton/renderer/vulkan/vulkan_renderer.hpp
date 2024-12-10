@@ -1,4 +1,7 @@
+// Copyright 2024 SkeletonEngine
+
 #pragma once
+#include "skeleton/core/core.hpp"
 
 #include <volk.h>
 #include "skeleton/application_settings.hpp"
@@ -8,11 +11,11 @@
 namespace Skeleton::Vulkan {
 
 class VulkanRenderer : public Renderer {
-public:
+ public:
   VulkanRenderer(const ApplicationSettings& settings, Window* window);
   virtual ~VulkanRenderer();
-  
-private:
+
+ private:
   void CreateInstance();
   void DestroyInstance();
   void CreateWindowSurface();
@@ -20,12 +23,12 @@ private:
   void ChoosePhysicalDevice();
   void CreateDevice();
   void DestroyDevice();
-  
-private:
+
+ private:
   /* Non-owning pointer to the window */
   Window* window;
 
-private:
+ private:
   /* Objects owned by the renderer */
   VkAllocationCallbacks* allocator_       = VK_NULL_HANDLE;
   VkInstance             instance_        = VK_NULL_HANDLE;
@@ -36,4 +39,4 @@ private:
   VkSurfaceKHR           surface_         = VK_NULL_HANDLE;
 };
 
-}
+}  // namespace Skeleton::Vulkan

@@ -1,3 +1,5 @@
+// Copyright 2024 SkeletonEngine
+
 #pragma once
 #include "skeleton/core/core.hpp"
 
@@ -9,4 +11,4 @@ struct ApplicationSettings {
   RendererSettings renderer;
 };
 
-}
+}  // namespace Skeleton

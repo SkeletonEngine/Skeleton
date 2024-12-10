@@ -1,3 +1,5 @@
+// Copyright 2024 SkeletonEngine
+
 #pragma once
 #include "skeleton/core/core.hpp"
 
@@ -7,4 +9,4 @@ namespace Skeleton {
 
 void StartApplication(const ApplicationSettings& settings = {});
 
-}
+}  // namespace Skeleton

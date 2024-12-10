@@ -1,3 +1,5 @@
+// Copyright 2024 SkeletonEngine
+
 #include "skeleton/renderer/vulkan/vulkan_device_queue_families.hpp"
 #include "skeleton/core/core.hpp"
 
@@ -13,9 +15,11 @@ DeviceQueueFamilies::DeviceQueueFamilies(VkPhysicalDevice physical_device, VkSur
   std::vector<VkQueueFamilyProperties> queue_families(queue_family_count);
   vkGetPhysicalDeviceQueueFamilyProperties(physical_device, &queue_family_count, queue_families.data());
 
-  /* Using a single queue for both graphics and presentation usually results in better performance, so we'll try to find a single queue that supports both */
+  /* Using a single queue for both graphics and presentation usually results in better performance,
+     so we'll try to find a single queue that supports both */
   /* If there isn't a single queue that can do both, we'll use different queues */
-  /* If we don't have at least one graphics queue and at least one present queue, this device isn't suitable for our purposes */
+  /* If we don't have at least one graphics queue and at least one present queue, this device isn't 
+     suitable for our purposes */
   struct QueueCapabilities {
     VkBool32 graphics = false;
     VkBool32 present  = false;
@@ -37,7 +41,8 @@ DeviceQueueFamilies::DeviceQueueFamilies(VkPhysicalDevice physical_device, VkSur
     }
   }
 
-  /* If we get to the end of the list without finding a single queue that supports both graphics and present, pick different queues for each */
+  /* If we get to the end of the list without finding a single queue that supports both graphics and present,
+     pick different queues for each */
   for (uint32_t i = 0; i < queue_family_count; ++i) {
     if (!graphics_family_.has_value() && capabilities[i].graphics) {
       graphics_family_ = i;
@@ -66,4 +71,4 @@ bool DeviceQueueFamilies::IsComplete() const {
   return graphics_family_.has_value() && present_family_.has_value();
 }
 
-}
+}  // namespace Skeleton::Vulkan

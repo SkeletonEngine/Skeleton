@@ -1,3 +1,5 @@
+// Copyright 2024 SkeletonEngine
+
 #pragma once
 #include "skeleton/core/core.hpp"
 
@@ -7,17 +9,17 @@
 namespace Skeleton::Vulkan {
 
 class SwapchainSupportDetails {
-public:
+ public:
   SwapchainSupportDetails(VkPhysicalDevice physical_device, VkSurfaceKHR surface);
-  
-public:
+
+ public:
   /* Returns true if the physical device and surface combo are suitable for our purposes */
   bool IsAdequate() const;
-  
-private:
+
+ private:
   VkSurfaceCapabilitiesKHR capabilities_;
   std::vector<VkSurfaceFormatKHR> formats_;
   std::vector<VkPresentModeKHR> present_modes_;
 };
 
-}
+}  // namespace Skeleton::Vulkan

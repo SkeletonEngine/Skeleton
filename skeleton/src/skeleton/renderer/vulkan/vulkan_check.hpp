@@ -1,3 +1,5 @@
+// Copyright 2024 SkeletonEngine
+
 #pragma once
 
 #include <cstdio>
@@ -9,12 +11,12 @@ namespace Skeleton::Vulkan {
 
 const char* VkResultString(VkResult result);
 
-}
+}  // namespace Skeleton::Vulkan
 
 #define VK_CHECK(x) { \
   VkResult result = (x); \
   if (result != VK_SUCCESS) { \
-fprintf(stderr, "VK_CHECK failed: %s => %s\n", #x, ::Skeleton::Vulkan::VkResultString(result)); \
+    fprintf(stderr, "VK_CHECK failed: %s => %s\n", #x, ::Skeleton::Vulkan::VkResultString(result)); \
   } \
 }
 

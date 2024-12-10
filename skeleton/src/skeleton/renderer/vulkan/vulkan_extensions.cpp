@@ -1,3 +1,5 @@
+// Copyright 2024 SkeletonEngine
+
 #include "skeleton/renderer/vulkan/vulkan_extensions.hpp"
 #include "skeleton/core/core.hpp"
 
@@ -10,7 +12,7 @@ namespace Skeleton::Vulkan {
 /* We only use validation layers in debug builds */
 #ifdef SK_BUILD_DEBUG
 const std::vector<const char*> FindRequiredValidationLayers() {
-  return { "VK_LAYER_KHRONOS_validation" }; 
+  return { "VK_LAYER_KHRONOS_validation" };
 }
 #endif
 
@@ -22,7 +24,8 @@ const std::vector<const char*> FindRequiredInstanceExtensions() {
   std::vector<const char*> instance_extensions(glfw_extensions, glfw_extensions + glfw_extension_count);
 
   /* To use MoltenVk we must enable the portability extension */
-  /* We also require VK_KHR_get_physical_device_properties2 as this is required by the VK_KHR_portability_subset device extension */
+  /* We also require VK_KHR_get_physical_device_properties2 as this is required by the 
+     VK_KHR_portability_subset device extension */
 #ifdef SK_PLATFORM_MACOS
   instance_extensions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
   instance_extensions.push_back("VK_KHR_get_physical_device_properties2");
@@ -48,4 +51,4 @@ const std::vector<const char*> FindRequiredDeviceExtensions() {
   };
 }
 
-}
+}  // namespace Skeleton::Vulkan

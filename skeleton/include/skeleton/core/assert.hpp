@@ -1,3 +1,5 @@
+// Copyright 2024 SkeletonEngine
+
 #pragma once
 
 #include "skeleton/core/build_configuration.hpp"
@@ -13,7 +15,10 @@
 #endif
 
 #ifdef SK_BUILD_DEBUG
-  #define SK_ASSERT(x) if (!(x)) { SK_DEBUGBREAK(); }
+  #define SK_ASSERT(x) \
+    if (!(x)) { \
+      SK_DEBUGBREAK(); \
+    }
   #define SK_CHECK(x)  SK_ASSERT(x)
 #else
   #define SK_ASSERT(x)

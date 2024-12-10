@@ -1,3 +1,5 @@
+// Copyright 2024 SkeletonEngine
+
 #include "skeleton/window/window.hpp"
 #include "skeleton/core/core.hpp"
 
@@ -7,7 +9,7 @@ namespace Skeleton {
 
 Window::Window(const ApplicationSettings& settings) {
   SK_CHECK(glfwInit());
-  
+
   switch (settings.renderer.backend) {
     case RendererBackend::kOpenGl: {
       glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
@@ -17,13 +19,13 @@ Window::Window(const ApplicationSettings& settings) {
       glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
       break;
     }
-    
+
     case RendererBackend::kVulkan: {
       glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
       break;
     }
   }
-  
+
   glfw_window = glfwCreateWindow(1280, 720, "Skeleton", NULL, NULL);
   SK_ASSERT(glfw_window);
 }
@@ -45,4 +47,4 @@ GLFWwindow* Window::GetGlfwWindowHandle() const {
   return glfw_window;
 }
 
-}
+}  // namespace Skeleton

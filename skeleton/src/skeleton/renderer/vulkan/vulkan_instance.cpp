@@ -1,3 +1,5 @@
+// Copyright 2024 SkeletonEngine
+
 #include "skeleton/renderer/vulkan/vulkan_renderer.hpp"
 #include "skeleton/core/core.hpp"
 
@@ -29,17 +31,17 @@ void VulkanRenderer::CreateInstance() {
   /* Create the VkInstance */
   VkInstanceCreateInfo instance_info { VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO };
   instance_info.pApplicationInfo        = &app_info;
-  instance_info.enabledExtensionCount   = (uint32_t)kInstanceExtensions.size();
+  instance_info.enabledExtensionCount   = static_cast<uint32_t>(kInstanceExtensions.size());
   instance_info.ppEnabledExtensionNames = kInstanceExtensions.data();
 #ifdef SK_PLATFORM_MACOS
   instance_info.flags                   = VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
 #endif
 #ifdef SK_BUILD_DEBUG
-  instance_info.enabledLayerCount       = (uint32_t)kValidationLayers.size();
+  instance_info.enabledLayerCount       = static_cast<uint32_t>(kValidationLayers.size());
   instance_info.ppEnabledLayerNames     = kValidationLayers.data();
 #endif
   VK_CHECK(vkCreateInstance(&instance_info, allocator_, &instance_));
-  
+
   /* Load vulkan instance functions */
   volkLoadInstance(instance_);
 }
@@ -48,4 +50,4 @@ void VulkanRenderer::DestroyInstance() {
   vkDestroyInstance(instance_, allocator_);
 }
 
-}
+}  // namespace Skeleton::Vulkan

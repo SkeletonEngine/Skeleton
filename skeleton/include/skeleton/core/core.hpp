@@ -1,3 +1,5 @@
+// Copyright 2024 SkeletonEngine
+
 #pragma once
 
 #include "skeleton/core/assert.hpp"

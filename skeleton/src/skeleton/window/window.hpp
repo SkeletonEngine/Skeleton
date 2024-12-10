@@ -1,3 +1,5 @@
+// Copyright 2024 SkeletonEngine
+
 #pragma once
 #include "skeleton/core/core.hpp"
 
@@ -8,19 +10,19 @@ struct GLFWwindow;
 namespace Skeleton {
 
 class Window {
-public:
-  Window(const ApplicationSettings& settings);
+ public:
+  explicit Window(const ApplicationSettings& settings);
   ~Window();
-  
-public:
+
+ public:
   void PollEvents() const;
   bool IsOpen() const;
 
-public:
+ public:
   GLFWwindow* GetGlfwWindowHandle() const;
 
-private:
+ private:
   GLFWwindow* glfw_window;
 };
 
-}
+}  // namespace Skeleton
