@@ -38,14 +38,14 @@ void VulkanRenderer::CreateInstance() {
   instance_info.enabledLayerCount       = (uint32_t)kValidationLayers.size();
   instance_info.ppEnabledLayerNames     = kValidationLayers.data();
 #endif
-  VK_CHECK(vkCreateInstance(&instance_info, allocator, &instance));
+  VK_CHECK(vkCreateInstance(&instance_info, allocator_, &instance_));
   
   /* Load vulkan instance functions */
-  volkLoadInstance(instance);
+  volkLoadInstance(instance_);
 }
 
 void VulkanRenderer::DestroyInstance() {
-  vkDestroyInstance(instance, allocator);
+  vkDestroyInstance(instance_, allocator_);
 }
 
 }

@@ -16,8 +16,8 @@ public:
   bool IsComplete() const;
 
 private:
-  std::optional<uint32_t> graphics_family;
-  std::optional<uint32_t> present_family;
+  std::optional<uint32_t> graphics_family_;
+  std::optional<uint32_t> present_family_;
 };
 
 }

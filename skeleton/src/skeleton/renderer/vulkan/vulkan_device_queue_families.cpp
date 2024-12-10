@@ -31,20 +31,20 @@ DeviceQueueFamilies::DeviceQueueFamilies(VkPhysicalDevice physical_device, VkSur
 
     /* If the current queue supports both, we're done */
     if (capabilities[i].graphics && capabilities[i].present) {
-      graphics_family = i;
-      present_family = i;
+      graphics_family_ = i;
+      present_family_ = i;
       return;
     }
   }
 
   /* If we get to the end of the list without finding a single queue that supports both graphics and present, pick different queues for each */
   for (uint32_t i = 0; i < queue_family_count; ++i) {
-    if (!graphics_family.has_value() && capabilities[i].graphics) {
-      graphics_family = i;
+    if (!graphics_family_.has_value() && capabilities[i].graphics) {
+      graphics_family_ = i;
     }
 
-    if (!present_family.has_value() && capabilities[i].present) {
-      present_family = i;
+    if (!present_family_.has_value() && capabilities[i].present) {
+      present_family_ = i;
     }
 
     /* We can stop as soon as we've found a graphics queue and a present queue */
@@ -55,15 +55,15 @@ DeviceQueueFamilies::DeviceQueueFamilies(VkPhysicalDevice physical_device, VkSur
 }
 
 uint32_t DeviceQueueFamilies::GraphicsFamilyIndex() const {
-  return graphics_family.value();
+  return graphics_family_.value();
 }
 
 uint32_t DeviceQueueFamilies::PresentFamilyIndex() const {
-  return present_family.value();
+  return present_family_.value();
 }
 
 bool DeviceQueueFamilies::IsComplete() const {
-  return graphics_family.has_value();
+  return graphics_family_.has_value() && present_family_.has_value();
 }
 
 }

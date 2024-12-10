@@ -15,9 +15,9 @@ public:
   bool IsAdequate() const;
   
 private:
-  VkSurfaceCapabilitiesKHR capabilities;
-  std::vector<VkSurfaceFormatKHR> formats;
-  std::vector<VkPresentModeKHR> present_modes;
+  VkSurfaceCapabilitiesKHR capabilities_;
+  std::vector<VkSurfaceFormatKHR> formats_;
+  std::vector<VkPresentModeKHR> present_modes_;
 };
 
 }

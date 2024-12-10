@@ -74,32 +74,32 @@ static int RateDeviceSuitability(VkPhysicalDevice physical_device, VkSurfaceKHR 
 void VulkanRenderer::ChoosePhysicalDevice() {
   /* Find the count of vulkan capable physical devices */
   uint32_t physical_device_count;
-  vkEnumeratePhysicalDevices(instance, &physical_device_count, nullptr);
+  vkEnumeratePhysicalDevices(instance_, &physical_device_count, nullptr);
   
   /* Check that we have at least one vulkan capable physical device */
   SK_ASSERT(physical_device_count);
   
   /* Get information about the available devices */
   std::vector<VkPhysicalDevice> physical_devices(physical_device_count);
-  vkEnumeratePhysicalDevices(instance, &physical_device_count, physical_devices.data());
+  vkEnumeratePhysicalDevices(instance_, &physical_device_count, physical_devices.data());
   
   /* Rate all devices and sort candidates by score, descending */
   std::multimap<int, VkPhysicalDevice> candidates;
-  for (const auto& device : physical_devices) {
-    int score = RateDeviceSuitability(device, surface);
-    candidates.insert({ score, device });
+  for (const auto& physical_device : physical_devices) {
+    int score = RateDeviceSuitability(physical_device, surface_);
+    candidates.insert({ score, physical_device });
   }
 
   /* Check whether the best candidate is suitable at all */
   SK_ASSERT(candidates.rbegin()->first > 0);
   
   /* Use the best device */
-  physical_device = candidates.rbegin()->second;
+  physical_device_ = candidates.rbegin()->second;
 }
 
 void VulkanRenderer::CreateDevice() {
   /* Query the physical device to find the indices of the graphics and present queues */
-  DeviceQueueFamilies queue_families(physical_device, surface);
+  DeviceQueueFamilies queue_families(physical_device_, surface_);
 
   /* Priority of all queues will be 1 */
   float priority = 1.0f;
@@ -140,15 +140,15 @@ void VulkanRenderer::CreateDevice() {
   device_info.enabledLayerCount       = (uint32_t)kValidationLayers.size();
 #endif
 
-  VK_CHECK(vkCreateDevice(physical_device, &device_info, allocator, &device));
+  VK_CHECK(vkCreateDevice(physical_device_, &device_info, allocator_, &device_));
 
   /* Retrieve graphics and present queue handles */
-  vkGetDeviceQueue(device, queue_families.GraphicsFamilyIndex(), 0, &graphics_queue);
-  vkGetDeviceQueue(device, queue_families.PresentFamilyIndex(),  0, &present_queue);
+  vkGetDeviceQueue(device_, queue_families.GraphicsFamilyIndex(), 0, &graphics_queue_);
+  vkGetDeviceQueue(device_, queue_families.PresentFamilyIndex(),  0, &present_queue_);
 }
 
 void VulkanRenderer::DestroyDevice() {
-  vkDestroyDevice(device, allocator);
+  vkDestroyDevice(device_, allocator_);
 }
 
 }
