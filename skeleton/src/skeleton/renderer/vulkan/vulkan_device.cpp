@@ -9,6 +9,7 @@
 #include "skeleton/renderer/vulkan/vulkan_check.hpp"
 #include "skeleton/renderer/vulkan/vulkan_device_queue_families.hpp"
 #include "skeleton/renderer/vulkan/vulkan_extensions.hpp"
+#include "skeleton/renderer/vulkan/vulkan_swapchain_support.hpp"
 
 namespace Skeleton::Vulkan {
 
@@ -40,6 +41,13 @@ static bool DeviceMeetsBasicStandards(VkPhysicalDevice physical_device, VkSurfac
   if (!DeviceSupportsRequiredExtensions(physical_device)) {
     return false;
   }
+  
+  /* Ensure the device and surface combo are capable of creating a suitable swapchain for our purposes
+     e.g. ensure it supports at least one suitable surface format for rendering */
+  SwapchainSupportDetails swapchain_support(physical_device, surface);
+  if (!swapchain_support.IsAdequate()) {
+    return false;
+  }
 
   return true;
 }
@@ -47,6 +55,7 @@ static bool DeviceMeetsBasicStandards(VkPhysicalDevice physical_device, VkSurfac
 static int RateDeviceSuitability(VkPhysicalDevice physical_device, VkSurfaceKHR surface) {
   if (!DeviceMeetsBasicStandards(physical_device, surface)) return 0;
   
+  /* We rate device suitability by assigning each device an arbitrary score */
   int score = 0;
   
   /* Prioritize discrete GPUs */
@@ -70,7 +79,7 @@ void VulkanRenderer::ChoosePhysicalDevice() {
   /* Check that we have at least one vulkan capable physical device */
   SK_ASSERT(physical_device_count);
   
-  /* Get   information about the available devices */
+  /* Get information about the available devices */
   std::vector<VkPhysicalDevice> physical_devices(physical_device_count);
   vkEnumeratePhysicalDevices(instance, &physical_device_count, physical_devices.data());
   
