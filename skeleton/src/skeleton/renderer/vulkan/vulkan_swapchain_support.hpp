@@ -9,11 +9,9 @@
 
 namespace Skeleton::Vulkan {
 
-class SwapchainSupportDetails {
- public:
+struct SwapchainSupportDetails {
   SwapchainSupportDetails(VkPhysicalDevice physical_device, VkSurfaceKHR surface);
 
- public:
   /* Returns true if the physical device and surface combo are suitable for our purposes */
   bool IsAdequate() const;
 
@@ -27,13 +25,9 @@ class SwapchainSupportDetails {
      This is normally equal to the size of the window framebuffer, but could be different */
   VkExtent2D ChooseExtent(Window* window) const;
 
-  uint32_t GetMinImageCount() const;
-  uint32_t GetMaxImageCount() const;
-
- private:
-  VkSurfaceCapabilitiesKHR capabilities_;
-  std::vector<VkSurfaceFormatKHR> formats_;
-  std::vector<VkPresentModeKHR> present_modes_;
+  VkSurfaceCapabilitiesKHR capabilities;
+  std::vector<VkSurfaceFormatKHR> formats;
+  std::vector<VkPresentModeKHR> present_modes;
 };
 
 }  // namespace Skeleton::Vulkan

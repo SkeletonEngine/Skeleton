@@ -39,6 +39,7 @@ class VulkanRenderer : public Renderer {
   VkQueue                graphics_queue_  = VK_NULL_HANDLE;
   VkQueue                present_queue_   = VK_NULL_HANDLE;
   VkSurfaceKHR           surface_         = VK_NULL_HANDLE;
+  VkSwapchainKHR         swapchain_       = VK_NULL_HANDLE;
   bool                   vsync_           = true;
 };
 
