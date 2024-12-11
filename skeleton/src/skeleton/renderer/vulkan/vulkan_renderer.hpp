@@ -3,6 +3,7 @@
 #pragma once
 #include "skeleton/core/core.hpp"
 
+#include <vector>
 #include <volk.h>
 #include "skeleton/application_settings.hpp"
 #include "skeleton/renderer/renderer.hpp"
@@ -40,6 +41,9 @@ class VulkanRenderer : public Renderer {
   VkQueue                present_queue_   = VK_NULL_HANDLE;
   VkSurfaceKHR           surface_         = VK_NULL_HANDLE;
   VkSwapchainKHR         swapchain_       = VK_NULL_HANDLE;
+  std::vector<VkImage>   swapchain_images_; 
+  VkExtent2D             swapchain_extent_;
+  VkFormat               swapchain_image_format_;
   bool                   vsync_           = true;
 };
 

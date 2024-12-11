@@ -17,8 +17,11 @@ void VulkanRenderer::CreateSwapchain() {
   VkSurfaceFormatKHR surface_format = swapchain_support.ChooseSurfaceFormat();
   VkPresentModeKHR present_mode = swapchain_support.ChoosePresentMode(vsync_);
 
+  /* Store the image format for later */
+  swapchain_image_format_ = surface_format.format;
+
   /* Choose the swap extent (resolution) of the swapchain images we'll be rendering to */
-  VkExtent2D extent = swapchain_support.ChooseExtent(window_);
+  swapchain_extent_ = swapchain_support.ChooseExtent(window_);
 
   /* We request one more image than the minimum to reduce the probability that we end up having to wait on the
      driver to complete operations to resume rendering. */
@@ -36,9 +39,9 @@ void VulkanRenderer::CreateSwapchain() {
   VkSwapchainCreateInfoKHR swapchain_info { VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR };
   swapchain_info.surface          = surface_;
   swapchain_info.minImageCount    = image_count;
-  swapchain_info.imageFormat      = surface_format.format;
+  swapchain_info.imageFormat      = swapchain_image_format_;
   swapchain_info.imageColorSpace  = surface_format.colorSpace;
-  swapchain_info.imageExtent      = extent;
+  swapchain_info.imageExtent      = swapchain_extent_;
   swapchain_info.imageArrayLayers = 1;
   swapchain_info.imageUsage       = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
   swapchain_info.preTransform     = swapchain_support.capabilities.currentTransform;
@@ -58,6 +61,11 @@ void VulkanRenderer::CreateSwapchain() {
   }
 
   VK_CHECK(vkCreateSwapchainKHR(device_, &swapchain_info, allocator_, &swapchain_));
+
+  /* Retrieve the swapchain images - no need to delete them, they are created and deleted as part of the swapchain */
+  vkGetSwapchainImagesKHR(device_, swapchain_, &image_count, nullptr);
+  swapchain_images_.resize(image_count);
+  vkGetSwapchainImagesKHR(device_, swapchain_, &image_count, swapchain_images_.data());
 }
 
 void VulkanRenderer::DestroySwapchain() {
