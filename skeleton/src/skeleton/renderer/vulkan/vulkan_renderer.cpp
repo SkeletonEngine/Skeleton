@@ -11,9 +11,11 @@ VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* wind
   ChoosePhysicalDevice();
   CreateDevice();
   CreateSwapchain();
+  CreateSwapchainImageViews();
 }
 
 VulkanRenderer::~VulkanRenderer() {
+  DestroySwapchainImageViews();
   DestroySwapchain();
   DestroyDevice();
   DestroyWindowSurface();
