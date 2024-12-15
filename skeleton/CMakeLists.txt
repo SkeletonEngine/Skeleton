@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.21)
 project(skeleton)
 
 include(cmake/skeleton_files.cmake)
@@ -16,3 +16,6 @@ add_subdirectory(vendor/glfw/glfw)
 target_link_libraries(skeleton PRIVATE glfw)
 add_subdirectory(vendor/zeux/volk)
 target_link_libraries(skeleton PRIVATE volk)
+
+include(cmake/skeleton_shader_compile_target.cmake)
+add_dependencies(skeleton skeleton-shaders)

@@ -17,7 +17,14 @@ set(SKELETON_RENDERER_VULKAN_FILES
 )
 source_group("src/skeleton/renderer/vulkan" FILES ${SKELETON_RENDERER_VULKAN_FILES})
 
+set(SKELETON_RENDERER_VULKAN_PIPELINE_FILES
+  src/skeleton/renderer/vulkan/pipeline/vulkan_graphics_pipeline.hpp
+  src/skeleton/renderer/vulkan/pipeline/vulkan_graphics_pipeline.cpp
+)
+source_group("src/skeleton/renderer/vulkan/pipeline" FILES ${SKELETON_RENDERER_VULKAN_PIPELINE_FILES})
+
 set(SKELETON_FILES
   ${SKELETON_FILES}
   ${SKELETON_RENDERER_VULKAN_FILES}
+  ${SKELETON_RENDERER_VULKAN_PIPELINE_FILES}
 )

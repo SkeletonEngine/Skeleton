@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.21)
 project(skeleton-editor)
 
 set(SKELETON_EDITOR_SRC_FILES
