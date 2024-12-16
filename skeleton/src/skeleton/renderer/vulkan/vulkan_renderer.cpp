@@ -12,9 +12,16 @@ VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* wind
   CreateDevice();
   CreateSwapchain();
   CreateSwapchainImageViews();
+
+  GraphicsPipelineSettings pipeline_settings;
+  pipeline_settings.vert_path = "build/shaders/test.vert.spv";
+  pipeline_settings.frag_path = "build/shaders/test.frag.spv";
+  pipeline_ = new GraphicsPipeline(pipeline_settings);
 }
 
 VulkanRenderer::~VulkanRenderer() {
+  delete pipeline_;
+
   DestroySwapchainImageViews();
   DestroySwapchain();
   DestroyDevice();

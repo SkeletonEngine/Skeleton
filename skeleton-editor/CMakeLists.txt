@@ -10,3 +10,5 @@ add_executable(skeleton-editor ${SKELETON_EDITOR_SRC_FILES})
 target_compile_features(skeleton-editor PRIVATE cxx_std_20)
 
 target_link_libraries(skeleton-editor PRIVATE skeleton)
+
+set_target_properties(skeleton-editor PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})

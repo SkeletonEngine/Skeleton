@@ -7,6 +7,7 @@
 #include <volk.h>
 #include "skeleton/application_settings.hpp"
 #include "skeleton/renderer/renderer.hpp"
+#include "skeleton/renderer/vulkan/pipeline/vulkan_graphics_pipeline.hpp"
 #include "skeleton/window/window.hpp"
 
 namespace Skeleton::Vulkan {
@@ -48,6 +49,8 @@ class VulkanRenderer : public Renderer {
   VkFormat                 swapchain_image_format_;
   std::vector<VkImageView> swapchain_image_views_;
   bool                     vsync_           = true;
+
+  GraphicsPipeline*        pipeline_        = nullptr;
 };
 
 }  // namespace Skeleton::Vulkan
