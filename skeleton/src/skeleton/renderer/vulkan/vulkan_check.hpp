@@ -4,19 +4,14 @@
 
 #include <cstdio>
 #include <volk.h>
+#include <vulkan/vk_enum_string_helper.h>
 
 #ifndef NDEBUG
-
-namespace Skeleton::Vulkan {
-
-const char* VkResultString(VkResult result);
-
-}  // namespace Skeleton::Vulkan
 
 #define VK_CHECK(x) { \
   VkResult result = (x); \
   if (result != VK_SUCCESS) { \
-    fprintf(stderr, "VK_CHECK failed: %s => %s\n", #x, ::Skeleton::Vulkan::VkResultString(result)); \
+    fprintf(stderr, "VK_CHECK failed: Call to %s (%s:%d) returned %s\n", #x, __FILE__, __LINE__, string_VkResult(result)); \
   } \
 }
 
