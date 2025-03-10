@@ -1,4 +1,4 @@
-// Copyright 2024 SkeletonEngine
+// Copyright 2024-2025 SkeletonEngine
 
 #include "skeleton/renderer/opengl/opengl_renderer.hpp"
 #include "skeleton/core/core.hpp"
