@@ -13,7 +13,11 @@ VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* wind
   CreateSwapchain();
   CreateSwapchainImageViews();
 
+  /* At some point we will create pipelines based on the contents of the scene */
+  /* For testing, just create one here */
   GraphicsPipelineSettings pipeline_settings;
+  pipeline_settings.device    = device_;
+  pipeline_settings.allocator = allocator_;
   pipeline_settings.vert_path = "build/shaders/test.vert.spv";
   pipeline_settings.frag_path = "build/shaders/test.frag.spv";
   pipeline_ = new GraphicsPipeline(pipeline_settings);

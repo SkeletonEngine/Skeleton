@@ -14,7 +14,7 @@ namespace Skeleton::Vulkan {
 const std::vector<const char*> FindRequiredValidationLayers() {
   return { "VK_LAYER_KHRONOS_validation" };
 }
-#endif
+#endif  // SK_BUILD_DEBUG
 
 const std::vector<const char*> FindRequiredInstanceExtensions() {
   /* Query GLFW for the list of extensions required to render to a surface on the current platform */
@@ -29,25 +29,25 @@ const std::vector<const char*> FindRequiredInstanceExtensions() {
 #ifdef SK_PLATFORM_MACOS
   instance_extensions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
   instance_extensions.push_back("VK_KHR_get_physical_device_properties2");
-#endif
+#endif  // SK_PLATFORM_MACOS
 
   /* We require debug utils to use validation layers */
 #ifdef SK_BUILD_DEBUG
   instance_extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
-#endif
+#endif  // SK_BUILD_DEBUG
 
   return instance_extensions;
 }
 
 const std::vector<const char*> FindRequiredDeviceExtensions() {
   return {
-    /* We obviously require the ability to render to a swapchain on every platform */
+    /* Every platform requires the ability to render to a swapchain */
     VK_KHR_SWAPCHAIN_EXTENSION_NAME,
 
     /* VK_KHR_portability_subset is required to use MoltenVk */
 #ifdef SK_PLATFORM_MACOS
     "VK_KHR_portability_subset",
-#endif
+#endif  // SK_PLATFORM_MACOS
   };
 }
 
