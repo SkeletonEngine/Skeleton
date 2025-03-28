@@ -12,6 +12,7 @@ struct GraphicsPipelineSettings {
 
   VkAllocationCallbacks* allocator;
   VkDevice               device;
+  VkRenderPass           render_pass;
 };
 
 }  // namespace Skeleton::Vulkan

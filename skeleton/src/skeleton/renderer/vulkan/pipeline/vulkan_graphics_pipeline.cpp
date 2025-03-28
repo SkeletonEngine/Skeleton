@@ -94,12 +94,31 @@ GraphicsPipeline::GraphicsPipeline(const GraphicsPipelineSettings& settings) : a
 
   VK_CHECK(vkCreatePipelineLayout(device_, &pipeline_layout_info, allocator_, &layout_));
 
+  /* Create the pipeline */
+  VkGraphicsPipelineCreateInfo pipeline_info { VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO };
+  pipeline_info.stageCount          = 2;
+  pipeline_info.pStages             = shader_stages;
+  pipeline_info.pVertexInputState   = &vertex_input_info;
+  pipeline_info.pInputAssemblyState = &input_assembly;
+  pipeline_info.pViewportState      = &viewport_state;
+  pipeline_info.pRasterizationState = &rasterization_state;
+  pipeline_info.pMultisampleState   = &multisample_state;
+  pipeline_info.pDepthStencilState  = nullptr;
+  pipeline_info.pColorBlendState    = &color_blend_state;
+  pipeline_info.pDynamicState       = &dynamic_state_info;
+  pipeline_info.layout              = layout_;
+  pipeline_info.renderPass          = settings.render_pass;
+  pipeline_info.subpass             = 0;
+
+  VK_CHECK(vkCreateGraphicsPipelines(device_, VK_NULL_HANDLE, 1, &pipeline_info, allocator_, &pipeline_));
+
   /* Cleanup the shader module objects */
   vkDestroyShaderModule(device_, vert_module, allocator_);
   vkDestroyShaderModule(device_, frag_module, allocator_);
 }
 
 GraphicsPipeline::~GraphicsPipeline() {
+  vkDestroyPipeline(device_, pipeline_, allocator_);
   vkDestroyPipelineLayout(device_, layout_, allocator_);
 }
 

@@ -17,10 +17,14 @@ private:
   VkShaderModule CreateShaderModule(const std::vector<char>& spv);
 
 private:
+  /* Owned by the renderer */
   VkAllocationCallbacks* allocator_;
   VkDevice               device_;
 
+private:
+  /* Owned by the pipeline */
   VkPipelineLayout layout_;
+  VkPipeline       pipeline_;
 };
 
 }  // namespace Skeleton::Vulkan
