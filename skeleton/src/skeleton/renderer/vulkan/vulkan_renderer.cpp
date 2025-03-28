@@ -14,9 +14,11 @@ VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* wind
   CreateSwapchainImageViews();
   CreateRenderPass();
   CreateGraphicsPipeline();
+  CreateSwapchainFramebuffers();
 }
 
 VulkanRenderer::~VulkanRenderer() {
+  DestroySwapchainFramebuffers();
   DestroyGraphicsPipeline();
   DestroyRenderPass();
   DestroySwapchainImageViews();
