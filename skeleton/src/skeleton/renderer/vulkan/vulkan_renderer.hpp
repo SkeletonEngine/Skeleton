@@ -16,6 +16,9 @@ class VulkanRenderer : public Renderer {
   VulkanRenderer(const ApplicationSettings& settings, Window* window);
   virtual ~VulkanRenderer();
 
+ public:
+  virtual void RenderFrame() override;
+
  private:
   void CreateInstance();
   void DestroyInstance();
@@ -34,6 +37,15 @@ class VulkanRenderer : public Renderer {
   void DestroyGraphicsPipeline();
   void CreateSwapchainFramebuffers();
   void DestroySwapchainFramebuffers();
+  void CreateCommandPool();
+  void DestroyCommandPool();
+  void CreateRenderCommandBuffer();
+  void DestroyRenderCommandBuffer();
+  void CreateSyncObjects();
+  void DestroySyncObjects();
+
+private:
+  void RecordRenderCommandBuffer(VkCommandBuffer command_buffer, uint32_t image_index);
 
  private:
   /* Non-owning pointer to the window */
@@ -58,6 +70,11 @@ class VulkanRenderer : public Renderer {
   VkRenderPass             render_pass_     = VK_NULL_HANDLE;
   VkPipeline               graphics_pipeline_ = VK_NULL_HANDLE;
   VkPipelineLayout         graphics_pipeline_layout_ = VK_NULL_HANDLE;
+  VkCommandPool            command_pool_    = VK_NULL_HANDLE;
+  VkCommandBuffer          render_command_buffer_ = VK_NULL_HANDLE;
+  VkSemaphore              image_available_semaphore_ = VK_NULL_HANDLE;
+  VkSemaphore              render_complete_semaphore_ = VK_NULL_HANDLE;
+  VkFence                  in_flight_fence_           = VK_NULL_HANDLE;
 };
 
 }  // namespace Skeleton::Vulkan

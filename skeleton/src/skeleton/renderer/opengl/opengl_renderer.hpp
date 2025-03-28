@@ -12,6 +12,9 @@ namespace Skeleton::OpenGl {
 class OpenGlRenderer : public Renderer {
  public:
   OpenGlRenderer(const ApplicationSettings& settings, Window* window);
+
+ public:
+  virtual void RenderFrame() override;
 };
 
 }  // namespace Skeleton::OpenGl

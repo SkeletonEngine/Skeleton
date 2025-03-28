@@ -8,5 +8,8 @@ namespace Skeleton::OpenGl {
 OpenGlRenderer::OpenGlRenderer(const ApplicationSettings& settings, Window* window) {
 }
 
+void OpenGlRenderer::RenderFrame() {
+}
+
 }
 

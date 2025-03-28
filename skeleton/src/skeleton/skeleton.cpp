@@ -23,6 +23,7 @@ void StartApplication(const ApplicationSettings& settings) {
 
   while (window.IsOpen()) {
     window.PollEvents();
+    renderer->RenderFrame();
   }
 
   delete renderer;
