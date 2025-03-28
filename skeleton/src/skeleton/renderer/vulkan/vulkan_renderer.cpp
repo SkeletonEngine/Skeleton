@@ -12,9 +12,9 @@ VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* wind
   CreateDevice();
   CreateSwapchain();
   CreateSwapchainImageViews();
+  CreateRenderPass();
 
-  /* At some point we will create pipelines based on the contents of the scene */
-  /* For testing, just create one here */
+  /* Temporary pipeline for testing */
   GraphicsPipelineSettings pipeline_settings;
   pipeline_settings.device    = device_;
   pipeline_settings.allocator = allocator_;
@@ -26,6 +26,7 @@ VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* wind
 VulkanRenderer::~VulkanRenderer() {
   delete pipeline_;
 
+  DestroyRenderPass();
   DestroySwapchainImageViews();
   DestroySwapchain();
   DestroyDevice();

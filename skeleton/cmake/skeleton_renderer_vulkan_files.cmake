@@ -8,6 +8,7 @@ set(SKELETON_RENDERER_VULKAN_FILES
   src/skeleton/renderer/vulkan/vulkan_instance.cpp
   src/skeleton/renderer/vulkan/vulkan_renderer.hpp
   src/skeleton/renderer/vulkan/vulkan_renderer.cpp
+  src/skeleton/renderer/vulkan/vulkan_render_pass.cpp
   src/skeleton/renderer/vulkan/vulkan_swapchain.cpp
   src/skeleton/renderer/vulkan/vulkan_swapchain_image_views.cpp
   src/skeleton/renderer/vulkan/vulkan_swapchain_support.hpp
@@ -26,5 +27,6 @@ source_group("src/skeleton/renderer/vulkan/pipeline" FILES ${SKELETON_RENDERER_V
 set(SKELETON_FILES
   ${SKELETON_FILES}
   ${SKELETON_RENDERER_VULKAN_FILES}
+  ${SKELETON_RENDERER_VULKAN_RENDER_PASS_FILES}
   ${SKELETON_RENDERER_VULKAN_PIPELINE_FILES}
 )

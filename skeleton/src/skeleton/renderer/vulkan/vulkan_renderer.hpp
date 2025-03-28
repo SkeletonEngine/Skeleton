@@ -29,6 +29,8 @@ class VulkanRenderer : public Renderer {
   void DestroySwapchain();
   void CreateSwapchainImageViews();
   void DestroySwapchainImageViews();
+  void CreateRenderPass();
+  void DestroyRenderPass();
 
  private:
   /* Non-owning pointer to the window */
@@ -49,6 +51,7 @@ class VulkanRenderer : public Renderer {
   VkFormat                 swapchain_image_format_;
   std::vector<VkImageView> swapchain_image_views_;
   bool                     vsync_           = true;
+  VkRenderPass             render_pass_     = VK_NULL_HANDLE;
 
   GraphicsPipeline*        pipeline_        = nullptr;
 };
