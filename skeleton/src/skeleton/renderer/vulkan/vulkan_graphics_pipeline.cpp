@@ -1,6 +1,6 @@
 // Copyright 2024-2025 SkeletonEngine
 
-#include "skeleton/renderer/vulkan/pipeline/vulkan_graphics_pipeline.hpp"
+#include "skeleton/renderer/vulkan/vulkan_renderer.hpp"
 #include "skeleton/core/core.hpp"
 
 #include <volk.h>
@@ -9,12 +9,26 @@
 
 namespace Skeleton::Vulkan {
 
-GraphicsPipeline::GraphicsPipeline(const GraphicsPipelineSettings& settings) : allocator_(settings.allocator), device_(settings.device) {
+static VkShaderModule CreateShaderModule(const std::vector<char>& spv, VkDevice device, VkAllocationCallbacks* allocator) {
+  VkShaderModuleCreateInfo module_info { VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO };
+  module_info.codeSize = spv.size();
+  module_info.pCode    = reinterpret_cast<const uint32_t*>(spv.data());
+
+  VkShaderModule shader_module;
+  VK_CHECK(vkCreateShaderModule(device, &module_info, allocator, &shader_module));
+  return shader_module;
+}
+
+void VulkanRenderer::CreateGraphicsPipeline() {
+  /* Hard code the shader paths for testing */
+  const char* kVertPath = "build/shaders/test.vert.spv";
+  const char* kFragPath = "build/shaders/test.frag.spv";
+
   /* Read SPIR-V files from disk and create shader modules from them */
-  std::vector<char> vert_spv = ReadSpvFile(settings.vert_path);
-  std::vector<char> frag_spv = ReadSpvFile(settings.frag_path);
-  VkShaderModule vert_module = CreateShaderModule(vert_spv);
-  VkShaderModule frag_module = CreateShaderModule(frag_spv);
+  std::vector<char> vert_spv = ReadSpvFile(kVertPath);
+  std::vector<char> frag_spv = ReadSpvFile(kFragPath);
+  VkShaderModule vert_module = CreateShaderModule(vert_spv, device_, allocator_);
+  VkShaderModule frag_module = CreateShaderModule(frag_spv, device_, allocator_);
 
   /* Define the pipeline shader stages - vertex and fragment */
   VkPipelineShaderStageCreateInfo vert_stage_info { VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO };
@@ -92,7 +106,7 @@ GraphicsPipeline::GraphicsPipeline(const GraphicsPipelineSettings& settings) : a
   pipeline_layout_info.pushConstantRangeCount = 0;
   pipeline_layout_info.pPushConstantRanges    = nullptr;
 
-  VK_CHECK(vkCreatePipelineLayout(device_, &pipeline_layout_info, allocator_, &layout_));
+  VK_CHECK(vkCreatePipelineLayout(device_, &pipeline_layout_info, allocator_, &graphics_pipeline_layout_));
 
   /* Create the pipeline */
   VkGraphicsPipelineCreateInfo pipeline_info { VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO };
@@ -106,30 +120,20 @@ GraphicsPipeline::GraphicsPipeline(const GraphicsPipelineSettings& settings) : a
   pipeline_info.pDepthStencilState  = nullptr;
   pipeline_info.pColorBlendState    = &color_blend_state;
   pipeline_info.pDynamicState       = &dynamic_state_info;
-  pipeline_info.layout              = layout_;
-  pipeline_info.renderPass          = settings.render_pass;
+  pipeline_info.layout              = graphics_pipeline_layout_;
+  pipeline_info.renderPass          = render_pass_;
   pipeline_info.subpass             = 0;
 
-  VK_CHECK(vkCreateGraphicsPipelines(device_, VK_NULL_HANDLE, 1, &pipeline_info, allocator_, &pipeline_));
+  VK_CHECK(vkCreateGraphicsPipelines(device_, VK_NULL_HANDLE, 1, &pipeline_info, allocator_, &graphics_pipeline_));
 
   /* Cleanup the shader module objects */
   vkDestroyShaderModule(device_, vert_module, allocator_);
   vkDestroyShaderModule(device_, frag_module, allocator_);
 }
 
-GraphicsPipeline::~GraphicsPipeline() {
-  vkDestroyPipeline(device_, pipeline_, allocator_);
-  vkDestroyPipelineLayout(device_, layout_, allocator_);
-}
-
-VkShaderModule GraphicsPipeline::CreateShaderModule(const std::vector<char>& spv) {
-  VkShaderModuleCreateInfo module_info { VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO };
-  module_info.codeSize = spv.size();
-  module_info.pCode    = reinterpret_cast<const uint32_t*>(spv.data());
-
-  VkShaderModule shader_module;
-  VK_CHECK(vkCreateShaderModule(device_, &module_info, allocator_, &shader_module));
-  return shader_module;
+void VulkanRenderer::DestroyGraphicsPipeline() {
+  vkDestroyPipeline(device_, graphics_pipeline_, allocator_);
+  vkDestroyPipelineLayout(device_, graphics_pipeline_layout_, allocator_);
 }
 
 }  // namespace Skeleton::Vulkan

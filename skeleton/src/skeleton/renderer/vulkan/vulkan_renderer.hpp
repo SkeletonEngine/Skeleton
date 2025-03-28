@@ -7,7 +7,6 @@
 #include <volk.h>
 #include "skeleton/application_settings.hpp"
 #include "skeleton/renderer/renderer.hpp"
-#include "skeleton/renderer/vulkan/pipeline/vulkan_graphics_pipeline.hpp"
 #include "skeleton/window/window.hpp"
 
 namespace Skeleton::Vulkan {
@@ -31,6 +30,8 @@ class VulkanRenderer : public Renderer {
   void DestroySwapchainImageViews();
   void CreateRenderPass();
   void DestroyRenderPass();
+  void CreateGraphicsPipeline();
+  void DestroyGraphicsPipeline();
 
  private:
   /* Non-owning pointer to the window */
@@ -52,8 +53,8 @@ class VulkanRenderer : public Renderer {
   std::vector<VkImageView> swapchain_image_views_;
   bool                     vsync_           = true;
   VkRenderPass             render_pass_     = VK_NULL_HANDLE;
-
-  GraphicsPipeline*        pipeline_        = nullptr;
+  VkPipeline               graphics_pipeline_ = VK_NULL_HANDLE;
+  VkPipelineLayout         graphics_pipeline_layout_ = VK_NULL_HANDLE;
 };
 
 }  // namespace Skeleton::Vulkan

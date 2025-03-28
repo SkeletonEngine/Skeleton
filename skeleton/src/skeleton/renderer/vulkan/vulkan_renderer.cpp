@@ -13,20 +13,11 @@ VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* wind
   CreateSwapchain();
   CreateSwapchainImageViews();
   CreateRenderPass();
-
-  /* Temporary pipeline for testing */
-  GraphicsPipelineSettings pipeline_settings;
-  pipeline_settings.device      = device_;
-  pipeline_settings.allocator   = allocator_;
-  pipeline_settings.render_pass = render_pass_;
-  pipeline_settings.vert_path   = "build/shaders/test.vert.spv";
-  pipeline_settings.frag_path   = "build/shaders/test.frag.spv";
-  pipeline_ = new GraphicsPipeline(pipeline_settings);
+  CreateGraphicsPipeline();
 }
 
 VulkanRenderer::~VulkanRenderer() {
-  delete pipeline_;
-
+  DestroyGraphicsPipeline();
   DestroyRenderPass();
   DestroySwapchainImageViews();
   DestroySwapchain();
