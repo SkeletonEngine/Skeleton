@@ -7,7 +7,7 @@
 namespace Skeleton::Vulkan {
 
 VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* window)
-    : window_(window), vsync_(settings.renderer.vsync) {
+: window_(window), vsync_(settings.renderer.vsync) {
   CreateInstance();
 #ifdef SK_BUILD_DEBUG
   CreateDebugMessenger();

@@ -3,13 +3,15 @@
 #include "skeleton/renderer/vulkan/vulkan_renderer.hpp"
 #include "skeleton/core/core.hpp"
 
+#include <vector>
 #include <volk.h>
 #include "skeleton/renderer/common/spv_file.hpp"
 #include "skeleton/renderer/vulkan/vulkan_check.hpp"
 
 namespace Skeleton::Vulkan {
 
-static VkShaderModule CreateShaderModule(const std::vector<char>& spv, VkDevice device, VkAllocationCallbacks* allocator) {
+static VkShaderModule CreateShaderModule(const std::vector<char>& spv, VkDevice device,
+                                         VkAllocationCallbacks* allocator) {
   VkShaderModuleCreateInfo module_info { VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO };
   module_info.codeSize = spv.size();
   module_info.pCode    = reinterpret_cast<const uint32_t*>(spv.data());
@@ -71,7 +73,8 @@ void VulkanRenderer::CreateGraphicsPipeline() {
   viewport_state.scissorCount  = 1;
 
   /* Rasterizer */
-  VkPipelineRasterizationStateCreateInfo rasterization_state { VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO };
+  VkPipelineRasterizationStateCreateInfo rasterization_state {
+    VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO };
   rasterization_state.depthClampEnable        = VK_FALSE;
   rasterization_state.rasterizerDiscardEnable = VK_FALSE;
   rasterization_state.polygonMode             = VK_POLYGON_MODE_FILL;
@@ -88,7 +91,10 @@ void VulkanRenderer::CreateGraphicsPipeline() {
   /* Color blending */
   /* VkPipelineColorBlendAttachmentState specifies per-framebuffer color blend settings */
   VkPipelineColorBlendAttachmentState color_blend_attachment_state { };
-  color_blend_attachment_state.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
+  color_blend_attachment_state.colorWriteMask = VK_COLOR_COMPONENT_R_BIT
+                                              | VK_COLOR_COMPONENT_G_BIT
+                                              | VK_COLOR_COMPONENT_B_BIT
+                                              | VK_COLOR_COMPONENT_A_BIT;
   color_blend_attachment_state.blendEnable    = VK_FALSE;
 
   /* VkPipelineColorBlendStateCreateInfo specifies global color blend settings */

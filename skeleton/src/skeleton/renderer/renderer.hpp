@@ -8,7 +8,7 @@ namespace Skeleton {
 class Renderer {
  public:
   virtual ~Renderer() { }
- 
+
  public:
   virtual void RenderFrame() = 0;
 };

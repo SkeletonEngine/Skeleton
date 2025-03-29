@@ -4,6 +4,7 @@
 #include "skeleton/core/core.hpp"
 
 #include <algorithm>
+#include <limits>
 #include "skeleton/window/window.hpp"
 
 namespace Skeleton::Vulkan {
@@ -58,7 +59,7 @@ VkPresentModeKHR SwapchainSupportDetails::ChoosePresentMode(bool vsync) const {
   if (std::count(present_modes.begin(), present_modes.end(), VK_PRESENT_MODE_MAILBOX_KHR)) {
     return VK_PRESENT_MODE_MAILBOX_KHR;
   }
-  
+
   /* If we can't use VK_PRESENT_MODE_MAILBOX_KHR we'll fall back to VK_PRESENT_MODE_FIFO_KHR,
      which is guaranteed to be available */
   return VK_PRESENT_MODE_FIFO_KHR;
@@ -71,17 +72,17 @@ VkExtent2D SwapchainSupportDetails::ChooseExtent(Window* window) const {
      to query the framebuffer size and use that instead */
   if (capabilities.currentExtent.width != std::numeric_limits<uint32_t>::max()) {
     return capabilities.currentExtent;
-  } else { 
+  } else {
     VkExtent2D actual_extent = {
       static_cast<uint32_t>(window->GetFramebufferWidth()),
       static_cast<uint32_t>(window->GetFramebufferHeight()),
     };
-    
+
     actual_extent.width = std::clamp(actual_extent.width,
       capabilities.minImageExtent.width,  capabilities.maxImageExtent.width);
     actual_extent.height = std::clamp(actual_extent.height,
       capabilities.minImageExtent.height, capabilities.maxImageExtent.height);
-    
+
     return actual_extent;
   }
 }

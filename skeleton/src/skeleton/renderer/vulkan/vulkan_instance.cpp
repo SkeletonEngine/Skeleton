@@ -41,7 +41,7 @@ void VulkanRenderer::CreateInstance() {
 #ifdef SK_BUILD_DEBUG
   instance_info.enabledLayerCount       = static_cast<uint32_t>(kValidationLayers.size());
   instance_info.ppEnabledLayerNames     = kValidationLayers.data();
-  
+
   VkDebugUtilsMessengerCreateInfoEXT debug_messenger_info;
   PopulateDebugMessengerCreateInfo(&debug_messenger_info);
   instance_info.pNext                   = &debug_messenger_info;

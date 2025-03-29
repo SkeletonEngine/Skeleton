@@ -44,14 +44,14 @@ class VulkanRenderer : public Renderer {
   void CreateSyncObjects();
   void DestroySyncObjects();
 
+ private:
 #ifdef SK_BUILD_DEBUG
-private:
   void CreateDebugMessenger();
   void DestroyDebugMessenger();
   void PopulateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT* to_populate);
 #endif  // SK_BUILD_DEBUG
-  
-private:
+
+ private:
   void RecordRenderCommandBuffer(VkCommandBuffer command_buffer, uint32_t image_index);
 
  private:
@@ -68,7 +68,7 @@ private:
   VkQueue                  present_queue_   = VK_NULL_HANDLE;
   VkSurfaceKHR             surface_         = VK_NULL_HANDLE;
   VkSwapchainKHR           swapchain_       = VK_NULL_HANDLE;
-  std::vector<VkImage>     swapchain_images_; 
+  std::vector<VkImage>     swapchain_images_;
   VkExtent2D               swapchain_extent_;
   VkFormat                 swapchain_image_format_;
   std::vector<VkImageView> swapchain_image_views_;
@@ -82,9 +82,9 @@ private:
   VkSemaphore              image_available_semaphore_ = VK_NULL_HANDLE;
   VkSemaphore              render_complete_semaphore_ = VK_NULL_HANDLE;
   VkFence                  in_flight_fence_           = VK_NULL_HANDLE;
-  
+
+ private:
 #ifdef SK_BUILD_DEBUG
-private:
   VkDebugUtilsMessengerEXT debug_messenger_ = VK_NULL_HANDLE;
 #endif  // SK_BUILD_DEBUG
 };

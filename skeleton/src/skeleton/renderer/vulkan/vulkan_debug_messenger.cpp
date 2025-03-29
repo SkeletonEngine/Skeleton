@@ -3,6 +3,8 @@
 #include "skeleton/renderer/vulkan/vulkan_renderer.hpp"
 #include "skeleton/core/core.hpp"
 
+#include <cstdio>
+
 #ifdef SK_BUILD_DEBUG
 
 namespace Skeleton::Vulkan {
