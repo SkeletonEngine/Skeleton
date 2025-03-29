@@ -11,4 +11,4 @@ jobs:
       with:
         python-version: 3.x
     - run: pip install cpplint
-    - run: cpplint --recursive --linelength=120 --filter=-build/include_order,-readability/inheritance,-whitespace/indent_namespace file skeleton/src skeleton/include
+    - run: scripts/lint.sh
