@@ -9,6 +9,9 @@ namespace Skeleton::Vulkan {
 VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* window)
     : window_(window), vsync_(settings.renderer.vsync) {
   CreateInstance();
+#ifdef SK_BUILD_DEBUG
+  CreateDebugMessenger();
+#endif  // SK_BUILD_DEBUG
   CreateWindowSurface();
   ChoosePhysicalDevice();
   CreateDevice();
@@ -35,6 +38,9 @@ VulkanRenderer::~VulkanRenderer() {
   DestroySwapchain();
   DestroyDevice();
   DestroyWindowSurface();
+#ifdef SK_BUILD_DEBUG
+  DestroyDebugMessenger();
+#endif  // SK_BUILD_DEBUG
   DestroyInstance();
 }
 

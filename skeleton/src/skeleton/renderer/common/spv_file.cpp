@@ -9,7 +9,10 @@ namespace Skeleton {
 
 std::vector<char> ReadSpvFile(const char* path) {
   std::ifstream file(path, std::ios::ate | std::ios::binary);
-  SK_ASSERT(file.is_open());
+  if(!file.is_open()) {
+    fprintf(stderr, "Failed to open SPIR-V file: %s\n", path);
+    SK_DEBUGBREAK();
+  }
   size_t file_size = (size_t) file.tellg();
   std::vector<char> buffer(file_size);
   file.seekg(0);

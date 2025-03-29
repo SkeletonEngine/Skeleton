@@ -12,6 +12,7 @@
   VkResult result = (x); \
   if (result != VK_SUCCESS) { \
     fprintf(stderr, "VK_CHECK failed: Call to %s (%s:%d) returned %s\n", #x, __FILE__, __LINE__, string_VkResult(result)); \
+    SK_DEBUGBREAK(); \
   } \
 }
 

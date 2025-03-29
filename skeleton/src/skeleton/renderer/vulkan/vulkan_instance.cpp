@@ -33,13 +33,20 @@ void VulkanRenderer::CreateInstance() {
   instance_info.pApplicationInfo        = &app_info;
   instance_info.enabledExtensionCount   = static_cast<uint32_t>(kInstanceExtensions.size());
   instance_info.ppEnabledExtensionNames = kInstanceExtensions.data();
+
 #ifdef SK_PLATFORM_MACOS
   instance_info.flags                   = VK_INSTANCE_CREATE_ENUMERATE_PORTABILITY_BIT_KHR;
 #endif
+
 #ifdef SK_BUILD_DEBUG
   instance_info.enabledLayerCount       = static_cast<uint32_t>(kValidationLayers.size());
   instance_info.ppEnabledLayerNames     = kValidationLayers.data();
+  
+  VkDebugUtilsMessengerCreateInfoEXT debug_messenger_info;
+  PopulateDebugMessengerCreateInfo(&debug_messenger_info);
+  instance_info.pNext                   = &debug_messenger_info;
 #endif
+
   VK_CHECK(vkCreateInstance(&instance_info, allocator_, &instance_));
 
   /* Load vulkan instance functions */

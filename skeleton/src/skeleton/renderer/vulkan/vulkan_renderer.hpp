@@ -44,6 +44,13 @@ class VulkanRenderer : public Renderer {
   void CreateSyncObjects();
   void DestroySyncObjects();
 
+#ifdef SK_BUILD_DEBUG
+private:
+  void CreateDebugMessenger();
+  void DestroyDebugMessenger();
+  void PopulateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT* to_populate);
+#endif  // SK_BUILD_DEBUG
+  
 private:
   void RecordRenderCommandBuffer(VkCommandBuffer command_buffer, uint32_t image_index);
 
@@ -75,6 +82,11 @@ private:
   VkSemaphore              image_available_semaphore_ = VK_NULL_HANDLE;
   VkSemaphore              render_complete_semaphore_ = VK_NULL_HANDLE;
   VkFence                  in_flight_fence_           = VK_NULL_HANDLE;
+  
+#ifdef SK_BUILD_DEBUG
+private:
+  VkDebugUtilsMessengerEXT debug_messenger_ = VK_NULL_HANDLE;
+#endif  // SK_BUILD_DEBUG
 };
 
 }  // namespace Skeleton::Vulkan
