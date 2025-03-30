@@ -55,7 +55,8 @@ void VulkanRenderer::RenderFrame() {
 
   /* Acquire an image from the swapchain */
   uint32_t image_index;
-  vkAcquireNextImageKHR(device_, swapchain_, UINT64_MAX, image_available_semaphores_[current_frame], VK_NULL_HANDLE, &image_index);
+  vkAcquireNextImageKHR(device_, swapchain_, UINT64_MAX, image_available_semaphores_[current_frame],
+                        VK_NULL_HANDLE, &image_index);
 
   /* Record the render commands to a command buffer */
   vkResetCommandBuffer(render_command_buffers_[current_frame], 0);
