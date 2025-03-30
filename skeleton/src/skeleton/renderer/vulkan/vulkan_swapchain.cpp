@@ -72,4 +72,16 @@ void VulkanRenderer::DestroySwapchain() {
   vkDestroySwapchainKHR(device_, swapchain_, allocator_);
 }
 
+void VulkanRenderer::RecreateSwapchain() {
+  vkDeviceWaitIdle(device_);
+
+  DestroySwapchainFramebuffers();
+  DestroySwapchainImageViews();
+  DestroySwapchain();
+
+  CreateSwapchain();
+  CreateSwapchainImageViews();
+  CreateSwapchainFramebuffers();
+}
+
 }  // namespace Skeleton::Vulkan

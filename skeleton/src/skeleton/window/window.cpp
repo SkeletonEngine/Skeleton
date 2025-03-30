@@ -26,12 +26,21 @@ Window::Window(const ApplicationSettings& settings) {
     }
   }
 
-  glfw_window = glfwCreateWindow(1280, 720, "Skeleton", NULL, NULL);
-  SK_ASSERT(glfw_window);
+  glfw_window_ = glfwCreateWindow(1280, 720, "Skeleton", NULL, NULL);
+  SK_ASSERT(glfw_window_);
+
+  /* Register callbacks */
+  glfwSetWindowUserPointer(glfw_window_, this);
+  glfwSetFramebufferSizeCallback(glfw_window_, [](GLFWwindow* w, int width, int height) {
+    Window* window = static_cast<Window*>(glfwGetWindowUserPointer(w));
+    if (window->framebuffer_size_callback_) {
+      window->framebuffer_size_callback_(width, height);
+    }
+  });
 }
 
 Window::~Window() {
-  glfwDestroyWindow(glfw_window);
+  glfwDestroyWindow(glfw_window_);
   glfwTerminate();
 }
 
@@ -40,22 +49,26 @@ void Window::PollEvents() const {
 }
 
 bool Window::IsOpen() const {
-  return !glfwWindowShouldClose(glfw_window);
+  return !glfwWindowShouldClose(glfw_window_);
+}
+
+void Window::RegisterFramebufferSizeCallback(std::function<void(int width, int height)> callback) {
+  framebuffer_size_callback_ = callback;
 }
 
 GLFWwindow* Window::GetGlfwWindowHandle() const {
-  return glfw_window;
+  return glfw_window_;
 }
 
 int Window::GetFramebufferWidth() const {
   int width, height;
-  glfwGetFramebufferSize(glfw_window, &width, &height);
+  glfwGetFramebufferSize(glfw_window_, &width, &height);
   return width;
 }
 
 int Window::GetFramebufferHeight() const {
   int width, height;
-  glfwGetFramebufferSize(glfw_window, &width, &height);
+  glfwGetFramebufferSize(glfw_window_, &width, &height);
   return height;
 }
 

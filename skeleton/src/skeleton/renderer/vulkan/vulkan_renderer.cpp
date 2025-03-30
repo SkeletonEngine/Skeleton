@@ -23,6 +23,12 @@ VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* wind
   CreateCommandPool();
   CreateRenderCommandBuffer();
   CreateSyncObjects();
+
+  /* Register a callback so that we are notified when the client window is resized
+     so that we can recreate the swapchain */
+  window->RegisterFramebufferSizeCallback([&](int, int) {
+    window_framebuffer_resized_ = true;
+  });
 }
 
 VulkanRenderer::~VulkanRenderer() {
@@ -45,18 +51,34 @@ VulkanRenderer::~VulkanRenderer() {
 }
 
 void VulkanRenderer::RenderFrame() {
+  /* If the window was resized, recreate the swapchain */
+  if (window_framebuffer_resized_) {
+    window_framebuffer_resized_ = false;
+    RecreateSwapchain();
+  }
+
   /* Keeps track of which set of command buffers/sync objects to use */
   static uint32_t current_frame = 0;
   current_frame = (current_frame + 1) % kMaxFramesInFlight;
 
   /* Wait for the previous frame to finish, if necessary */
   vkWaitForFences(device_, 1, &in_flight_fences_[current_frame], VK_TRUE, UINT64_MAX);
-  vkResetFences(device_, 1, &in_flight_fences_[current_frame]);
 
   /* Acquire an image from the swapchain */
   uint32_t image_index;
-  vkAcquireNextImageKHR(device_, swapchain_, UINT64_MAX, image_available_semaphores_[current_frame],
-                        VK_NULL_HANDLE, &image_index);
+  VkResult image_acquire_result = vkAcquireNextImageKHR(device_, swapchain_, UINT64_MAX,
+                                                        image_available_semaphores_[current_frame],
+                                                        VK_NULL_HANDLE, &image_index);
+
+  /* If the swapchain is out of date, we need to recreate it */
+  if (image_acquire_result == VK_ERROR_OUT_OF_DATE_KHR) {
+    RecreateSwapchain();
+    return;
+  }
+  VK_CHECK(image_acquire_result);
+
+  /* Once we know that we have an image to render to, we can reset the fence for the current frame */
+  vkResetFences(device_, 1, &in_flight_fences_[current_frame]);
 
   /* Record the render commands to a command buffer */
   vkResetCommandBuffer(render_command_buffers_[current_frame], 0);

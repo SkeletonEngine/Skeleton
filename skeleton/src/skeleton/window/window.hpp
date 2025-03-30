@@ -3,6 +3,7 @@
 #pragma once
 #include "skeleton/core/core.hpp"
 
+#include <functional>
 #include "skeleton/application_settings.hpp"
 
 struct GLFWwindow;
@@ -21,12 +22,17 @@ class Window {
   /* Returns true if the window has not yet recieved a close event or platform equivalent */
   bool IsOpen() const;
 
+  /* Allows renderer to handle framebuffer resize events */
+  void RegisterFramebufferSizeCallback(std::function<void(int width, int height)> callback);
+
+ public:
   GLFWwindow* GetGlfwWindowHandle() const;
   int GetFramebufferWidth() const;
   int GetFramebufferHeight() const;
 
  private:
-  GLFWwindow* glfw_window;
+  GLFWwindow* glfw_window_;
+  std::function<void(int width, int height)> framebuffer_size_callback_;
 };
 
 }  // namespace Skeleton

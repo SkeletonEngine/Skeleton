@@ -29,6 +29,7 @@ class VulkanRenderer : public Renderer {
   void DestroyDevice();
   void CreateSwapchain();
   void DestroySwapchain();
+  void RecreateSwapchain();
   void CreateSwapchainImageViews();
   void DestroySwapchainImageViews();
   void CreateRenderPass();
@@ -86,6 +87,7 @@ class VulkanRenderer : public Renderer {
   std::vector<VkSemaphore> image_available_semaphores_;
   std::vector<VkSemaphore> render_complete_semaphores_;
   std::vector<VkFence>     in_flight_fences_;
+  bool                     window_framebuffer_resized_ = false;
 
  private:
 #ifdef SK_BUILD_DEBUG
