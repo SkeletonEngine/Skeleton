@@ -55,6 +55,10 @@ class VulkanRenderer : public Renderer {
   void RecordRenderCommandBuffer(VkCommandBuffer command_buffer, uint32_t image_index);
 
  private:
+  /* Constants */
+  const uint32_t kMaxFramesInFlight = 2;
+
+ private:
   /* Non-owning pointer to the window */
   Window* window_;
 
@@ -78,10 +82,10 @@ class VulkanRenderer : public Renderer {
   VkPipeline               graphics_pipeline_ = VK_NULL_HANDLE;
   VkPipelineLayout         graphics_pipeline_layout_ = VK_NULL_HANDLE;
   VkCommandPool            command_pool_    = VK_NULL_HANDLE;
-  VkCommandBuffer          render_command_buffer_ = VK_NULL_HANDLE;
-  VkSemaphore              image_available_semaphore_ = VK_NULL_HANDLE;
-  VkSemaphore              render_complete_semaphore_ = VK_NULL_HANDLE;
-  VkFence                  in_flight_fence_           = VK_NULL_HANDLE;
+  std::vector<VkCommandBuffer> render_command_buffers_;
+  std::vector<VkSemaphore> image_available_semaphores_;
+  std::vector<VkSemaphore> render_complete_semaphores_;
+  std::vector<VkFence>     in_flight_fences_;
 
  private:
 #ifdef SK_BUILD_DEBUG

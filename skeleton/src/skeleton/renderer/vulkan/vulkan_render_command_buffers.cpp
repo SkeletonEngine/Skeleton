@@ -11,13 +11,14 @@ void VulkanRenderer::CreateRenderCommandBuffer() {
   VkCommandBufferAllocateInfo alloc_info { VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO };
   alloc_info.commandPool        = command_pool_;
   alloc_info.level              = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-  alloc_info.commandBufferCount = 1;
+  alloc_info.commandBufferCount = kMaxFramesInFlight;
 
-  vkAllocateCommandBuffers(device_, &alloc_info, &render_command_buffer_);
+  render_command_buffers_.resize(kMaxFramesInFlight);
+  vkAllocateCommandBuffers(device_, &alloc_info, render_command_buffers_.data());
 }
 
 void VulkanRenderer::DestroyRenderCommandBuffer() {
-  vkFreeCommandBuffers(device_, command_pool_, 1, &render_command_buffer_);
+  vkFreeCommandBuffers(device_, command_pool_, kMaxFramesInFlight, render_command_buffers_.data());
 }
 
 void VulkanRenderer::RecordRenderCommandBuffer(VkCommandBuffer command_buffer, uint32_t image_index) {

@@ -45,22 +45,26 @@ VulkanRenderer::~VulkanRenderer() {
 }
 
 void VulkanRenderer::RenderFrame() {
+  /* Keeps track of which set of command buffers/sync objects to use */
+  static uint32_t current_frame = 0;
+  current_frame = (current_frame + 1) % kMaxFramesInFlight;
+
   /* Wait for the previous frame to finish, if necessary */
-  vkWaitForFences(device_, 1, &in_flight_fence_, VK_TRUE, UINT64_MAX);
-  vkResetFences(device_, 1, &in_flight_fence_);
+  vkWaitForFences(device_, 1, &in_flight_fences_[current_frame], VK_TRUE, UINT64_MAX);
+  vkResetFences(device_, 1, &in_flight_fences_[current_frame]);
 
   /* Acquire an image from the swapchain */
   uint32_t image_index;
-  vkAcquireNextImageKHR(device_, swapchain_, UINT64_MAX, image_available_semaphore_, VK_NULL_HANDLE, &image_index);
+  vkAcquireNextImageKHR(device_, swapchain_, UINT64_MAX, image_available_semaphores_[current_frame], VK_NULL_HANDLE, &image_index);
 
   /* Record the render commands to a command buffer */
-  vkResetCommandBuffer(render_command_buffer_, 0);
-  RecordRenderCommandBuffer(render_command_buffer_, image_index);
+  vkResetCommandBuffer(render_command_buffers_[current_frame], 0);
+  RecordRenderCommandBuffer(render_command_buffers_[current_frame], image_index);
 
   /* Submit the command buffer */
   VkSubmitInfo submit_info { VK_STRUCTURE_TYPE_SUBMIT_INFO };
-  VkSemaphore wait_semaphores[]   = { image_available_semaphore_ };
-  VkSemaphore signal_semaphores[] = { render_complete_semaphore_ };
+  VkSemaphore wait_semaphores[]   = { image_available_semaphores_[current_frame] };
+  VkSemaphore signal_semaphores[] = { render_complete_semaphores_[current_frame] };
   VkPipelineStageFlags wait_stages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
   submit_info.waitSemaphoreCount = 1;
   submit_info.pWaitSemaphores    = wait_semaphores;
@@ -68,8 +72,8 @@ void VulkanRenderer::RenderFrame() {
   submit_info.signalSemaphoreCount = 1;
   submit_info.pSignalSemaphores  = signal_semaphores;
   submit_info.commandBufferCount = 1;
-  submit_info.pCommandBuffers    = &render_command_buffer_;
-  VK_CHECK(vkQueueSubmit(graphics_queue_, 1, &submit_info, in_flight_fence_));
+  submit_info.pCommandBuffers    = &render_command_buffers_[current_frame];
+  VK_CHECK(vkQueueSubmit(graphics_queue_, 1, &submit_info, in_flight_fences_[current_frame]));
 
   /* Presentation */
   VkPresentInfoKHR present_info { VK_STRUCTURE_TYPE_PRESENT_INFO_KHR };
