@@ -11,6 +11,7 @@ set(SKELETON_RENDERER_VULKAN_FILES
   src/skeleton/renderer/vulkan/vulkan_instance.cpp
   src/skeleton/renderer/vulkan/vulkan_renderer.hpp
   src/skeleton/renderer/vulkan/vulkan_renderer.cpp
+  src/skeleton/renderer/vulkan/vulkan_renderer_string.cpp
   src/skeleton/renderer/vulkan/vulkan_render_command_buffers.cpp
   src/skeleton/renderer/vulkan/vulkan_render_pass.cpp
   src/skeleton/renderer/vulkan/vulkan_swapchain.cpp

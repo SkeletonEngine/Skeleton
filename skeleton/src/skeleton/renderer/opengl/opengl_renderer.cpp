@@ -11,5 +11,9 @@ OpenGlRenderer::OpenGlRenderer(const ApplicationSettings& settings, Window* wind
 void OpenGlRenderer::RenderFrame() {
 }
 
+std::string OpenGlRenderer::GetRendererString() const {
+  return "OpenGl";
+}
+
 }
 

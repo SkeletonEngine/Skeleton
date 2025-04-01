@@ -72,4 +72,8 @@ int Window::GetFramebufferHeight() const {
   return height;
 }
 
+void Window::SetTitle(const std::string& title) {
+  glfwSetWindowTitle(glfw_window_, title.c_str());
+}
+
 }  // namespace Skeleton

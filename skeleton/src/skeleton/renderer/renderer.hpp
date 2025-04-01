@@ -3,6 +3,8 @@
 #pragma once
 #include "skeleton/core/core.hpp"
 
+#include <string>
+
 namespace Skeleton {
 
 class Renderer {
@@ -11,6 +13,9 @@ class Renderer {
 
  public:
   virtual void RenderFrame() = 0;
+
+ public:
+  virtual std::string GetRendererString() const = 0;
 };
 
 }  // namespace Skeleton

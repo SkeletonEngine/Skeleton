@@ -19,6 +19,9 @@ class VulkanRenderer : public Renderer {
  public:
   virtual void RenderFrame() override;
 
+ public:
+  virtual std::string GetRendererString() const override;
+
  private:
   void CreateInstance();
   void DestroyInstance();

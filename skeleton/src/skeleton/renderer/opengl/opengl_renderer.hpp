@@ -15,6 +15,9 @@ class OpenGlRenderer : public Renderer {
 
  public:
   virtual void RenderFrame() override;
+
+ public:
+  virtual std::string GetRendererString() const override;
 };
 
 }  // namespace Skeleton::OpenGl

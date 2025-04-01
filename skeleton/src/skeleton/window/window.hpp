@@ -4,6 +4,7 @@
 #include "skeleton/core/core.hpp"
 
 #include <functional>
+#include <string>
 #include "skeleton/application_settings.hpp"
 
 struct GLFWwindow;
@@ -29,6 +30,9 @@ class Window {
   GLFWwindow* GetGlfwWindowHandle() const;
   int GetFramebufferWidth() const;
   int GetFramebufferHeight() const;
+
+ public:
+  void SetTitle(const std::string& title);
 
  private:
   GLFWwindow* glfw_window_;

@@ -21,6 +21,8 @@ void StartApplication(const ApplicationSettings& settings) {
       return;
   }
 
+  window.SetTitle(renderer->GetRendererString());
+
   while (window.IsOpen()) {
     window.PollEvents();
     renderer->RenderFrame();

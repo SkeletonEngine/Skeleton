@@ -10,6 +10,7 @@ set(SKELETON_SRC_CORE_FILES
   include/skeleton/core/build_configuration.hpp
   include/skeleton/core/core.hpp
   include/skeleton/core/platform.hpp
+  include/skeleton/core/version.hpp
 )
 source_group("src/skeleton/core" FILES ${SKELETON_SRC_CORE_FILES})
 
