@@ -3,6 +3,8 @@
 #include "skeleton/renderer/opengl/opengl_renderer.hpp"
 #include "skeleton/core/core.hpp"
 
+#include <string>
+
 namespace Skeleton::OpenGl {
 
 OpenGlRenderer::OpenGlRenderer(const ApplicationSettings& settings, Window* window) {
@@ -15,5 +17,4 @@ std::string OpenGlRenderer::GetRendererString() const {
   return "OpenGl";
 }
 
-}
-
+}  // Namespace Skeleton::OpenGl

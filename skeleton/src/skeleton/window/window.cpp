@@ -3,6 +3,7 @@
 #include "skeleton/window/window.hpp"
 #include "skeleton/core/core.hpp"
 
+#include <string>
 #include <GLFW/glfw3.h>
 
 namespace Skeleton {
