@@ -10,7 +10,7 @@ namespace Skeleton {
 
 class ShaderReflectionDetails {
  public:
-  ShaderReflectionDetails(const std::vector<uint32_t>& spv);
+  explicit ShaderReflectionDetails(const std::vector<uint32_t>& spv);
 };
 
 }  // namespace Skeleton

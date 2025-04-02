@@ -18,7 +18,7 @@ std::vector<uint32_t> ReadSpvFile(const char* path) {
   size_t file_size = static_cast<size_t>(file.tellg());
   std::vector<uint32_t> buffer(file_size / sizeof(uint32_t));
   file.seekg(0);
-  file.read((char*)buffer.data(), file_size);
+  file.read(reinterpret_cast<char*>(buffer.data()), file_size);
   file.close();
   return buffer;
 }
