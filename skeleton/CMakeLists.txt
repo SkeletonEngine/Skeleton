@@ -12,6 +12,18 @@ target_compile_features(skeleton PRIVATE cxx_std_20)
 target_include_directories(skeleton PUBLIC include)
 target_include_directories(skeleton PRIVATE src)
 
+# Choose targets to build for SPIRV-Cross
+set(SPIRV_CROSS_ENABLE_GLSL TRUE)
+set(SPIRV_CROSS_ENABLE_CPP FALSE)
+set(SPIRV_CROSS_ENABLE_C_API FALSE)
+set(SPIRV_CROSS_ENABLE_REFLECT FALSE)
+set(SPIRV_CROSS_ENABLE_MSL FALSE)
+set(SPIRV_CROSS_ENABLE_HLSL FALSE)
+set(SPIRV_CROSS_ENABLE_UTIL FALSE)
+set(SPIRV_CROSS_CLI FALSE)
+add_subdirectory(vendor/khronosgroup/spirv-cross)
+target_link_libraries(skeleton PRIVATE spirv-cross-glsl)
+
 add_subdirectory(vendor/glfw/glfw)
 target_link_libraries(skeleton PRIVATE glfw)
 add_subdirectory(vendor/zeux/volk)

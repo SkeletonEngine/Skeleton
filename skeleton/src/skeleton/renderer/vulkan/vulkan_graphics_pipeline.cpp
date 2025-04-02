@@ -5,16 +5,17 @@
 
 #include <vector>
 #include <volk.h>
+#include "skeleton/renderer/common/shader_reflection.hpp"
 #include "skeleton/renderer/common/spv_file.hpp"
 #include "skeleton/renderer/vulkan/vulkan_check.hpp"
 
 namespace Skeleton::Vulkan {
 
-static VkShaderModule CreateShaderModule(const std::vector<char>& spv, VkDevice device,
+static VkShaderModule CreateShaderModule(const std::vector<uint32_t>& spv, VkDevice device,
                                          VkAllocationCallbacks* allocator) {
   VkShaderModuleCreateInfo module_info { VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO };
-  module_info.codeSize = spv.size();
-  module_info.pCode    = reinterpret_cast<const uint32_t*>(spv.data());
+  module_info.codeSize = spv.size() * sizeof(uint32_t);
+  module_info.pCode    = spv.data();
 
   VkShaderModule shader_module;
   VK_CHECK(vkCreateShaderModule(device, &module_info, allocator, &shader_module));
@@ -27,10 +28,14 @@ void VulkanRenderer::CreateGraphicsPipeline() {
   const char* kFragPath = "build/shaders/test.frag.spv";
 
   /* Read SPIR-V files from disk and create shader modules from them */
-  std::vector<char> vert_spv = ReadSpvFile(kVertPath);
-  std::vector<char> frag_spv = ReadSpvFile(kFragPath);
+  std::vector<uint32_t> vert_spv = ReadSpvFile(kVertPath);
+  std::vector<uint32_t> frag_spv = ReadSpvFile(kFragPath);
   VkShaderModule vert_module = CreateShaderModule(vert_spv, device_, allocator_);
   VkShaderModule frag_module = CreateShaderModule(frag_spv, device_, allocator_);
+
+  /* Perform reflection on the shaders to find the number and type of vertex input binding descriptions, etc. */
+  ShaderReflectionDetails vert_reflection(vert_spv);
+  ShaderReflectionDetails frag_reflection(frag_spv);
 
   /* Define the pipeline shader stages - vertex and fragment */
   VkPipelineShaderStageCreateInfo vert_stage_info { VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO };

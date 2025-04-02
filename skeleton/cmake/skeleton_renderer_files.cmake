@@ -8,6 +8,8 @@ source_group("src/skeleton/renderer" FILES ${SKELETON_RENDERER_FILES})
 set(SKELETON_RENDERER_COMMON_FILES
   src/skeleton/renderer/common/spv_file.hpp
   src/skeleton/renderer/common/spv_file.cpp
+  src/skeleton/renderer/common/shader_reflection.hpp
+  src/skeleton/renderer/common/shader_reflection.cpp
 )
 source_group("src/skeleton/renderer/common" FILES ${SKELETON_RENDERER_COMMON_FILES})
 

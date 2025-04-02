@@ -8,6 +8,9 @@
 
 namespace Skeleton {
 
-std::vector<uint32_t> ReadSpvFile(const char* path);
+class ShaderReflectionDetails {
+ public:
+  ShaderReflectionDetails(const std::vector<uint32_t>& spv);
+};
 
 }  // namespace Skeleton
