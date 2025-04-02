@@ -26,8 +26,9 @@ VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* wind
 
   /* Register a callback so that we are notified when the client window is resized
      so that we can recreate the swapchain */
-  window->RegisterFramebufferSizeCallback([&](int, int) {
+  window->RegisterFramebufferSizeCallback([&](int width, int height) {
     window_framebuffer_resized_ = true;
+    window_minimized_ = (width == 0 || height == 0);
   });
 }
 
@@ -51,6 +52,11 @@ VulkanRenderer::~VulkanRenderer() {
 }
 
 void VulkanRenderer::RenderFrame() {
+  /* If the window was minimized, don't render anything */
+  if (window_minimized_) {
+    return;
+  }
+
   /* If the window was resized, recreate the swapchain */
   if (window_framebuffer_resized_) {
     window_framebuffer_resized_ = false;

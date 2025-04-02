@@ -91,6 +91,7 @@ class VulkanRenderer : public Renderer {
   std::vector<VkSemaphore> render_complete_semaphores_;
   std::vector<VkFence>     in_flight_fences_;
   bool                     window_framebuffer_resized_ = false;
+  bool                     window_minimized_           = false;
 
  private:
 #ifdef SK_BUILD_DEBUG
