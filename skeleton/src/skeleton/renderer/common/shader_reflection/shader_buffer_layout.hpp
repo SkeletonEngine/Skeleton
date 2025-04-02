@@ -14,16 +14,16 @@ namespace Skeleton {
 
 class ShaderBufferLayout {
  public:
-  ShaderBufferLayout(const std::vector<uint32_t>& spv);
+  explicit ShaderBufferLayout(const std::vector<uint32_t>& spv);
 
  public:
   size_t GetStride() const;
 
  public:
-	inline std::vector<ShaderBufferElement>::iterator begin()             { return elements_.begin(); }
-	inline std::vector<ShaderBufferElement>::iterator end()               { return elements_.end();   }
-	inline std::vector<ShaderBufferElement>::const_iterator begin() const { return elements_.begin(); }
-	inline std::vector<ShaderBufferElement>::const_iterator end() const   { return elements_.end();   }
+  inline std::vector<ShaderBufferElement>::iterator begin()             { return elements_.begin(); }
+  inline std::vector<ShaderBufferElement>::iterator end()               { return elements_.end();   }
+  inline std::vector<ShaderBufferElement>::const_iterator begin() const { return elements_.begin(); }
+  inline std::vector<ShaderBufferElement>::const_iterator end() const   { return elements_.end();   }
 
  private:
   std::vector<ShaderBufferElement> elements_;

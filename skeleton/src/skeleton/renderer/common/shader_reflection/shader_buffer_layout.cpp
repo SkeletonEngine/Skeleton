@@ -4,6 +4,7 @@
 #include "skeleton/core/core.hpp"
 
 #include <map>
+#include <vector>
 #include <spirv_cross.hpp>
 
 namespace Skeleton {
@@ -25,7 +26,8 @@ ShaderBufferLayout::ShaderBufferLayout(const std::vector<uint32_t>& spv) {
   spirv_cross::Compiler compiler(spv);
   spirv_cross::ShaderResources resources = compiler.get_shader_resources();
 
-  // The buffer elements may be out of order as we iterate over them, so we'll place them into a map until we know how many there are
+  // The buffer elements may be out of order as we iterate over them,
+  // so we'll place them into a map until we know how many there are
   std::map<int, ShaderBufferElement> element_map;
 
   for (auto& resource : resources.stage_inputs) {
