@@ -72,9 +72,8 @@ void VulkanRenderer::RenderFrame() {
 
   /* Acquire an image from the swapchain */
   uint32_t image_index;
-  VkResult image_acquire_result = vkAcquireNextImageKHR(device_, swapchain_, UINT64_MAX,
-                                                        image_available_semaphores_[current_frame],
-                                                        VK_NULL_HANDLE, &image_index);
+  VkResult image_acquire_result = vkAcquireNextImageKHR(
+    device_, swapchain_, UINT64_MAX, image_available_semaphores_[current_frame], VK_NULL_HANDLE, &image_index);
 
   /* If the swapchain is out of date, we need to recreate it */
   if (image_acquire_result == VK_ERROR_OUT_OF_DATE_KHR) {
