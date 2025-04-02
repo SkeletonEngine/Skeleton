@@ -3,6 +3,7 @@
 #pragma once
 #include "skeleton/core/core.hpp"
 
+#include <string>
 #include <vector>
 #include <volk.h>
 #include "skeleton/application_settings.hpp"

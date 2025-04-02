@@ -2,6 +2,7 @@
 
 #include "skeleton/renderer/vulkan/vulkan_renderer.hpp"
 
+#include <string>
 #include <sstream>
 
 namespace Skeleton::Vulkan {

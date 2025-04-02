@@ -17,4 +17,4 @@ std::string OpenGlRenderer::GetRendererString() const {
   return "OpenGl";
 }
 
-}  // Namespace Skeleton::OpenGl
+}  // namespace Skeleton::OpenGl
