@@ -3,6 +3,8 @@
 #pragma once
 #include "skeleton/core/core.hpp"
 
+#include <string>
+
 #include "skeleton/application_settings.hpp"
 #include "skeleton/renderer/renderer.hpp"
 #include "skeleton/window/window.hpp"
