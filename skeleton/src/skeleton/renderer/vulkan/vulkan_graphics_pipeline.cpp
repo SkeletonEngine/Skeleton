@@ -5,11 +5,20 @@
 
 #include <vector>
 #include <volk.h>
-#include "skeleton/renderer/common/shader_reflection.hpp"
+#include "skeleton/renderer/common/shader_reflection/shader_buffer_layout.hpp"
 #include "skeleton/renderer/common/spv_file.hpp"
 #include "skeleton/renderer/vulkan/vulkan_check.hpp"
 
 namespace Skeleton::Vulkan {
+
+static VkFormat DeduceFormat(ShaderDataType type) {
+  switch (type) {
+    case ShaderDataType::kFloat:  return VK_FORMAT_R32_SFLOAT;
+    case ShaderDataType::kFloat2: return VK_FORMAT_R32G32_SFLOAT;
+    case ShaderDataType::kFloat3: return VK_FORMAT_R32G32B32_SFLOAT;
+    case ShaderDataType::kFloat4: return VK_FORMAT_R32G32B32A32_SFLOAT;
+  }
+}
 
 static VkShaderModule CreateShaderModule(const std::vector<uint32_t>& spv, VkDevice device,
                                          VkAllocationCallbacks* allocator) {
@@ -33,9 +42,6 @@ void VulkanRenderer::CreateGraphicsPipeline() {
   VkShaderModule vert_module = CreateShaderModule(vert_spv, device_, allocator_);
   VkShaderModule frag_module = CreateShaderModule(frag_spv, device_, allocator_);
 
-  /* Perform reflection on the shaders to find the number and type of vertex input binding descriptions, etc. */
-  ShaderReflectionDetails vert_reflection(vert_spv);
-  ShaderReflectionDetails frag_reflection(frag_spv);
 
   /* Define the pipeline shader stages - vertex and fragment */
   VkPipelineShaderStageCreateInfo vert_stage_info { VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO };
@@ -51,10 +57,31 @@ void VulkanRenderer::CreateGraphicsPipeline() {
   VkPipelineShaderStageCreateInfo shader_stages[] = { vert_stage_info, frag_stage_info };
 
   /* Vertex input descriptors */
-  /* We'll use SPIRV-Cross to grab this information at some point */
+  // Use SPIRV-Cross to perform reflection on the shaders to find the number and type of vertex inputs
+  ShaderBufferLayout vert_input_layout(vert_spv);
+
+  // We only need one binding since our vertex data is packed in a single array
+  VkVertexInputBindingDescription vertex_binding_description { };
+  vertex_binding_description.binding = 0;
+  vertex_binding_description.stride = vert_input_layout.GetStride();
+  vertex_binding_description.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
+
+  // We need one attribute description for each layout (location = xyz) in our vertex shader
+  std::vector<VkVertexInputAttributeDescription> vertex_input_attribs;
+  for (const auto& element : vert_input_layout) {
+    VkVertexInputAttributeDescription attrib { };
+    attrib.binding = 0;
+    attrib.location = element.location;
+    attrib.format = DeduceFormat(element.type);
+    attrib.offset = element.offset;
+    vertex_input_attribs.push_back(attrib);
+  }
+
   VkPipelineVertexInputStateCreateInfo vertex_input_info { VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO };
-  vertex_input_info.vertexBindingDescriptionCount   = 0;
-  vertex_input_info.vertexAttributeDescriptionCount = 0;
+  vertex_input_info.vertexBindingDescriptionCount   = 1;
+  vertex_input_info.pVertexBindingDescriptions      = &vertex_binding_description;
+  vertex_input_info.vertexAttributeDescriptionCount = static_cast<uint32_t>(vertex_input_attribs.size());
+  vertex_input_info.pVertexAttributeDescriptions    = vertex_input_attribs.data();
 
   /* Input assembly */
   VkPipelineInputAssemblyStateCreateInfo input_assembly { VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO };
