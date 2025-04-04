@@ -8,5 +8,5 @@
 	path = skeleton/vendor/khronosgroup/spirv-cross
 	url = https://github.com/KhronosGroup/SPIRV-Cross
 [submodule "skeleton/vendor/gpuopen/vulkan-memory-allocator"]
-	path = skeleton/vendor/gpuopen/vulkan-memory-allocator
+	path = skeleton/vendor/gpuopen/vulkan-memory-allocator/vulkan-memory-allocator
 	url = https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator
