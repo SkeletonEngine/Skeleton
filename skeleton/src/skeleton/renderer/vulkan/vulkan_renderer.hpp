@@ -49,8 +49,8 @@ class VulkanRenderer : public Renderer {
   void DestroySyncObjects();
   void CreateVmaAllocator();
   void DestroyVmaAllocator();
-  void CreateVertexBuffer();
-  void DestroyVertexBuffer();
+  void CreateMesh();
+  void DestroyMesh();
 
  private:
 #ifdef SK_BUILD_DEBUG
@@ -61,6 +61,10 @@ class VulkanRenderer : public Renderer {
 
  private:
   void RecordRenderCommandBuffer(VkCommandBuffer command_buffer, uint32_t image_index);
+  VkCommandBuffer BeginSingleUseCommandBuffer();
+  void EndSingleUseCommandBuffer(VkCommandBuffer command_buffer);
+  void CreateDeviceLocalBuffer(const void* data, uint32_t size, VkBuffer* buffer, 
+                               VmaAllocation* allocation, VkBufferUsageFlagBits usage);
 
  private:
   /* Constants */
@@ -99,7 +103,9 @@ class VulkanRenderer : public Renderer {
   bool                     window_minimized_           = false;
   VkBuffer                 vertex_buffer_   = VK_NULL_HANDLE;
   VmaAllocation            vertex_buffer_allocation_ = VK_NULL_HANDLE;
-  uint32_t                 vertex_buffer_vertex_count_ = 0;
+  VkBuffer                 index_buffer_   = VK_NULL_HANDLE;
+  VmaAllocation            index_buffer_allocation_ = VK_NULL_HANDLE;
+  uint32_t                 index_count_    = 0;
 
  private:
 #ifdef SK_BUILD_DEBUG

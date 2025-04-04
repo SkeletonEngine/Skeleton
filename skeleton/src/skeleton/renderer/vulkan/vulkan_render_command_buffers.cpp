@@ -43,6 +43,9 @@ void VulkanRenderer::RecordRenderCommandBuffer(VkCommandBuffer command_buffer, u
   VkDeviceSize offsets[] = { 0 };
   vkCmdBindVertexBuffers(command_buffer, 0, 1, vertex_buffers, offsets);
 
+  // Bind the index buffer
+  vkCmdBindIndexBuffer(command_buffer, index_buffer_, 0, VK_INDEX_TYPE_UINT16);
+
   // Set dynamic viewport and scissor
   VkViewport viewport { };
   viewport.x = 0.0f;
@@ -59,7 +62,7 @@ void VulkanRenderer::RecordRenderCommandBuffer(VkCommandBuffer command_buffer, u
   vkCmdSetScissor(command_buffer, 0, 1, &scissor);
 
   // Issue draw command
-  vkCmdDraw(command_buffer, vertex_buffer_vertex_count_, 1, 0, 0);
+  vkCmdDrawIndexed(command_buffer, index_count_, 1, 0, 0, 0);
 
   // End the render pass
   vkCmdEndRenderPass(command_buffer);
