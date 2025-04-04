@@ -22,7 +22,8 @@ VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* wind
   CreateCommandPool();
   CreateRenderCommandBuffer();
   CreateSyncObjects();
-  CreateGpuMemoryAllocator();
+  CreateVmaAllocator();
+  CreateVertexBuffer();
 
   /* Register a callback so that we are notified when the client window is resized
      so that we can recreate the swapchain */
@@ -35,7 +36,8 @@ VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* wind
 VulkanRenderer::~VulkanRenderer() {
   vkDeviceWaitIdle(device_);
 
-  CreateGpuMemoryAllocator();
+  DestroyVertexBuffer();
+  DestroyVmaAllocator();
   DestroySyncObjects();
   DestroyRenderCommandBuffer();
   DestroyCommandPool();

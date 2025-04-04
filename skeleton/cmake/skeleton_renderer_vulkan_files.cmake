@@ -22,6 +22,7 @@ set(SKELETON_RENDERER_VULKAN_FILES
   src/skeleton/renderer/vulkan/vulkan_swapchain_support.hpp
   src/skeleton/renderer/vulkan/vulkan_swapchain_support.cpp
   src/skeleton/renderer/vulkan/vulkan_sync_objects.cpp
+  src/skeleton/renderer/vulkan/vulkan_memory_allocator.cpp
   src/skeleton/renderer/vulkan/vulkan_vertex_buffer.cpp
   src/skeleton/renderer/vulkan/vulkan_window_surface.cpp
 )

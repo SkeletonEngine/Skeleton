@@ -5,43 +5,37 @@
 
 namespace Skeleton::Vulkan {
 
-void VulkanRenderer::CreateGpuMemoryAllocator() {
-  // Since we are using volk to load vulkan functions, we need to explicitly feed VMA
-  // the addresses of all the functions it will use
-  VmaVulkanFunctions vulkan_functions { };
-  vulkan_functions.vkGetInstanceProcAddr               = vkGetInstanceProcAddr;
-  vulkan_functions.vkGetDeviceProcAddr                 = vkGetDeviceProcAddr;
-  vulkan_functions.vkGetPhysicalDeviceProperties       = vkGetPhysicalDeviceProperties;
-  vulkan_functions.vkGetPhysicalDeviceMemoryProperties = vkGetPhysicalDeviceMemoryProperties;
-  vulkan_functions.vkAllocateMemory                    = vkAllocateMemory;
-  vulkan_functions.vkFreeMemory                        = vkFreeMemory;
-  vulkan_functions.vkMapMemory                         = vkMapMemory;
-  vulkan_functions.vkUnmapMemory                       = vkUnmapMemory;
-  vulkan_functions.vkFlushMappedMemoryRanges           = vkFlushMappedMemoryRanges;
-  vulkan_functions.vkInvalidateMappedMemoryRanges      = vkInvalidateMappedMemoryRanges;
-  vulkan_functions.vkBindBufferMemory                  = vkBindBufferMemory;
-  vulkan_functions.vkBindImageMemory                   = vkBindImageMemory;
-  vulkan_functions.vkGetBufferMemoryRequirements       = vkGetBufferMemoryRequirements;
-  vulkan_functions.vkGetImageMemoryRequirements        = vkGetImageMemoryRequirements;
-  vulkan_functions.vkCreateBuffer                      = vkCreateBuffer;
-  vulkan_functions.vkDestroyBuffer                     = vkDestroyBuffer;
-  vulkan_functions.vkCreateImage                       = vkCreateImage;
-  vulkan_functions.vkDestroyImage                      = vkDestroyImage;
-  vulkan_functions.vkCmdCopyBuffer                     = vkCmdCopyBuffer;
+void VulkanRenderer::CreateVertexBuffer() {
+  const std::vector<float> vertices = {
+     0.0f, -0.5f, 1.0f, 1.0f, 1.0f,
+     0.5f,  0.5f, 0.0f, 1.0f, 0.0f,
+    -0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
+  };
 
-  VmaAllocatorCreateInfo allocator_create_info = { };
-  allocator_create_info.flags            = 0;
-  allocator_create_info.vulkanApiVersion = SK_VK_API_VERSION;
-  allocator_create_info.physicalDevice   = physical_device_;
-  allocator_create_info.device           = device_;
-  allocator_create_info.instance         = instance_;
-  allocator_create_info.pVulkanFunctions = &vulkan_functions;
+  vertex_buffer_vertex_count_ = vertices.size();
 
-  vmaCreateAllocator(&allocator_create_info, &vma_allocator_);
+	VkBufferCreateInfo buffer_info { VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO };
+	buffer_info.size        = vertices.size() * sizeof(float);
+	buffer_info.usage       = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
+  buffer_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+  VmaAllocationCreateInfo alloc_info { };
+  alloc_info.requiredFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
+  alloc_info.usage         = VMA_MEMORY_USAGE_AUTO;
+  alloc_info.flags         = VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT;
+
+  VmaAllocationInfo allocation_info;
+  VK_CHECK(vmaCreateBuffer(vma_allocator_, &buffer_info, &alloc_info, &vertex_buffer_, &vertex_buffer_allocation_, &allocation_info));
+
+  // Map the allocated memory and upload the vertex data to the GPU
+  void* mapped_memory;
+  vmaMapMemory(vma_allocator_, vertex_buffer_allocation_, &mapped_memory);
+  std::memcpy(mapped_memory, vertices.data(), buffer_info.size);
+  vmaUnmapMemory(vma_allocator_, vertex_buffer_allocation_);
 }
 
-void VulkanRenderer::DestroyGpuMemoryAllocator() {
-  vmaDestroyAllocator(vma_allocator_);
+void VulkanRenderer::DestroyVertexBuffer() {
+  vmaDestroyBuffer(vma_allocator_, vertex_buffer_, vertex_buffer_allocation_);
 }
 
 }  // namespace Skeleton::Vulkan

@@ -47,8 +47,10 @@ class VulkanRenderer : public Renderer {
   void DestroyRenderCommandBuffer();
   void CreateSyncObjects();
   void DestroySyncObjects();
-  void CreateGpuMemoryAllocator();
-  void DestroyGpuMemoryAllocator();
+  void CreateVmaAllocator();
+  void DestroyVmaAllocator();
+  void CreateVertexBuffer();
+  void DestroyVertexBuffer();
 
  private:
 #ifdef SK_BUILD_DEBUG
@@ -95,6 +97,9 @@ class VulkanRenderer : public Renderer {
   std::vector<VkFence>     in_flight_fences_;
   bool                     window_framebuffer_resized_ = false;
   bool                     window_minimized_           = false;
+  VkBuffer                 vertex_buffer_   = VK_NULL_HANDLE;
+  VmaAllocation            vertex_buffer_allocation_ = VK_NULL_HANDLE;
+  uint32_t                 vertex_buffer_vertex_count_ = 0;
 
  private:
 #ifdef SK_BUILD_DEBUG

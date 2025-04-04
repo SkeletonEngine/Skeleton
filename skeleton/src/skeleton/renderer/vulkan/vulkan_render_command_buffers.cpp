@@ -20,11 +20,11 @@ void VulkanRenderer::DestroyRenderCommandBuffer() {
 }
 
 void VulkanRenderer::RecordRenderCommandBuffer(VkCommandBuffer command_buffer, uint32_t image_index) {
-  /* Begin recording the command buffer with no flags or inheritance */
+  // Begin recording the command buffer with no flags or inheritance
   VkCommandBufferBeginInfo begin_info { VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO };
   VK_CHECK(vkBeginCommandBuffer(command_buffer, &begin_info));
 
-  /* Begin the render pass */
+  // Begin the render pass
   VkRenderPassBeginInfo render_pass_info { VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO };
   render_pass_info.renderPass  = render_pass_;
   render_pass_info.framebuffer = swapchain_framebuffers_[image_index];
@@ -35,10 +35,15 @@ void VulkanRenderer::RecordRenderCommandBuffer(VkCommandBuffer command_buffer, u
   render_pass_info.pClearValues = &clear_color;
   vkCmdBeginRenderPass(command_buffer, &render_pass_info, VK_SUBPASS_CONTENTS_INLINE);
 
-  /* Bind the pipeline */
+  // Bind the pipeline
   vkCmdBindPipeline(command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphics_pipeline_);
 
-  /* Set dynamic viewport and scissor */
+  // Bind the vertex buffer
+  VkBuffer vertex_buffers[] = { vertex_buffer_ };
+  VkDeviceSize offsets[] = { 0 };
+  vkCmdBindVertexBuffers(command_buffer, 0, 1, vertex_buffers, offsets);
+
+  // Set dynamic viewport and scissor
   VkViewport viewport { };
   viewport.x = 0.0f;
   viewport.y = 0.0f;
@@ -53,13 +58,13 @@ void VulkanRenderer::RecordRenderCommandBuffer(VkCommandBuffer command_buffer, u
   scissor.extent = swapchain_extent_;
   vkCmdSetScissor(command_buffer, 0, 1, &scissor);
 
-  /* Issue draw command */
-  vkCmdDraw(command_buffer, 3, 1, 0, 0);
+  // Issue draw command
+  vkCmdDraw(command_buffer, vertex_buffer_vertex_count_, 1, 0, 0);
 
-  /* End the render pass */
+  // End the render pass
   vkCmdEndRenderPass(command_buffer);
 
-  /* End the command buffer */
+  // End the command buffer
   VK_CHECK(vkEndCommandBuffer(command_buffer));
 }
 
