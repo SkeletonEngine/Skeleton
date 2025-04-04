@@ -1,10 +1,9 @@
 // Copyright 2024-2025 SkeletonEngine
 
 #include "skeleton/renderer/vulkan/vulkan_device_queue_families.hpp"
-#include "skeleton/core/core.hpp"
+#include "skeleton/renderer/vulkan/vulkan_core.hpp"
 
 #include <vector>
-#include <volk.h>
 
 namespace Skeleton::Vulkan {
 

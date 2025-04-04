@@ -1,11 +1,10 @@
 // Copyright 2024-2025 SkeletonEngine
 
 #include "skeleton/renderer/vulkan/vulkan_renderer.hpp"
-#include "skeleton/core/core.hpp"
+#include "skeleton/renderer/vulkan/vulkan_core.hpp"
 
 #include <algorithm>
 #include <GLFW/glfw3.h>
-#include "skeleton/renderer/vulkan/vulkan_check.hpp"
 #include "skeleton/renderer/vulkan/vulkan_device_queue_families.hpp"
 #include "skeleton/renderer/vulkan/vulkan_swapchain_support.hpp"
 

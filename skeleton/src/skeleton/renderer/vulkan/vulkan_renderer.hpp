@@ -1,11 +1,10 @@
 // Copyright 2024-2025 SkeletonEngine
 
 #pragma once
-#include "skeleton/core/core.hpp"
+#include "skeleton/renderer/vulkan/vulkan_core.hpp"
 
 #include <string>
 #include <vector>
-#include <volk.h>
 #include "skeleton/application_settings.hpp"
 #include "skeleton/renderer/renderer.hpp"
 #include "skeleton/window/window.hpp"
@@ -48,6 +47,8 @@ class VulkanRenderer : public Renderer {
   void DestroyRenderCommandBuffer();
   void CreateSyncObjects();
   void DestroySyncObjects();
+  void CreateGpuMemoryAllocator();
+  void DestroyGpuMemoryAllocator();
 
  private:
 #ifdef SK_BUILD_DEBUG
@@ -70,6 +71,7 @@ class VulkanRenderer : public Renderer {
  private:
   /* Objects owned by the renderer */
   VkAllocationCallbacks*   allocator_       = VK_NULL_HANDLE;
+  VmaAllocator             vma_allocator_   = VK_NULL_HANDLE;
   VkInstance               instance_        = VK_NULL_HANDLE;
   VkPhysicalDevice         physical_device_ = VK_NULL_HANDLE;
   VkDevice                 device_          = VK_NULL_HANDLE;

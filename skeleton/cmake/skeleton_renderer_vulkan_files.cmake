@@ -1,6 +1,7 @@
 set(SKELETON_RENDERER_VULKAN_FILES
   src/skeleton/renderer/vulkan/vulkan_check.hpp
   src/skeleton/renderer/vulkan/vulkan_command_pool.cpp
+  src/skeleton/renderer/vulkan/vulkan_core.hpp
   src/skeleton/renderer/vulkan/vulkan_debug_messenger.cpp
   src/skeleton/renderer/vulkan/vulkan_device.cpp
   src/skeleton/renderer/vulkan/vulkan_device_queue_families.hpp
@@ -20,6 +21,7 @@ set(SKELETON_RENDERER_VULKAN_FILES
   src/skeleton/renderer/vulkan/vulkan_swapchain_support.hpp
   src/skeleton/renderer/vulkan/vulkan_swapchain_support.cpp
   src/skeleton/renderer/vulkan/vulkan_sync_objects.cpp
+  src/skeleton/renderer/vulkan/vulkan_vertex_buffer.cpp
   src/skeleton/renderer/vulkan/vulkan_window_surface.cpp
 )
 source_group("src/skeleton/renderer/vulkan" FILES ${SKELETON_RENDERER_VULKAN_FILES})

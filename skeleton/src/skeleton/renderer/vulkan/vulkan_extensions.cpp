@@ -1,11 +1,10 @@
 // Copyright 2024-2025 SkeletonEngine
 
 #include "skeleton/renderer/vulkan/vulkan_extensions.hpp"
-#include "skeleton/core/core.hpp"
+#include "skeleton/renderer/vulkan/vulkan_core.hpp"
 
 #include <vector>
 #include <GLFW/glfw3.h>
-#include <volk.h>
 
 namespace Skeleton::Vulkan {
 

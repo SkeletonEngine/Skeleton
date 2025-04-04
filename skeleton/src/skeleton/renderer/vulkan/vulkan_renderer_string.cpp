@@ -1,6 +1,7 @@
 // Copyright 2024-2025 SkeletonEngine
 
 #include "skeleton/renderer/vulkan/vulkan_renderer.hpp"
+#include "skeleton/renderer/vulkan/vulkan_core.hpp"
 
 #include <string>
 #include <sstream>

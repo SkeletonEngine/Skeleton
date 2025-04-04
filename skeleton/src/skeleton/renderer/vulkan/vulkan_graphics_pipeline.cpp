@@ -1,13 +1,11 @@
 // Copyright 2024-2025 SkeletonEngine
 
 #include "skeleton/renderer/vulkan/vulkan_renderer.hpp"
-#include "skeleton/core/core.hpp"
+#include "skeleton/renderer/vulkan/vulkan_core.hpp"
 
 #include <vector>
-#include <volk.h>
 #include "skeleton/renderer/common/shader_reflection/shader_buffer_layout.hpp"
 #include "skeleton/renderer/common/spv_file.hpp"
-#include "skeleton/renderer/vulkan/vulkan_check.hpp"
 
 namespace Skeleton::Vulkan {
 

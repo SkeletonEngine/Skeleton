@@ -1,11 +1,10 @@
 // Copyright 2024-2025 SkeletonEngine
 
 #include "skeleton/renderer/vulkan/vulkan_renderer.hpp"
-#include "skeleton/core/core.hpp"
+#include "skeleton/renderer/vulkan/vulkan_core.hpp"
 
 #include <vector>
 #include <GLFW/glfw3.h>
-#include "skeleton/renderer/vulkan/vulkan_check.hpp"
 #include "skeleton/renderer/vulkan/vulkan_extensions.hpp"
 
 namespace Skeleton::Vulkan {
@@ -17,10 +16,8 @@ void VulkanRenderer::CreateInstance() {
   /* --- Application info --- */
   VkApplicationInfo app_info { VK_STRUCTURE_TYPE_APPLICATION_INFO };
   app_info.pEngineName   = "Skeleton";
-  app_info.engineVersion = VK_MAKE_VERSION(1, 0, 0);
-
-  /* For now we are just using Vulkan 1.0 features */
-  app_info.apiVersion    = VK_API_VERSION_1_0;
+  app_info.engineVersion = VK_MAKE_VERSION(SK_VERSION_MAJOR, SK_VERSION_MINOR, SK_VERSION_PATCH);
+  app_info.apiVersion    = SK_VK_API_VERSION;
 
   /* Find the list of required instance extensions and the list of required validation layers */
 #ifdef SK_BUILD_DEBUG

@@ -1,8 +1,7 @@
 // Copyright 2024-2025 SkeletonEngine
 
 #include "skeleton/renderer/vulkan/vulkan_renderer.hpp"
-
-#include "skeleton/renderer/vulkan/vulkan_check.hpp"
+#include "skeleton/renderer/vulkan/vulkan_core.hpp"
 
 namespace Skeleton::Vulkan {
 
@@ -23,6 +22,7 @@ VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* wind
   CreateCommandPool();
   CreateRenderCommandBuffer();
   CreateSyncObjects();
+  CreateGpuMemoryAllocator();
 
   /* Register a callback so that we are notified when the client window is resized
      so that we can recreate the swapchain */
@@ -35,6 +35,7 @@ VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* wind
 VulkanRenderer::~VulkanRenderer() {
   vkDeviceWaitIdle(device_);
 
+  CreateGpuMemoryAllocator();
   DestroySyncObjects();
   DestroyRenderCommandBuffer();
   DestroyCommandPool();
