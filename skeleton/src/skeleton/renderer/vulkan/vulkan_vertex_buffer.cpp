@@ -3,9 +3,6 @@
 #include "skeleton/renderer/vulkan/vulkan_renderer.hpp"
 #include "skeleton/renderer/vulkan/vulkan_core.hpp"
 
-#define VMA_IMPLEMENTATION
-#include <vk_mem_alloc.h>
-
 namespace Skeleton::Vulkan {
 
 void VulkanRenderer::CreateGpuMemoryAllocator() {
