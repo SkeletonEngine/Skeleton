@@ -3,6 +3,8 @@
 #include "skeleton/renderer/vulkan/vulkan_renderer.hpp"
 #include "skeleton/renderer/vulkan/vulkan_core.hpp"
 
+#include <vector>
+
 namespace Skeleton::Vulkan {
 
 void VulkanRenderer::CreateVertexBuffer() {
@@ -14,9 +16,9 @@ void VulkanRenderer::CreateVertexBuffer() {
 
   vertex_buffer_vertex_count_ = vertices.size();
 
-	VkBufferCreateInfo buffer_info { VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO };
-	buffer_info.size        = vertices.size() * sizeof(float);
-	buffer_info.usage       = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
+  VkBufferCreateInfo buffer_info { VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO };
+  buffer_info.size        = vertices.size() * sizeof(float);
+  buffer_info.usage       = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
   buffer_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
   VmaAllocationCreateInfo alloc_info { };
@@ -25,7 +27,8 @@ void VulkanRenderer::CreateVertexBuffer() {
   alloc_info.flags         = VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT;
 
   VmaAllocationInfo allocation_info;
-  VK_CHECK(vmaCreateBuffer(vma_allocator_, &buffer_info, &alloc_info, &vertex_buffer_, &vertex_buffer_allocation_, &allocation_info));
+  VK_CHECK(vmaCreateBuffer(vma_allocator_, &buffer_info, &alloc_info,
+                           &vertex_buffer_, &vertex_buffer_allocation_, &allocation_info));
 
   // Map the allocated memory and upload the vertex data to the GPU
   void* mapped_memory;
