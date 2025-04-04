@@ -66,7 +66,7 @@ void VulkanRenderer::CreateVertexBuffer() {
   VkCommandBufferBeginInfo begin_info { VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO };
   begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
   vkBeginCommandBuffer(transfer_command_buffer, &begin_info);
-  
+
   // Record copy command
   VkBufferCopy copy_region { };
   copy_region.size = vertex_buffer_vertex_count_ * sizeof(float);
