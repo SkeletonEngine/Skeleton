@@ -30,7 +30,7 @@ void VulkanRenderer::CreateMesh() {
 }
 
 void VulkanRenderer::DestroyMesh() {
-  vmaDestroyBuffer(vma_allocator_, index_buffer_,  index_buffer_allocation_ );
+  vmaDestroyBuffer(vma_allocator_, index_buffer_,  index_buffer_allocation_);
   vmaDestroyBuffer(vma_allocator_, vertex_buffer_, vertex_buffer_allocation_);
 }
 

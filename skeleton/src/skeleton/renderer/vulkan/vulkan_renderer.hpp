@@ -63,7 +63,7 @@ class VulkanRenderer : public Renderer {
   void RecordRenderCommandBuffer(VkCommandBuffer command_buffer, uint32_t image_index);
   VkCommandBuffer BeginSingleUseCommandBuffer();
   void EndSingleUseCommandBuffer(VkCommandBuffer command_buffer);
-  void CreateDeviceLocalBuffer(const void* data, uint32_t size, VkBuffer* buffer, 
+  void CreateDeviceLocalBuffer(const void* data, uint32_t size, VkBuffer* buffer,
                                VmaAllocation* allocation, VkBufferUsageFlagBits usage);
 
  private:
