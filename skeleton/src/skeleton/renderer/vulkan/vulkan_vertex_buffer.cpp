@@ -31,7 +31,7 @@ void VulkanRenderer::CreateGpuMemoryAllocator() {
   vulkan_functions.vkCreateImage                       = vkCreateImage;
   vulkan_functions.vkDestroyImage                      = vkDestroyImage;
   vulkan_functions.vkCmdCopyBuffer                     = vkCmdCopyBuffer;
- 
+
   VmaAllocatorCreateInfo allocator_create_info = { };
   allocator_create_info.flags            = 0;
   allocator_create_info.vulkanApiVersion = SK_VK_API_VERSION;
@@ -39,7 +39,7 @@ void VulkanRenderer::CreateGpuMemoryAllocator() {
   allocator_create_info.device           = device_;
   allocator_create_info.instance         = instance_;
   allocator_create_info.pVulkanFunctions = &vulkan_functions;
- 
+
   vmaCreateAllocator(&allocator_create_info, &vma_allocator_);
 }
 
