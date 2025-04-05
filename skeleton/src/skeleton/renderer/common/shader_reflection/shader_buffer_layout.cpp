@@ -20,6 +20,7 @@ static ShaderDataType DeduceShaderDataType(const spirv_cross::SPIRType& type) {
       }
     }
   }
+  return ShaderDataType::kFloat;
 }
 
 ShaderBufferLayout::ShaderBufferLayout(const std::vector<uint32_t>& spv) {

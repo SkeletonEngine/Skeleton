@@ -16,6 +16,7 @@ static VkFormat DeduceFormat(ShaderDataType type) {
     case ShaderDataType::kFloat3: return VK_FORMAT_R32G32B32_SFLOAT;
     case ShaderDataType::kFloat4: return VK_FORMAT_R32G32B32A32_SFLOAT;
   }
+  return VK_FORMAT_MAX_ENUM;
 }
 
 static VkShaderModule CreateShaderModule(const std::vector<uint32_t>& spv, VkDevice device,

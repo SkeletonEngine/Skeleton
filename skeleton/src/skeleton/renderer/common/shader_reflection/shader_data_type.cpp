@@ -14,6 +14,7 @@ size_t ShaderDataTypeSize(ShaderDataType type) {
     case ShaderDataType::kMat3:   return sizeof(float) * 3 * 3;
     case ShaderDataType::kMat4:   return sizeof(float) * 4 * 4;
   }
+  return 0;
 }
 
 }  // namespace Skeleton
