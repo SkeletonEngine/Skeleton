@@ -1,0 +1,12 @@
+# GitHub Action to count lines of code on all pushes and pull requests
+
+name: cloc
+on: [push, pull_request]
+jobs:
+  cloc:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - run: git ls-files skeleton/src | xargs wc -l | tail -1
+    - run: git ls-files skeleton-editor/src | xargs wc -l | tail -1
+    - run: git ls-files skeleton-runtime/src | xargs wc -l | tail -1
