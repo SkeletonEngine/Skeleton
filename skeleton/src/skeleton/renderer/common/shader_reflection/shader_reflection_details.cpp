@@ -3,6 +3,8 @@
 #include "skeleton/renderer/common/shader_reflection/shader_reflection_details.hpp"
 #include "skeleton/core/core.hpp"
 
+#include <map>
+#include <vector>
 #include <spirv_cross.hpp>
 
 namespace Skeleton {
@@ -41,7 +43,7 @@ static ShaderBufferLayout ReflectVertexInputLayout(const spirv_cross::Compiler& 
     element_map.emplace(location, element);
   }
 
-  return { element_map };
+  return ShaderBufferLayout { element_map };
 }
 
 static ShaderBufferLayout ReflectUniformBufferLayout(
@@ -50,7 +52,7 @@ static ShaderBufferLayout ReflectUniformBufferLayout(
   // Iterate over the members of the uniform buffer and create a ShaderBufferLayout
   std::vector<ShaderBufferElement> elements;
   const auto& buffer_type = compiler.get_type(uniform_buffer.type_id);
-  
+
   // For each element in the uniform buffer, create a ShaderBufferElement
   for (uint32_t i = 0; i < buffer_type.member_types.size(); ++i) {
     ShaderBufferElement element;
@@ -61,7 +63,7 @@ static ShaderBufferLayout ReflectUniformBufferLayout(
     elements.push_back(element);
   }
 
-  return { elements };
+  return ShaderBufferLayout { elements };
 }
 
 ShaderReflectionDetails::ShaderReflectionDetails(const std::vector<uint32_t>& spv) {

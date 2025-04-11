@@ -3,6 +3,9 @@
 #include "skeleton/renderer/common/shader_reflection/shader_buffer_layout.hpp"
 #include "skeleton/core/core.hpp"
 
+#include <map>
+#include <vector>
+
 namespace Skeleton {
 
 ShaderBufferLayout::ShaderBufferLayout(const std::vector<ShaderBufferElement>& elements) {
