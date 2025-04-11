@@ -10,3 +10,6 @@
 [submodule "skeleton/vendor/gpuopen/vulkan-memory-allocator"]
 	path = skeleton/vendor/gpuopen/vulkan-memory-allocator/vulkan-memory-allocator
 	url = https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator
+[submodule "skeleton/vendor/g-truc/glm"]
+	path = skeleton/vendor/g-truc/glm
+	url = https://github.com/g-truc/glm

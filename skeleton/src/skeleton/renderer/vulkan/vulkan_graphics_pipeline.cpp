@@ -4,7 +4,7 @@
 #include "skeleton/renderer/vulkan/vulkan_core.hpp"
 
 #include <vector>
-#include "skeleton/renderer/common/shader_reflection/shader_buffer_layout.hpp"
+#include "skeleton/renderer/common/shader_reflection/shader_reflection_details.hpp"
 #include "skeleton/renderer/common/spv_file.hpp"
 
 namespace Skeleton::Vulkan {
@@ -57,20 +57,20 @@ void VulkanRenderer::CreateGraphicsPipeline() {
 
   /* Vertex input descriptors */
   // Use SPIRV-Cross to perform reflection on the shaders to find the number and type of vertex inputs
-  ShaderBufferLayout vert_input_layout(vert_spv);
+  ShaderReflectionDetails vert_reflection(vert_spv);
 
   // We only need one binding since our vertex data is packed in a single array
   VkVertexInputBindingDescription vertex_binding_description { };
   vertex_binding_description.binding = 0;
-  vertex_binding_description.stride = vert_input_layout.GetStride();
+  vertex_binding_description.stride = vert_reflection.vertex_input_layout.GetSize();
   vertex_binding_description.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
 
   // We need one attribute description for each layout (location = xyz) in our vertex shader
   std::vector<VkVertexInputAttributeDescription> vertex_input_attribs;
-  for (const auto& element : vert_input_layout) {
+  for (const auto& element : vert_reflection.vertex_input_layout) {
     VkVertexInputAttributeDescription attrib { };
     attrib.binding = 0;
-    attrib.location = element.location;
+    attrib.location = element.location.value();
     attrib.format = DeduceFormat(element.type);
     attrib.offset = element.offset;
     vertex_input_attribs.push_back(attrib);

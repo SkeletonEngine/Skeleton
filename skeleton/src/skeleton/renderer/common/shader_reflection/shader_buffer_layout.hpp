@@ -7,6 +7,7 @@
 #include "skeleton/core/core.hpp"
 
 #include <cstdint>
+#include <map>
 #include <vector>
 #include "skeleton/renderer/common/shader_reflection/shader_buffer_element.hpp"
 
@@ -14,10 +15,12 @@ namespace Skeleton {
 
 class ShaderBufferLayout {
  public:
-  explicit ShaderBufferLayout(const std::vector<uint32_t>& spv);
+  ShaderBufferLayout() = default;
+  ShaderBufferLayout(const std::vector<ShaderBufferElement>& elements);
+  ShaderBufferLayout(const std::map<uint32_t, ShaderBufferElement>& element_map);
 
  public:
-  size_t GetStride() const;
+  size_t GetSize() const;
 
  public:
   inline std::vector<ShaderBufferElement>::iterator begin()             { return elements_.begin(); }
@@ -27,7 +30,7 @@ class ShaderBufferLayout {
 
  private:
   std::vector<ShaderBufferElement> elements_;
-  size_t stride_;
+  size_t size_ = 0;
 };
 
 }  // namespace Skeleton

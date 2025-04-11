@@ -28,6 +28,8 @@ add_subdirectory(vendor/gpuopen/vulkan-memory-allocator)
 target_link_libraries(skeleton PRIVATE vulkan-memory-allocator)
 add_subdirectory(vendor/glfw/glfw)
 target_link_libraries(skeleton PRIVATE glfw)
+add_subdirectory(vendor/g-truc/glm)
+target_link_libraries(skeleton PRIVATE glm)
 add_subdirectory(vendor/zeux/volk)
 target_link_libraries(skeleton PRIVATE volk)
 

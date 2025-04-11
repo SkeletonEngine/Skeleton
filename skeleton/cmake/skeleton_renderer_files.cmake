@@ -12,11 +12,13 @@ set(SKELETON_RENDERER_COMMON_FILES
 source_group("src/skeleton/renderer/common" FILES ${SKELETON_RENDERER_COMMON_FILES})
 
 set(SKELETON_RENDERER_COMMON_SHADER_REFLECTION_FILES
+  src/skeleton/renderer/common/shader_reflection/shader_data_type.hpp
+  src/skeleton/renderer/common/shader_reflection/shader_data_type.cpp
   src/skeleton/renderer/common/shader_reflection/shader_buffer_element.hpp
   src/skeleton/renderer/common/shader_reflection/shader_buffer_layout.hpp
   src/skeleton/renderer/common/shader_reflection/shader_buffer_layout.cpp
-  src/skeleton/renderer/common/shader_reflection/shader_data_type.hpp
-  src/skeleton/renderer/common/shader_reflection/shader_data_type.cpp
+  src/skeleton/renderer/common/shader_reflection/shader_reflection_details.hpp
+  src/skeleton/renderer/common/shader_reflection/shader_reflection_details.cpp
 )
 source_group("src/skeleton/renderer/common/shader_reflection" FILES ${SKELETON_RENDERER_COMMON_SHADER_REFLECTION_FILES})
 
