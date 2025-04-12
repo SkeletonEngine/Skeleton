@@ -8,7 +8,9 @@
 
 namespace Skeleton {
 
-ShaderBufferLayout::ShaderBufferLayout(const std::vector<ShaderBufferElement>& elements) {
+ShaderBufferLayout::ShaderBufferLayout(
+    const std::vector<ShaderBufferElement>& elements,
+    std::optional<uint32_t> binding) : binding_(binding) {
   size_t offset = 0;
 
   for (auto& e : elements) {
@@ -21,7 +23,9 @@ ShaderBufferLayout::ShaderBufferLayout(const std::vector<ShaderBufferElement>& e
   size_ = offset;
 }
 
-ShaderBufferLayout::ShaderBufferLayout(const std::map<uint32_t, ShaderBufferElement>& element_map) {
+ShaderBufferLayout::ShaderBufferLayout(
+    const std::map<uint32_t, ShaderBufferElement>& element_map,
+    std::optional<uint32_t> binding) : binding_(binding) {
   size_t offset = 0;
 
   for (auto& e : element_map) {
@@ -35,8 +39,12 @@ ShaderBufferLayout::ShaderBufferLayout(const std::map<uint32_t, ShaderBufferElem
   size_ = offset;
 }
 
-size_t ShaderBufferLayout::GetSize() const {
+uint32_t ShaderBufferLayout::GetSize() const {
   return size_;
+}
+
+std::optional<uint32_t> ShaderBufferLayout::GetBinding() const {
+  return binding_;
 }
 
 }  // namespace Skeleton

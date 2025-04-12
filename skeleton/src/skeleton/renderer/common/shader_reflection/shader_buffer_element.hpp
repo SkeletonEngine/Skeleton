@@ -5,6 +5,7 @@
 #pragma once
 #include "skeleton/core/core.hpp"
 
+#include <cstdint>
 #include <optional>
 #include <string>
 #include "skeleton/renderer/common/shader_reflection/shader_data_type.hpp"
@@ -14,9 +15,10 @@ namespace Skeleton {
 struct ShaderBufferElement {
   std::string name;
   ShaderDataType type;
-  size_t offset;
-  size_t size;
-  std::optional<size_t> location;
+  uint32_t offset;
+  uint32_t size;
+  std::optional<uint32_t> location;
+  std::optional<uint32_t> binding;
 };
 
 }  // namespace Skeleton

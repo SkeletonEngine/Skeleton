@@ -16,11 +16,12 @@ namespace Skeleton {
 class ShaderBufferLayout {
  public:
   ShaderBufferLayout() = default;
-  explicit ShaderBufferLayout(const std::vector<ShaderBufferElement>& elements);
-  explicit ShaderBufferLayout(const std::map<uint32_t, ShaderBufferElement>& element_map);
+  explicit ShaderBufferLayout(const std::vector<ShaderBufferElement>& elements, std::optional<uint32_t> binding);
+  explicit ShaderBufferLayout(const std::map<uint32_t, ShaderBufferElement>& element_map, std::optional<uint32_t> binding);
 
  public:
-  size_t GetSize() const;
+  uint32_t GetSize() const;
+  std::optional<uint32_t> GetBinding() const;
 
  public:
   inline std::vector<ShaderBufferElement>::iterator begin()             { return elements_.begin(); }
@@ -30,7 +31,8 @@ class ShaderBufferLayout {
 
  private:
   std::vector<ShaderBufferElement> elements_;
-  size_t size_ = 0;
+  uint32_t size_ = 0;
+  std::optional<uint32_t> binding_;
 };
 
 }  // namespace Skeleton

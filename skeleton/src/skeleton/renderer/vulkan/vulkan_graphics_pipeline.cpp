@@ -141,7 +141,7 @@ void VulkanRenderer::CreateGraphicsPipeline() {
   std::vector<VkDescriptorSetLayoutBinding> layout_bindings;
   for (auto& ubo : vert_reflection.uniform_buffers) {
     VkDescriptorSetLayoutBinding binding { };
-    binding.binding         = ubo.first;
+    binding.binding         = ubo.second.GetBinding().value();
     binding.descriptorType  = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
     binding.descriptorCount = 1;
     binding.stageFlags      = VK_SHADER_STAGE_VERTEX_BIT;

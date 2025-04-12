@@ -43,12 +43,12 @@ static ShaderBufferLayout ReflectVertexInputLayout(const spirv_cross::Compiler& 
     element_map.emplace(location, element);
   }
 
-  return ShaderBufferLayout { element_map };
+  return ShaderBufferLayout { element_map, std::nullopt };
 }
 
 static ShaderBufferLayout ReflectUniformBufferLayout(
     const spirv_cross::Compiler& compiler, const spirv_cross::ShaderResources& resources,
-    const spirv_cross::Resource& uniform_buffer, uint32_t binding) {
+    const spirv_cross::Resource& uniform_buffer) {
   // Iterate over the members of the uniform buffer and create a ShaderBufferLayout
   std::vector<ShaderBufferElement> elements;
   const auto& buffer_type = compiler.get_type(uniform_buffer.type_id);
@@ -63,7 +63,8 @@ static ShaderBufferLayout ReflectUniformBufferLayout(
     elements.push_back(element);
   }
 
-  return ShaderBufferLayout { elements };
+  uint32_t binding = compiler.get_decoration(uniform_buffer.id, spv::DecorationLocation);
+  return ShaderBufferLayout { elements, binding };
 }
 
 ShaderReflectionDetails::ShaderReflectionDetails(const std::vector<uint32_t>& spv) {
@@ -73,8 +74,7 @@ ShaderReflectionDetails::ShaderReflectionDetails(const std::vector<uint32_t>& sp
   vertex_input_layout = ReflectVertexInputLayout(compiler, resources);
 
   for (auto& uniform_buffer : resources.uniform_buffers) {
-    uint32_t binding = compiler.get_decoration(uniform_buffer.id, spv::DecorationBinding);
-    uniform_buffers.emplace(binding, ReflectUniformBufferLayout(compiler, resources, uniform_buffer, binding));
+    uniform_buffers.emplace(uniform_buffer.name, ReflectUniformBufferLayout(compiler, resources, uniform_buffer));
   }
 }
 

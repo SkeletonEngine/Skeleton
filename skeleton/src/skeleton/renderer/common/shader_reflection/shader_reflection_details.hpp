@@ -4,6 +4,7 @@
 #include "skeleton/core/core.hpp"
 
 #include <map>
+#include <string>
 #include <vector>
 #include "skeleton/renderer/common/shader_reflection/shader_buffer_layout.hpp"
 
@@ -13,7 +14,7 @@ struct ShaderReflectionDetails {
   explicit ShaderReflectionDetails(const std::vector<uint32_t>& spv);
 
   ShaderBufferLayout                     vertex_input_layout;
-  std::map<uint32_t, ShaderBufferLayout> uniform_buffers;
+  std::map<std::string, ShaderBufferLayout> uniform_buffers;
 };
 
 }  // namespace Skeleton

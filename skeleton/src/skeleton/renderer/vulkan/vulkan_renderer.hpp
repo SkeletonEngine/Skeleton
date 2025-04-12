@@ -51,6 +51,8 @@ class VulkanRenderer : public Renderer {
   void DestroyVmaAllocator();
   void CreateMesh();
   void DestroyMesh();
+  void CreateUniformBuffers();
+  void DestroyUniformBuffers();
 
  private:
 #ifdef SK_BUILD_DEBUG
@@ -107,6 +109,9 @@ class VulkanRenderer : public Renderer {
   VkBuffer                 index_buffer_   = VK_NULL_HANDLE;
   VmaAllocation            index_buffer_allocation_ = VK_NULL_HANDLE;
   uint32_t                 index_count_    = 0;
+  std::vector<VkBuffer>    u_mvp_buffers_;
+  std::vector<VmaAllocation> u_mvp_allocations_;
+  std::vector<void*>       u_mvp_mapped_memory_;
 
  private:
 #ifdef SK_BUILD_DEBUG

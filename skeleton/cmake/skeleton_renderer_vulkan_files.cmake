@@ -11,6 +11,7 @@ set(SKELETON_RENDERER_VULKAN_FILES
   src/skeleton/renderer/vulkan/vulkan_extensions.cpp
   src/skeleton/renderer/vulkan/vulkan_graphics_pipeline.cpp
   src/skeleton/renderer/vulkan/vulkan_instance.cpp
+  src/skeleton/renderer/vulkan/vulkan_memory_allocator.cpp
   src/skeleton/renderer/vulkan/vulkan_mesh.cpp
   src/skeleton/renderer/vulkan/vulkan_renderer.hpp
   src/skeleton/renderer/vulkan/vulkan_renderer.cpp
@@ -24,7 +25,7 @@ set(SKELETON_RENDERER_VULKAN_FILES
   src/skeleton/renderer/vulkan/vulkan_swapchain_support.hpp
   src/skeleton/renderer/vulkan/vulkan_swapchain_support.cpp
   src/skeleton/renderer/vulkan/vulkan_sync_objects.cpp
-  src/skeleton/renderer/vulkan/vulkan_memory_allocator.cpp
+  src/skeleton/renderer/vulkan/vulkan_uniform_buffers.cpp
   src/skeleton/renderer/vulkan/vulkan_window_surface.cpp
 )
 source_group("src/skeleton/renderer/vulkan" FILES ${SKELETON_RENDERER_VULKAN_FILES})
