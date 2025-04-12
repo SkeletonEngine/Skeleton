@@ -33,7 +33,7 @@ void VulkanRenderer::CreateUniformBuffers() {
   VmaAllocationInfo alloc_info;
 
   for (uint32_t i = 0; i < kMaxFramesInFlight; ++i) {
-    VK_CHECK(vmaCreateBuffer(vma_allocator_, &buffer_info, &alloc_create_info, 
+    VK_CHECK(vmaCreateBuffer(vma_allocator_, &buffer_info, &alloc_create_info,
                              &u_mvp_buffers_[i], &u_mvp_allocations_[i], &alloc_info));
     u_mvp_mapped_memory_[i] = alloc_info.pMappedData;
   }
