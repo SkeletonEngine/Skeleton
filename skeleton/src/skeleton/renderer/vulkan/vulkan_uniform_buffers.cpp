@@ -3,6 +3,7 @@
 #include "skeleton/renderer/vulkan/vulkan_renderer.hpp"
 #include "skeleton/renderer/vulkan/vulkan_core.hpp"
 
+#include <vector>
 #include "skeleton/renderer/common/shader_reflection/shader_reflection_details.hpp"
 #include "skeleton/renderer/common/spv_file.hpp"
 
@@ -23,7 +24,7 @@ void VulkanRenderer::CreateUniformBuffers() {
   buffer_info.size        = u_mvp_layout.GetSize();
   buffer_info.usage       = VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
   buffer_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-  
+
   VmaAllocationCreateInfo alloc_create_info { };
   alloc_create_info.requiredFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
   alloc_create_info.usage = VMA_MEMORY_USAGE_AUTO;
@@ -32,7 +33,8 @@ void VulkanRenderer::CreateUniformBuffers() {
   VmaAllocationInfo alloc_info;
 
   for (uint32_t i = 0; i < kMaxFramesInFlight; ++i) {
-    VK_CHECK(vmaCreateBuffer(vma_allocator_, &buffer_info, &alloc_create_info, &u_mvp_buffers_[i], &u_mvp_allocations_[i], &alloc_info));
+    VK_CHECK(vmaCreateBuffer(vma_allocator_, &buffer_info, &alloc_create_info, 
+                             &u_mvp_buffers_[i], &u_mvp_allocations_[i], &alloc_info));
     u_mvp_mapped_memory_[i] = alloc_info.pMappedData;
   }
 }

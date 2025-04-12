@@ -16,8 +16,12 @@ namespace Skeleton {
 class ShaderBufferLayout {
  public:
   ShaderBufferLayout() = default;
-  explicit ShaderBufferLayout(const std::vector<ShaderBufferElement>& elements, std::optional<uint32_t> binding);
-  explicit ShaderBufferLayout(const std::map<uint32_t, ShaderBufferElement>& element_map, std::optional<uint32_t> binding);
+  explicit ShaderBufferLayout(
+    const std::vector<ShaderBufferElement>& elements,
+    std::optional<uint32_t> binding);
+  explicit ShaderBufferLayout(
+    const std::map<uint32_t, ShaderBufferElement>& element_map,
+    std::optional<uint32_t> binding);
 
  public:
   uint32_t GetSize() const;
