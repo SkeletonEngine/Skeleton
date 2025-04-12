@@ -94,6 +94,7 @@ class VulkanRenderer : public Renderer {
   VkRenderPass             render_pass_     = VK_NULL_HANDLE;
   VkPipeline               graphics_pipeline_ = VK_NULL_HANDLE;
   VkPipelineLayout         graphics_pipeline_layout_ = VK_NULL_HANDLE;
+  VkDescriptorSetLayout    descriptor_set_layout_ = VK_NULL_HANDLE;
   VkCommandPool            command_pool_    = VK_NULL_HANDLE;
   std::vector<VkCommandBuffer> render_command_buffers_;
   std::vector<VkSemaphore> image_available_semaphores_;

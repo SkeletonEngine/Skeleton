@@ -31,18 +31,18 @@ static VkShaderModule CreateShaderModule(const std::vector<uint32_t>& spv, VkDev
 }
 
 void VulkanRenderer::CreateGraphicsPipeline() {
-  /* Hard code the shader paths for testing */
+  // Hard code the shader paths for testing
   const char* kVertPath = "build/shaders/test.vert.spv";
   const char* kFragPath = "build/shaders/test.frag.spv";
 
-  /* Read SPIR-V files from disk and create shader modules from them */
+  // Read SPIR-V files from disk and create shader modules from them
   std::vector<uint32_t> vert_spv = ReadSpvFile(kVertPath);
   std::vector<uint32_t> frag_spv = ReadSpvFile(kFragPath);
   VkShaderModule vert_module = CreateShaderModule(vert_spv, device_, allocator_);
   VkShaderModule frag_module = CreateShaderModule(frag_spv, device_, allocator_);
 
 
-  /* Define the pipeline shader stages - vertex and fragment */
+  // Define the pipeline shader stages - vertex and fragment
   VkPipelineShaderStageCreateInfo vert_stage_info { VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO };
   vert_stage_info.stage = VK_SHADER_STAGE_VERTEX_BIT;
   vert_stage_info.module = vert_module;
@@ -55,7 +55,7 @@ void VulkanRenderer::CreateGraphicsPipeline() {
 
   VkPipelineShaderStageCreateInfo shader_stages[] = { vert_stage_info, frag_stage_info };
 
-  /* Vertex input descriptors */
+  // Vertex input descriptors
   // Use SPIRV-Cross to perform reflection on the shaders to find the number and type of vertex inputs
   ShaderReflectionDetails vert_reflection(vert_spv);
 
@@ -82,14 +82,14 @@ void VulkanRenderer::CreateGraphicsPipeline() {
   vertex_input_info.vertexAttributeDescriptionCount = static_cast<uint32_t>(vertex_input_attribs.size());
   vertex_input_info.pVertexAttributeDescriptions    = vertex_input_attribs.data();
 
-  /* Input assembly */
+  // Input assembly
   VkPipelineInputAssemblyStateCreateInfo input_assembly { VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO };
   input_assembly.topology               = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
   input_assembly.primitiveRestartEnable = VK_FALSE;
 
-  /* Dynamic viewport and scissor */
-  /* Allegedly on most platforms there is negligible performance overhead incurred using dynamic viewport/scissor */
-  /* However it would be nice to have the option to disable this for exclusive fullscreen applications */
+  // Dynamic viewport and scissor
+  // Allegedly on most platforms there is negligible performance overhead incurred using dynamic viewport/scissor
+  // However it would be nice to have the option to disable this for exclusive fullscreen applications
   std::vector<VkDynamicState> dynamic_states = {
     VK_DYNAMIC_STATE_VIEWPORT,
     VK_DYNAMIC_STATE_SCISSOR
@@ -98,12 +98,13 @@ void VulkanRenderer::CreateGraphicsPipeline() {
   dynamic_state_info.dynamicStateCount = static_cast<uint32_t>(dynamic_states.size());
   dynamic_state_info.pDynamicStates = dynamic_states.data();
 
-  /* We only need to specify the number of viewports/scissors. These are defined  */
+  // We only need to specify the number of viewports/scissors. These are defined
+  // later when recording the command buffer
   VkPipelineViewportStateCreateInfo viewport_state { VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO };
   viewport_state.viewportCount = 1;
   viewport_state.scissorCount  = 1;
 
-  /* Rasterizer */
+  // Rasterizer
   VkPipelineRasterizationStateCreateInfo rasterization_state {
     VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO };
   rasterization_state.depthClampEnable        = VK_FALSE;
@@ -114,13 +115,13 @@ void VulkanRenderer::CreateGraphicsPipeline() {
   rasterization_state.frontFace               = VK_FRONT_FACE_CLOCKWISE;
   rasterization_state.depthBiasEnable         = VK_FALSE;
 
-  /* Multisampling */
+  // Multisampling
   VkPipelineMultisampleStateCreateInfo multisample_state { VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO };
   multisample_state.sampleShadingEnable  = VK_FALSE;
   multisample_state.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
 
-  /* Color blending */
-  /* VkPipelineColorBlendAttachmentState specifies per-framebuffer color blend settings */
+  // Color blending
+  // VkPipelineColorBlendAttachmentState specifies per-framebuffer color blend settings
   VkPipelineColorBlendAttachmentState color_blend_attachment_state { };
   color_blend_attachment_state.colorWriteMask = VK_COLOR_COMPONENT_R_BIT
                                               | VK_COLOR_COMPONENT_G_BIT
@@ -128,24 +129,42 @@ void VulkanRenderer::CreateGraphicsPipeline() {
                                               | VK_COLOR_COMPONENT_A_BIT;
   color_blend_attachment_state.blendEnable    = VK_FALSE;
 
-  /* VkPipelineColorBlendStateCreateInfo specifies global color blend settings */
+  // VkPipelineColorBlendStateCreateInfo specifies global color blend settings
   VkPipelineColorBlendStateCreateInfo color_blend_state { VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO };
-  color_blend_state.logicOpEnable = VK_FALSE;
-  color_blend_state.logicOp = VK_LOGIC_OP_COPY;
+  color_blend_state.logicOpEnable   = VK_FALSE;
+  color_blend_state.logicOp         = VK_LOGIC_OP_COPY;
   color_blend_state.attachmentCount = 1;
-  color_blend_state.pAttachments = &color_blend_attachment_state;
+  color_blend_state.pAttachments    = &color_blend_attachment_state;
 
-  /* Pipeline layout */
-  /* This describes uniforms and push constants */
+  // Descriptor set layout
+  // Perform reflection on the shaders to find all uniform buffers present and create a layout binding for each one
+  std::vector<VkDescriptorSetLayoutBinding> layout_bindings;
+  for (auto& ubo : vert_reflection.uniform_buffers) {
+    VkDescriptorSetLayoutBinding binding { };
+    binding.binding         = ubo.first;
+    binding.descriptorType  = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+    binding.descriptorCount = 1;
+    binding.stageFlags      = VK_SHADER_STAGE_VERTEX_BIT;
+    layout_bindings.push_back(binding);
+  }
+
+  // Create the descriptor set layout
+  VkDescriptorSetLayoutCreateInfo layout_info { VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO };
+  layout_info.bindingCount = static_cast<uint32_t>(layout_bindings.size());
+  layout_info.pBindings    = layout_bindings.data();
+  vkCreateDescriptorSetLayout(device_, &layout_info, allocator_, &descriptor_set_layout_);
+
+  // Pipeline layout
+  // This describes uniforms and push constants
   VkPipelineLayoutCreateInfo pipeline_layout_info { VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO };
-  pipeline_layout_info.setLayoutCount         = 0;
-  pipeline_layout_info.pSetLayouts            = nullptr;
+  pipeline_layout_info.setLayoutCount         = 1;
+  pipeline_layout_info.pSetLayouts            = &descriptor_set_layout_;
   pipeline_layout_info.pushConstantRangeCount = 0;
   pipeline_layout_info.pPushConstantRanges    = nullptr;
 
   VK_CHECK(vkCreatePipelineLayout(device_, &pipeline_layout_info, allocator_, &graphics_pipeline_layout_));
 
-  /* Create the pipeline */
+  // Create the pipeline
   VkGraphicsPipelineCreateInfo pipeline_info { VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO };
   pipeline_info.stageCount          = 2;
   pipeline_info.pStages             = shader_stages;
@@ -163,12 +182,13 @@ void VulkanRenderer::CreateGraphicsPipeline() {
 
   VK_CHECK(vkCreateGraphicsPipelines(device_, VK_NULL_HANDLE, 1, &pipeline_info, allocator_, &graphics_pipeline_));
 
-  /* Cleanup the shader module objects */
+  // Cleanup the shader module objects
   vkDestroyShaderModule(device_, vert_module, allocator_);
   vkDestroyShaderModule(device_, frag_module, allocator_);
 }
 
 void VulkanRenderer::DestroyGraphicsPipeline() {
+  vkDestroyDescriptorSetLayout(device_, descriptor_set_layout_, allocator_);
   vkDestroyPipeline(device_, graphics_pipeline_, allocator_);
   vkDestroyPipelineLayout(device_, graphics_pipeline_layout_, allocator_);
 }
