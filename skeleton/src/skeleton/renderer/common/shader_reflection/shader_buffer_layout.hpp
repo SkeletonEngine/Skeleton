@@ -20,7 +20,7 @@ class ShaderBufferLayout {
   explicit ShaderBufferLayout(const std::map<uint32_t, ShaderBufferElement>& element_map);
 
  public:
-  inline uint32_t GetSize() const { return size_; };
+  inline uint32_t GetSize() const { return size_; }
 
  public:
   inline std::vector<ShaderBufferElement>::iterator begin()             { return elements_.begin(); }

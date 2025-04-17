@@ -3,6 +3,7 @@
 #include "skeleton/renderer/vulkan/vulkan_renderer.hpp"
 #include "skeleton/renderer/vulkan/vulkan_core.hpp"
 
+#include <vector>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -36,7 +37,7 @@ VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* wind
   });
 
   // Test code - upload identity matrix to all uniform buffers
-  // TODO: delete
+  // TODO(jack): delete
   std::vector<glm::mat4> identity_matrices(3, glm::mat4(1.0f));
 
   for (const auto& ub : uniform_buffers_) {

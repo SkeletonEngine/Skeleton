@@ -19,7 +19,8 @@ void VulkanRenderer::DestroyRenderCommandBuffer() {
   vkFreeCommandBuffers(device_, command_pool_, kMaxFramesInFlight, render_command_buffers_.data());
 }
 
-void VulkanRenderer::RecordRenderCommandBuffer(VkCommandBuffer command_buffer, uint32_t image_index, uint32_t current_frame) {
+void VulkanRenderer::RecordRenderCommandBuffer(VkCommandBuffer command_buffer, uint32_t image_index,
+                                               uint32_t current_frame) {
   // Begin recording the command buffer with no flags or inheritance
   VkCommandBufferBeginInfo begin_info { VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO };
   VK_CHECK(vkBeginCommandBuffer(command_buffer, &begin_info));
