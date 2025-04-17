@@ -4,6 +4,7 @@
 #include "skeleton/renderer/vulkan/vulkan_core.hpp"
 
 #include <string>
+#include <unordered_map>
 #include <vector>
 #include "skeleton/application_settings.hpp"
 #include "skeleton/renderer/renderer.hpp"
@@ -51,8 +52,6 @@ class VulkanRenderer : public Renderer {
   void DestroyVmaAllocator();
   void CreateMesh();
   void DestroyMesh();
-  void CreateUniformBuffers();
-  void DestroyUniformBuffers();
 
  private:
 #ifdef SK_BUILD_DEBUG
@@ -62,7 +61,7 @@ class VulkanRenderer : public Renderer {
 #endif  // SK_BUILD_DEBUG
 
  private:
-  void RecordRenderCommandBuffer(VkCommandBuffer command_buffer, uint32_t image_index);
+  void RecordRenderCommandBuffer(VkCommandBuffer command_buffer, uint32_t image_index, uint32_t current_frame);
   VkCommandBuffer BeginSingleUseCommandBuffer();
   void EndSingleUseCommandBuffer(VkCommandBuffer command_buffer);
   void CreateDeviceLocalBuffer(const void* data, uint32_t size, VkBuffer* buffer,
@@ -94,9 +93,6 @@ class VulkanRenderer : public Renderer {
   std::vector<VkFramebuffer> swapchain_framebuffers_;
   bool                     vsync_           = true;
   VkRenderPass             render_pass_     = VK_NULL_HANDLE;
-  VkPipeline               graphics_pipeline_ = VK_NULL_HANDLE;
-  VkPipelineLayout         graphics_pipeline_layout_ = VK_NULL_HANDLE;
-  VkDescriptorSetLayout    descriptor_set_layout_ = VK_NULL_HANDLE;
   VkCommandPool            command_pool_    = VK_NULL_HANDLE;
   std::vector<VkCommandBuffer> render_command_buffers_;
   std::vector<VkSemaphore> image_available_semaphores_;
@@ -109,9 +105,20 @@ class VulkanRenderer : public Renderer {
   VkBuffer                 index_buffer_   = VK_NULL_HANDLE;
   VmaAllocation            index_buffer_allocation_ = VK_NULL_HANDLE;
   uint32_t                 index_count_    = 0;
-  std::vector<VkBuffer>    u_mvp_buffers_;
-  std::vector<VmaAllocation> u_mvp_allocations_;
-  std::vector<void*>       u_mvp_mapped_memory_;
+
+  // Per-pipeline objects
+  VkPipeline                   graphics_pipeline_ = VK_NULL_HANDLE;
+  VkPipelineLayout             graphics_pipeline_layout_ = VK_NULL_HANDLE;
+  VkDescriptorSetLayout        descriptor_set_layout_ = VK_NULL_HANDLE;
+  VkDescriptorPool             descriptor_pool_;
+  struct UniformBuffer {
+    std::vector<VkDescriptorSet> descriptor_sets;
+    std::vector<VkBuffer>        buffers;
+    std::vector<VmaAllocation>   allocations;
+    std::vector<void*>           mapped_memory;
+    uint32_t                     size;
+  };
+  std::unordered_map<uint32_t, UniformBuffer>   uniform_buffers_;
 
  private:
 #ifdef SK_BUILD_DEBUG

@@ -3,6 +3,9 @@
 #include "skeleton/renderer/vulkan/vulkan_renderer.hpp"
 #include "skeleton/renderer/vulkan/vulkan_core.hpp"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 namespace Skeleton::Vulkan {
 
 VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* window)
@@ -14,6 +17,7 @@ VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* wind
   CreateWindowSurface();
   ChoosePhysicalDevice();
   CreateDevice();
+  CreateVmaAllocator();
   CreateSwapchain();
   CreateSwapchainImageViews();
   CreateRenderPass();
@@ -22,9 +26,7 @@ VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* wind
   CreateCommandPool();
   CreateRenderCommandBuffer();
   CreateSyncObjects();
-  CreateVmaAllocator();
   CreateMesh();
-  CreateUniformBuffers();
 
   // Register a callback so that we are notified when the client window is resized
   // When that happens, we will need to recreate the swapchain
@@ -32,14 +34,22 @@ VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* wind
     window_framebuffer_resized_ = true;
     window_minimized_ = (width == 0 || height == 0);
   });
+
+  // Test code - upload identity matrix to all uniform buffers
+  // TODO: delete
+  std::vector<glm::mat4> identity_matrices(3, glm::mat4(1.0f));
+
+  for (const auto& ub : uniform_buffers_) {
+    for (uint32_t i = 0; i < kMaxFramesInFlight; ++i) {
+      std::memcpy(ub.second.mapped_memory[i], identity_matrices.data(), sizeof(glm::mat4) * identity_matrices.size());
+    }
+  }
 }
 
 VulkanRenderer::~VulkanRenderer() {
   vkDeviceWaitIdle(device_);
 
-  DestroyUniformBuffers();
   DestroyMesh();
-  DestroyVmaAllocator();
   DestroySyncObjects();
   DestroyRenderCommandBuffer();
   DestroyCommandPool();
@@ -48,6 +58,7 @@ VulkanRenderer::~VulkanRenderer() {
   DestroyRenderPass();
   DestroySwapchainImageViews();
   DestroySwapchain();
+  DestroyVmaAllocator();
   DestroyDevice();
   DestroyWindowSurface();
 #ifdef SK_BUILD_DEBUG
@@ -92,7 +103,7 @@ void VulkanRenderer::RenderFrame() {
 
   // Record the render commands to a command buffer
   vkResetCommandBuffer(render_command_buffers_[current_frame], 0);
-  RecordRenderCommandBuffer(render_command_buffers_[current_frame], image_index);
+  RecordRenderCommandBuffer(render_command_buffers_[current_frame], image_index, current_frame);
 
   // Submit the command buffer
   VkSubmitInfo submit_info { VK_STRUCTURE_TYPE_SUBMIT_INFO };

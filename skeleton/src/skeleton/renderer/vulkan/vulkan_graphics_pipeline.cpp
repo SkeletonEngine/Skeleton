@@ -56,10 +56,12 @@ void VulkanRenderer::CreateGraphicsPipeline() {
   VkPipelineShaderStageCreateInfo shader_stages[] = { vert_stage_info, frag_stage_info };
 
   // Vertex input descriptors
-  // Use SPIRV-Cross to perform reflection on the shaders to find the number and type of vertex inputs
+  // Use SPIRV-Cross to perform reflection on the shaders
+  // Find the number and type of vertex inputs, and the number, size and binding of any uniform buffers
   ShaderReflectionDetails vert_reflection(vert_spv);
+  ShaderReflectionDetails frag_reflection(frag_spv);
 
-  // We only need one binding since our vertex data is packed in a single array
+  // We only need one vertex input binding since our vertex data is interleaved in a single array
   VkVertexInputBindingDescription vertex_binding_description { };
   vertex_binding_description.binding = 0;
   vertex_binding_description.stride = vert_reflection.vertex_input_layout.GetSize();
@@ -139,13 +141,21 @@ void VulkanRenderer::CreateGraphicsPipeline() {
   // Descriptor set layout
   // Perform reflection on the shaders to find all uniform buffers present and create a layout binding for each one
   std::vector<VkDescriptorSetLayoutBinding> layout_bindings;
+
+  auto add_layout_binding = [&](uint32_t binding) {
+    VkDescriptorSetLayoutBinding layout_binding { };
+    layout_binding.binding         = binding;
+    layout_binding.descriptorType  = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+    layout_binding.descriptorCount = 1;
+    layout_binding.stageFlags      = VK_SHADER_STAGE_VERTEX_BIT;
+    layout_bindings.push_back(layout_binding);
+  };
+
   for (auto& ubo : vert_reflection.uniform_buffers) {
-    VkDescriptorSetLayoutBinding binding { };
-    binding.binding         = ubo.second.GetBinding().value();
-    binding.descriptorType  = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-    binding.descriptorCount = 1;
-    binding.stageFlags      = VK_SHADER_STAGE_VERTEX_BIT;
-    layout_bindings.push_back(binding);
+    add_layout_binding(ubo.first);
+  }
+  for (auto& ubo : frag_reflection.uniform_buffers) {
+    add_layout_binding(ubo.first);
   }
 
   // Create the descriptor set layout
@@ -185,9 +195,112 @@ void VulkanRenderer::CreateGraphicsPipeline() {
   // Cleanup the shader module objects
   vkDestroyShaderModule(device_, vert_module, allocator_);
   vkDestroyShaderModule(device_, frag_module, allocator_);
+
+  // If there are no uniform buffers to allocate then we don't need to allocate descriptors, so we're done
+  if (vert_reflection.uniform_buffers.empty() && frag_reflection.uniform_buffers.empty()) {
+    return;
+  }
+
+  // Allocate uniform buffers and map the memory
+  auto create_uniform_buffer = [&](uint32_t binding, const ShaderBufferLayout& layout) {
+    UniformBuffer ub;
+
+    ub.buffers.resize(kMaxFramesInFlight);
+    ub.allocations.resize(kMaxFramesInFlight);
+    ub.mapped_memory.resize(kMaxFramesInFlight);
+    ub.size = layout.GetSize();
+
+    VkBufferCreateInfo buffer_info { VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO };
+    buffer_info.size        = layout.GetSize();
+    buffer_info.usage       = VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
+    buffer_info.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+    VmaAllocationCreateInfo alloc_create_info { };
+    alloc_create_info.requiredFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
+    alloc_create_info.usage = VMA_MEMORY_USAGE_AUTO;
+    alloc_create_info.flags = VMA_ALLOCATION_CREATE_HOST_ACCESS_SEQUENTIAL_WRITE_BIT | VMA_ALLOCATION_CREATE_MAPPED_BIT;
+
+    VmaAllocationInfo alloc_info;
+
+    for (uint32_t i = 0; i < kMaxFramesInFlight; ++i) {
+      VK_CHECK(vmaCreateBuffer(vma_allocator_, &buffer_info, &alloc_create_info,
+                               &ub.buffers[i], &ub.allocations[i], &alloc_info));
+      ub.mapped_memory[i] = alloc_info.pMappedData;
+    }
+
+    uniform_buffers_.emplace(binding, ub);
+  };
+
+  for (auto& uniform_buffer : vert_reflection.uniform_buffers) {
+    create_uniform_buffer(uniform_buffer.first, uniform_buffer.second);
+  }
+  for (auto& uniform_buffer : frag_reflection.uniform_buffers) {
+    create_uniform_buffer(uniform_buffer.first, uniform_buffer.second);
+  }
+
+  // Create the descriptor pool for the uniform buffers
+  VkDescriptorPoolSize pool_size { };
+  pool_size.type            = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+  pool_size.descriptorCount = kMaxFramesInFlight * uniform_buffers_.size();
+
+  VkDescriptorPoolCreateInfo pool_info { VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO };
+  pool_info.poolSizeCount = 1;
+  pool_info.pPoolSizes    = &pool_size;
+  pool_info.maxSets       = kMaxFramesInFlight * uniform_buffers_.size();
+
+  VK_CHECK(vkCreateDescriptorPool(device_, &pool_info, allocator_, &descriptor_pool_));
+
+  // Allocate descriptor sets from descriptor pool
+  std::vector<VkDescriptorSetLayout> layouts(kMaxFramesInFlight, descriptor_set_layout_);
+  VkDescriptorSetAllocateInfo alloc_info { VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO };
+  alloc_info.descriptorPool     = descriptor_pool_;
+  alloc_info.descriptorSetCount = kMaxFramesInFlight * uniform_buffers_.size();
+  alloc_info.pSetLayouts        = layouts.data();
+
+  for (auto& ub : uniform_buffers_) {
+    ub.second.descriptor_sets.resize(kMaxFramesInFlight);
+    VK_CHECK(vkAllocateDescriptorSets(device_, &alloc_info, ub.second.descriptor_sets.data()));
+  }
+
+  // Configure the descriptor sets
+  auto configure_descriptor_set = [&](uint32_t binding, const ShaderBufferLayout& layout) {
+    for (uint32_t i = 0; i < kMaxFramesInFlight; ++i) {
+      VkDescriptorBufferInfo buffer_info { };
+      buffer_info.buffer = uniform_buffers_[binding].buffers[i];
+      buffer_info.offset = 0;
+      buffer_info.range = layout.GetSize();
+
+      VkWriteDescriptorSet descriptor_write { VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET };
+      descriptor_write.dstSet          = uniform_buffers_[binding].descriptor_sets[i];
+      descriptor_write.dstBinding      = binding;
+      descriptor_write.dstArrayElement = 0;
+      descriptor_write.descriptorCount = 1;
+      descriptor_write.descriptorType  = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+      descriptor_write.pBufferInfo     = &buffer_info;
+
+      vkUpdateDescriptorSets(device_, 1, &descriptor_write, 0, nullptr);
+    }
+  };
+
+  for (auto& ubo : vert_reflection.uniform_buffers) {
+    configure_descriptor_set(ubo.first, ubo.second);
+  }
+  for (auto& ubo : frag_reflection.uniform_buffers) {
+    configure_descriptor_set(ubo.first, ubo.second);
+  }
 }
 
 void VulkanRenderer::DestroyGraphicsPipeline() {
+  if (!uniform_buffers_.empty()) {
+    vkDestroyDescriptorPool(device_, descriptor_pool_, allocator_);
+  }
+
+  for (auto& ub : uniform_buffers_) {
+    for (uint32_t i = 0; i < kMaxFramesInFlight; ++i) {
+      vmaDestroyBuffer(vma_allocator_, ub.second.buffers[i], ub.second.allocations[i]);
+    }
+  }
+
   vkDestroyDescriptorSetLayout(device_, descriptor_set_layout_, allocator_);
   vkDestroyPipeline(device_, graphics_pipeline_, allocator_);
   vkDestroyPipelineLayout(device_, graphics_pipeline_layout_, allocator_);

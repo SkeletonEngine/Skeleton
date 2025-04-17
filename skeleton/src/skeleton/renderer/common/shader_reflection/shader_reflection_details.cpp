@@ -43,7 +43,7 @@ static ShaderBufferLayout ReflectVertexInputLayout(const spirv_cross::Compiler& 
     element_map.emplace(location, element);
   }
 
-  return ShaderBufferLayout { element_map, std::nullopt };
+  return ShaderBufferLayout { element_map };
 }
 
 static ShaderBufferLayout ReflectUniformBufferLayout(
@@ -57,14 +57,13 @@ static ShaderBufferLayout ReflectUniformBufferLayout(
   for (uint32_t i = 0; i < buffer_type.member_types.size(); ++i) {
     ShaderBufferElement element;
     element.name = compiler.get_member_name(buffer_type.self, i);
-    uint32_t member_id = buffer_type.member_types[i];
-    element.type = DeduceShaderDataType(compiler.get_type(member_id));
+    element.type = DeduceShaderDataType(compiler.get_type(buffer_type.member_types[i]));
     element.size = ShaderDataTypeSize(element.type);
+    element.binding = compiler.get_decoration(uniform_buffer.id, spv::DecorationLocation);
     elements.push_back(element);
   }
 
-  uint32_t binding = compiler.get_decoration(uniform_buffer.id, spv::DecorationLocation);
-  return ShaderBufferLayout { elements, binding };
+  return ShaderBufferLayout { elements };
 }
 
 ShaderReflectionDetails::ShaderReflectionDetails(const std::vector<uint32_t>& spv) {
@@ -74,7 +73,8 @@ ShaderReflectionDetails::ShaderReflectionDetails(const std::vector<uint32_t>& sp
   vertex_input_layout = ReflectVertexInputLayout(compiler, resources);
 
   for (auto& uniform_buffer : resources.uniform_buffers) {
-    uniform_buffers.emplace(uniform_buffer.name, ReflectUniformBufferLayout(compiler, resources, uniform_buffer));
+    uint32_t binding = compiler.get_decoration(uniform_buffer.id, spv::DecorationLocation);
+    uniform_buffers.emplace(binding, ReflectUniformBufferLayout(compiler, resources, uniform_buffer));
   }
 }
 

@@ -1,7 +1,7 @@
 // Copyright 2024-2025 SkeletonEngine
 
 // Wrapper around a list of ShaderBufferElement
-// Iterable object representing the layout of a shader uniform buffer, vertex buffer, etc.
+// Iterable object representing the layout of a uniform buffer, vertex buffer, etc.
 
 #pragma once
 #include "skeleton/core/core.hpp"
@@ -16,16 +16,11 @@ namespace Skeleton {
 class ShaderBufferLayout {
  public:
   ShaderBufferLayout() = default;
-  explicit ShaderBufferLayout(
-    const std::vector<ShaderBufferElement>& elements,
-    std::optional<uint32_t> binding);
-  explicit ShaderBufferLayout(
-    const std::map<uint32_t, ShaderBufferElement>& element_map,
-    std::optional<uint32_t> binding);
+  explicit ShaderBufferLayout(const std::vector<ShaderBufferElement>& elements);
+  explicit ShaderBufferLayout(const std::map<uint32_t, ShaderBufferElement>& element_map);
 
  public:
-  uint32_t GetSize() const;
-  std::optional<uint32_t> GetBinding() const;
+  inline uint32_t GetSize() const { return size_; };
 
  public:
   inline std::vector<ShaderBufferElement>::iterator begin()             { return elements_.begin(); }
@@ -36,7 +31,6 @@ class ShaderBufferLayout {
  private:
   std::vector<ShaderBufferElement> elements_;
   uint32_t size_ = 0;
-  std::optional<uint32_t> binding_;
 };
 
 }  // namespace Skeleton

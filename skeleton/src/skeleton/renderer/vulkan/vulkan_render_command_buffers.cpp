@@ -19,7 +19,7 @@ void VulkanRenderer::DestroyRenderCommandBuffer() {
   vkFreeCommandBuffers(device_, command_pool_, kMaxFramesInFlight, render_command_buffers_.data());
 }
 
-void VulkanRenderer::RecordRenderCommandBuffer(VkCommandBuffer command_buffer, uint32_t image_index) {
+void VulkanRenderer::RecordRenderCommandBuffer(VkCommandBuffer command_buffer, uint32_t image_index, uint32_t current_frame) {
   // Begin recording the command buffer with no flags or inheritance
   VkCommandBufferBeginInfo begin_info { VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO };
   VK_CHECK(vkBeginCommandBuffer(command_buffer, &begin_info));
@@ -60,6 +60,12 @@ void VulkanRenderer::RecordRenderCommandBuffer(VkCommandBuffer command_buffer, u
   scissor.offset = { 0, 0 };
   scissor.extent = swapchain_extent_;
   vkCmdSetScissor(command_buffer, 0, 1, &scissor);
+
+  // Bind descriptor sets
+  for (const auto& uniform_buffer : uniform_buffers_) {
+    vkCmdBindDescriptorSets(command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphics_pipeline_layout_, 0, 1,
+                            &uniform_buffer.second.descriptor_sets[current_frame], 0, nullptr);
+  }
 
   // Issue draw command
   vkCmdDrawIndexed(command_buffer, index_count_, 1, 0, 0, 0);
