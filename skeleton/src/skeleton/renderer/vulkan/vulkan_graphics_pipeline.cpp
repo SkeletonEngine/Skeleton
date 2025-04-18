@@ -289,7 +289,8 @@ void VulkanRenderer::CreateGraphicsPipeline() {
       add_uniform_buffer_descriptor_config(ubo.first, ubo.second);
     }
 
-    vkUpdateDescriptorSets(device_, static_cast<uint32_t>(descriptor_writes.size()), descriptor_writes.data(), 0, nullptr);
+    vkUpdateDescriptorSets(device_, static_cast<uint32_t>(descriptor_writes.size()),
+                           descriptor_writes.data(), 0, nullptr);
   }
 }
 
