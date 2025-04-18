@@ -69,7 +69,7 @@ class VulkanRenderer : public Renderer {
 
  private:
   /* Constants */
-  const uint32_t kMaxFramesInFlight = 2;
+  const size_t kMaxFramesInFlight = 2;
   
   enum {
     kUboBindingCameraMatrix = 0,
