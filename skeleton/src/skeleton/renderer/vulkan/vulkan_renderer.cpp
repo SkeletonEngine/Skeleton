@@ -30,22 +30,30 @@ VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* wind
   CreateSyncObjects();
   CreateMesh();
 
+  // TODO(jack): remove test code
+  // Calculate and upload the camera view/projection matrix
+  auto calc_camera_matrix = [&](int width, int height) {
+    glm::mat4 view_matrix       = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+    glm::mat4 projection_matrix = glm::perspectiveFov(
+      glm::radians(90.0f), static_cast<float>(width), static_cast<float>(height), 0.1f, 1000.0f);
+    glm::mat4 camera_matrix = projection_matrix * view_matrix;
+    for (size_t i = 0; i < kMaxFramesInFlight; ++i) {
+      std::memcpy(uniform_buffers_[kUboBindingCameraMatrix].mapped_memory[i],
+                  glm::value_ptr(camera_matrix), sizeof(glm::mat4));
+    }
+  };
+
   // Register a callback so that we are notified when the client window is resized
   // When that happens, we will need to recreate the swapchain
-  window->RegisterFramebufferSizeCallback([&](int width, int height) {
+  // We also need to recalculate the projection matrix in case the aspect ratio of the window has changed
+  auto on_window_resize = [&](int width, int height) {
     window_framebuffer_resized_ = true;
     window_minimized_ = (width == 0 || height == 0);
-  });
+    calc_camera_matrix(width, height);
+  };
 
-  // TODO(jack): remove test code
-  // Upload identity matrix to all uniform buffers
-  glm::mat4 identity_matrix(1.0f);
-
-  for (const auto& ub : uniform_buffers_) {
-    for (uint32_t i = 0; i < kMaxFramesInFlight; ++i) {
-      std::memcpy(ub.second.mapped_memory[i], glm::value_ptr(identity_matrix), sizeof(glm::mat4));
-    }
-  }
+  window->RegisterFramebufferSizeCallback(on_window_resize);
+  calc_camera_matrix(window_->GetFramebufferWidth(), window_->GetFramebufferHeight());
 }
 
 VulkanRenderer::~VulkanRenderer() {
