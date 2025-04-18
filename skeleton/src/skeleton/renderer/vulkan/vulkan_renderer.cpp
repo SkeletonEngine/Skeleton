@@ -36,8 +36,9 @@ VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* wind
     window_minimized_ = (width == 0 || height == 0);
   });
 
-  // Test code - upload identity matrix to all uniform buffers
-  // TODO(jack): delete
+  
+  // TODO(jack): remove test code
+  // Upload identity matrix to all uniform buffers
   std::vector<glm::mat4> identity_matrices(3, glm::mat4(1.0f));
 
   for (const auto& ub : uniform_buffers_) {
@@ -83,6 +84,15 @@ void VulkanRenderer::RenderFrame() {
   // Keeps track of which set of command buffers/sync objects to use
   static uint32_t current_frame = 0;
   current_frame = (current_frame + 1) % kMaxFramesInFlight;
+  
+  // TODO(jack): remove test code
+  // Upload rotation matrix
+  static float angle = 0.0f;
+  glm::mat4 rotation_matrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0, 0, 1));
+  angle += 0.002f;
+  for (const auto& ub : uniform_buffers_) {
+    std::memcpy(ub.second.mapped_memory[current_frame], glm::value_ptr(rotation_matrix), sizeof(glm::mat4));
+  }
 
   // Wait for the previous frame to finish, if necessary
   vkWaitForFences(device_, 1, &in_flight_fences_[current_frame], VK_TRUE, UINT64_MAX);
@@ -97,8 +107,10 @@ void VulkanRenderer::RenderFrame() {
     RecreateSwapchain();
     return;
   }
+#ifdef SK_BUILD_DEBUG
   VK_CHECK(image_acquire_result);
-
+#endif  // SK_BUILD_DEBUG
+  
   // Once we know that we have an image to render to, we can reset the fence for the current frame
   vkResetFences(device_, 1, &in_flight_fences_[current_frame]);
 
