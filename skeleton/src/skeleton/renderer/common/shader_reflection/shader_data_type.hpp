@@ -5,13 +5,16 @@
 #pragma once
 #include "skeleton/core/core.hpp"
 
+#include <cstdint>
+
 namespace Skeleton {
 
 enum class ShaderDataType {
   kFloat, kFloat2, kFloat3, kFloat4,
   kMat3,  kMat4,
+  kUndefined,
 };
 
-size_t ShaderDataTypeSize(ShaderDataType type);
+uint32_t ShaderDataTypeSize(ShaderDataType type);
 
 }  // namespace Skeleton

@@ -9,7 +9,7 @@
 namespace Skeleton {
 
 ShaderBufferLayout::ShaderBufferLayout(const std::vector<ShaderBufferElement>& elements) {
-  size_t offset = 0;
+  uint32_t offset = 0;
 
   for (auto& e : elements) {
     ShaderBufferElement element = e;
@@ -22,7 +22,7 @@ ShaderBufferLayout::ShaderBufferLayout(const std::vector<ShaderBufferElement>& e
 }
 
 ShaderBufferLayout::ShaderBufferLayout(const std::map<uint32_t, ShaderBufferElement>& element_map) {
-  size_t offset = 0;
+  uint32_t offset = 0;
 
   for (auto& e : element_map) {
     ShaderBufferElement element = e.second;

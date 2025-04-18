@@ -26,7 +26,7 @@ void VulkanRenderer::CreateMesh() {
                           &index_buffer_allocation_, VK_BUFFER_USAGE_INDEX_BUFFER_BIT);
 
   // Store the index count for performing the draw operation later
-  index_count_ = indices.size();
+  index_count_ = static_cast<uint32_t>(indices.size());
 }
 
 void VulkanRenderer::DestroyMesh() {

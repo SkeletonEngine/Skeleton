@@ -6,7 +6,7 @@
 namespace Skeleton::Vulkan {
 
 // Creates a device-local buffer (usually a vertex or index buffer) and uploads arbitrary data to it
-void VulkanRenderer::CreateDeviceLocalBuffer(const void* data, uint32_t size, VkBuffer* buffer,
+void VulkanRenderer::CreateDeviceLocalBuffer(const void* data, VkDeviceSize size, VkBuffer* buffer,
                                              VmaAllocation* allocation, VkBufferUsageFlagBits usage) {
   // Create staging buffer in host-visible memory
   VkBufferCreateInfo staging_buffer_info { VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO };

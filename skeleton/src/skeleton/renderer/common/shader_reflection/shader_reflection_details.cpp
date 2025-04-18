@@ -18,15 +18,17 @@ static ShaderDataType DeduceShaderDataType(const spirv_cross::SPIRType& type) {
         case 3: switch (type.columns) {
           case 1: return ShaderDataType::kFloat3;
           case 3: return ShaderDataType::kMat3;
+          default: return ShaderDataType::kUndefined;
         }
         case 4: switch (type.columns) {
           case 1: return ShaderDataType::kFloat4;
           case 4: return ShaderDataType::kMat4;
+          default: return ShaderDataType::kUndefined;
         }
       }
     }
+    default: return ShaderDataType::kUndefined;
   }
-  return ShaderDataType::kFloat;
 }
 
 static ShaderBufferLayout ReflectVertexInputLayout(const spirv_cross::Compiler& compiler,

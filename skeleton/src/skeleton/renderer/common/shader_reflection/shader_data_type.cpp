@@ -5,7 +5,7 @@
 
 namespace Skeleton {
 
-size_t ShaderDataTypeSize(ShaderDataType type) {
+uint32_t ShaderDataTypeSize(ShaderDataType type) {
   switch (type) {
     case ShaderDataType::kFloat:  return sizeof(float);
     case ShaderDataType::kFloat2: return sizeof(float) * 2;
@@ -13,8 +13,8 @@ size_t ShaderDataTypeSize(ShaderDataType type) {
     case ShaderDataType::kFloat4: return sizeof(float) * 4;
     case ShaderDataType::kMat3:   return sizeof(float) * 3 * 3;
     case ShaderDataType::kMat4:   return sizeof(float) * 4 * 4;
+    default: return 0;
   }
-  return 0;
 }
 
 }  // namespace Skeleton

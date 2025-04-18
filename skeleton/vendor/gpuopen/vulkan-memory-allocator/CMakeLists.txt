@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.21)
 add_subdirectory(vulkan-memory-allocator)
 
 add_library(vulkan-memory-allocator vma_implementation.cpp)
+target_compile_features(vulkan-memory-allocator PRIVATE cxx_std_20)
 target_link_libraries(vulkan-memory-allocator PRIVATE VulkanMemoryAllocator)
 target_link_libraries(vulkan-memory-allocator PRIVATE volk)
 target_include_directories(vulkan-memory-allocator PUBLIC vulkan-memory-allocator/include)

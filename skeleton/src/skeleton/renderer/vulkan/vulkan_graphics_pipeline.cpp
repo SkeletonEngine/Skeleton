@@ -15,8 +15,8 @@ static VkFormat DeduceFormat(ShaderDataType type) {
     case ShaderDataType::kFloat2: return VK_FORMAT_R32G32_SFLOAT;
     case ShaderDataType::kFloat3: return VK_FORMAT_R32G32B32_SFLOAT;
     case ShaderDataType::kFloat4: return VK_FORMAT_R32G32B32A32_SFLOAT;
+    default: return VK_FORMAT_MAX_ENUM;
   }
-  return VK_FORMAT_MAX_ENUM;
 }
 
 static VkShaderModule CreateShaderModule(const std::vector<uint32_t>& spv, VkDevice device,
@@ -241,12 +241,12 @@ void VulkanRenderer::CreateGraphicsPipeline() {
   // Create the descriptor pool for the uniform buffers
   VkDescriptorPoolSize pool_size { };
   pool_size.type            = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-  pool_size.descriptorCount = kMaxFramesInFlight * uniform_buffers_.size();
+  pool_size.descriptorCount = static_cast<uint32_t>(kMaxFramesInFlight * uniform_buffers_.size());
 
   VkDescriptorPoolCreateInfo pool_info { VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO };
   pool_info.poolSizeCount = 1;
   pool_info.pPoolSizes    = &pool_size;
-  pool_info.maxSets       = kMaxFramesInFlight * uniform_buffers_.size();
+  pool_info.maxSets       = static_cast<uint32_t>(kMaxFramesInFlight * uniform_buffers_.size());
 
   VK_CHECK(vkCreateDescriptorPool(device_, &pool_info, allocator_, &descriptor_pool_));
 
@@ -254,7 +254,7 @@ void VulkanRenderer::CreateGraphicsPipeline() {
   std::vector<VkDescriptorSetLayout> layouts(kMaxFramesInFlight, descriptor_set_layout_);
   VkDescriptorSetAllocateInfo alloc_info { VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO };
   alloc_info.descriptorPool     = descriptor_pool_;
-  alloc_info.descriptorSetCount = kMaxFramesInFlight * uniform_buffers_.size();
+  alloc_info.descriptorSetCount = static_cast<uint32_t>(kMaxFramesInFlight * uniform_buffers_.size());
   alloc_info.pSetLayouts        = layouts.data();
 
   for (auto& ub : uniform_buffers_) {
