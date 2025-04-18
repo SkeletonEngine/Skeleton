@@ -142,20 +142,20 @@ void VulkanRenderer::CreateGraphicsPipeline() {
   // Perform reflection on the shaders to find all uniform buffers present and create a layout binding for each one
   std::vector<VkDescriptorSetLayoutBinding> layout_bindings;
 
-  auto add_layout_binding = [&](uint32_t binding) {
+  auto add_layout_binding = [&](uint32_t binding, VkShaderStageFlagBits stage) {
     VkDescriptorSetLayoutBinding layout_binding { };
     layout_binding.binding         = binding;
     layout_binding.descriptorType  = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
     layout_binding.descriptorCount = 1;
-    layout_binding.stageFlags      = VK_SHADER_STAGE_VERTEX_BIT;
+    layout_binding.stageFlags      = stage;
     layout_bindings.push_back(layout_binding);
   };
 
   for (auto& ubo : vert_reflection.uniform_buffers) {
-    add_layout_binding(ubo.first);
+    add_layout_binding(ubo.first, VK_SHADER_STAGE_VERTEX_BIT);
   }
   for (auto& ubo : frag_reflection.uniform_buffers) {
-    add_layout_binding(ubo.first);
+    add_layout_binding(ubo.first, VK_SHADER_STAGE_FRAGMENT_BIT);
   }
 
   // Create the descriptor set layout
@@ -238,55 +238,58 @@ void VulkanRenderer::CreateGraphicsPipeline() {
     create_uniform_buffer(uniform_buffer.first, uniform_buffer.second);
   }
 
-  // Create the descriptor pool for the uniform buffers
-  VkDescriptorPoolSize pool_size { };
-  pool_size.type            = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-  pool_size.descriptorCount = static_cast<uint32_t>(kMaxFramesInFlight * uniform_buffers_.size());
+  // Create the descriptor pool
+  VkDescriptorPoolSize pool_uniform_buffers_size { };
+  pool_uniform_buffers_size.type            = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+  pool_uniform_buffers_size.descriptorCount = static_cast<uint32_t>(kMaxFramesInFlight * uniform_buffers_.size());
 
   VkDescriptorPoolCreateInfo pool_info { VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO };
   pool_info.poolSizeCount = 1;
-  pool_info.pPoolSizes    = &pool_size;
-  pool_info.maxSets       = static_cast<uint32_t>(kMaxFramesInFlight * uniform_buffers_.size());
-
+  pool_info.pPoolSizes    = &pool_uniform_buffers_size;
+  pool_info.maxSets       = static_cast<uint32_t>(kMaxFramesInFlight);
   VK_CHECK(vkCreateDescriptorPool(device_, &pool_info, allocator_, &descriptor_pool_));
 
   // Allocate descriptor sets from descriptor pool
   std::vector<VkDescriptorSetLayout> layouts(kMaxFramesInFlight, descriptor_set_layout_);
   VkDescriptorSetAllocateInfo alloc_info { VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO };
   alloc_info.descriptorPool     = descriptor_pool_;
-  alloc_info.descriptorSetCount = static_cast<uint32_t>(kMaxFramesInFlight * uniform_buffers_.size());
+  alloc_info.descriptorSetCount = static_cast<uint32_t>(kMaxFramesInFlight);
   alloc_info.pSetLayouts        = layouts.data();
-
-  for (auto& ub : uniform_buffers_) {
-    ub.second.descriptor_sets.resize(kMaxFramesInFlight);
-    VK_CHECK(vkAllocateDescriptorSets(device_, &alloc_info, ub.second.descriptor_sets.data()));
-  }
+  descriptor_sets_.resize(kMaxFramesInFlight);
+  VK_CHECK(vkAllocateDescriptorSets(device_, &alloc_info, descriptor_sets_.data()));
 
   // Configure the descriptor sets
-  auto configure_descriptor_set = [&](uint32_t binding, const ShaderBufferLayout& layout) {
-    for (uint32_t i = 0; i < kMaxFramesInFlight; ++i) {
-      VkDescriptorBufferInfo buffer_info { };
-      buffer_info.buffer = uniform_buffers_[binding].buffers[i];
-      buffer_info.offset = 0;
-      buffer_info.range = layout.GetSize();
+  for (uint32_t i = 0; i < kMaxFramesInFlight; ++i) {
+    std::vector<VkDescriptorBufferInfo> buffer_infos(uniform_buffers_.size());
+    std::vector<VkWriteDescriptorSet> descriptor_writes(buffer_infos.size());
+    size_t buffer_index = 0;
+    size_t write_index  = 0;
 
-      VkWriteDescriptorSet descriptor_write { VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET };
-      descriptor_write.dstSet          = uniform_buffers_[binding].descriptor_sets[i];
-      descriptor_write.dstBinding      = binding;
-      descriptor_write.dstArrayElement = 0;
-      descriptor_write.descriptorCount = 1;
-      descriptor_write.descriptorType  = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-      descriptor_write.pBufferInfo     = &buffer_info;
+    auto add_uniform_buffer_descriptor_config = [&](uint32_t binding, const ShaderBufferLayout& layout) {
+      buffer_infos[buffer_index].buffer = uniform_buffers_[binding].buffers[i];
+      buffer_infos[buffer_index].offset = 0;
+      buffer_infos[buffer_index].range  = layout.GetSize();
 
-      vkUpdateDescriptorSets(device_, 1, &descriptor_write, 0, nullptr);
+      descriptor_writes[write_index].sType           = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+      descriptor_writes[write_index].dstSet          = descriptor_sets_[i];
+      descriptor_writes[write_index].dstBinding      = binding;
+      descriptor_writes[write_index].dstArrayElement = 0;
+      descriptor_writes[write_index].descriptorCount = 1;
+      descriptor_writes[write_index].descriptorType  = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+      descriptor_writes[write_index].pBufferInfo     = &buffer_infos[buffer_index];
+
+      ++buffer_index;
+      ++write_index;
+    };
+
+    for (auto& ubo : vert_reflection.uniform_buffers) {
+      add_uniform_buffer_descriptor_config(ubo.first, ubo.second);
     }
-  };
+    for (auto& ubo : frag_reflection.uniform_buffers) {
+      add_uniform_buffer_descriptor_config(ubo.first, ubo.second);
+    }
 
-  for (auto& ubo : vert_reflection.uniform_buffers) {
-    configure_descriptor_set(ubo.first, ubo.second);
-  }
-  for (auto& ubo : frag_reflection.uniform_buffers) {
-    configure_descriptor_set(ubo.first, ubo.second);
+    vkUpdateDescriptorSets(device_, static_cast<uint32_t>(descriptor_writes.size()), descriptor_writes.data(), 0, nullptr);
   }
 }
 

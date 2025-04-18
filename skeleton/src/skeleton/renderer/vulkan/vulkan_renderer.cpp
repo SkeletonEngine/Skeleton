@@ -39,11 +39,11 @@ VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* wind
 
   // TODO(jack): remove test code
   // Upload identity matrix to all uniform buffers
-  std::vector<glm::mat4> identity_matrices(3, glm::mat4(1.0f));
+  glm::mat4 identity_matrix(1.0f);
 
   for (const auto& ub : uniform_buffers_) {
     for (uint32_t i = 0; i < kMaxFramesInFlight; ++i) {
-      std::memcpy(ub.second.mapped_memory[i], identity_matrices.data(), sizeof(glm::mat4) * identity_matrices.size());
+      std::memcpy(ub.second.mapped_memory[i], glm::value_ptr(identity_matrix), sizeof(glm::mat4));
     }
   }
 }

@@ -75,7 +75,7 @@ ShaderReflectionDetails::ShaderReflectionDetails(const std::vector<uint32_t>& sp
   vertex_input_layout = ReflectVertexInputLayout(compiler, resources);
 
   for (auto& uniform_buffer : resources.uniform_buffers) {
-    uint32_t binding = compiler.get_decoration(uniform_buffer.id, spv::DecorationLocation);
+    uint32_t binding = compiler.get_decoration(uniform_buffer.id, spv::DecorationBinding);
     uniform_buffers.emplace(binding, ReflectUniformBufferLayout(compiler, resources, uniform_buffer));
   }
 }

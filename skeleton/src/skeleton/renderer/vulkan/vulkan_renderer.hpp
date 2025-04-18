@@ -111,8 +111,8 @@ class VulkanRenderer : public Renderer {
   VkPipelineLayout             graphics_pipeline_layout_ = VK_NULL_HANDLE;
   VkDescriptorSetLayout        descriptor_set_layout_ = VK_NULL_HANDLE;
   VkDescriptorPool             descriptor_pool_;
+  std::vector<VkDescriptorSet> descriptor_sets_;
   struct UniformBuffer {
-    std::vector<VkDescriptorSet> descriptor_sets;
     std::vector<VkBuffer>        buffers;
     std::vector<VmaAllocation>   allocations;
     std::vector<void*>           mapped_memory;

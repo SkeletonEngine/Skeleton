@@ -5,13 +5,15 @@ layout (location = 1) in vec3 a_color;
 
 layout (location = 0) out vec3 v_color;
 
-layout (binding = 0) uniform MvpUniformBuffer {
-  mat4 model;
-  mat4 view;
-  mat4 proj;
-} u_mvp;
+layout (set = 0, binding = 0) uniform CameraUniformBuffer {
+  mat4 matrix;
+} u_camera;
+
+layout (set = 0, binding = 1) uniform ModelUniformBuffer {
+  mat4 matrix;
+} u_model;
 
 void main() {
   v_color = a_color;
-  gl_Position = u_mvp.proj * u_mvp.view * u_mvp.model * vec4(a_pos, 0.0, 1.0);
+  gl_Position = u_camera.matrix * u_model.matrix * vec4(a_pos, 0.0, 1.0);
 }

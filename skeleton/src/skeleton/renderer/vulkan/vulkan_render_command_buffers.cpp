@@ -64,8 +64,8 @@ void VulkanRenderer::RecordRenderCommandBuffer(VkCommandBuffer command_buffer, u
 
   // Bind descriptor sets
   for (const auto& uniform_buffer : uniform_buffers_) {
-    vkCmdBindDescriptorSets(command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphics_pipeline_layout_, 0, 1,
-                            &uniform_buffer.second.descriptor_sets[current_frame], 0, nullptr);
+    vkCmdBindDescriptorSets(command_buffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphics_pipeline_layout_,
+                            0, 1, &descriptor_sets_[current_frame], 0, nullptr);
   }
 
   // Issue draw command
