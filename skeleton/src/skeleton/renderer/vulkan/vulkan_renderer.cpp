@@ -91,10 +91,8 @@ void VulkanRenderer::RenderFrame() {
   auto current_time = std::chrono::high_resolution_clock::now();
   float angle = std::chrono::duration<float, std::chrono::seconds::period>(current_time - start_time).count();
   glm::mat4 rotation_matrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0, 0, 1));
-
-  for (const auto& ub : uniform_buffers_) {
-    std::memcpy(ub.second.mapped_memory[current_frame], glm::value_ptr(rotation_matrix), sizeof(glm::mat4));
-  }
+  std::memcpy(uniform_buffers_[kUboBindingModelMatrix].mapped_memory[current_frame],
+              glm::value_ptr(rotation_matrix), sizeof(glm::mat4));
 
   // Wait for the previous frame to finish, if necessary
   vkWaitForFences(device_, 1, &in_flight_fences_[current_frame], VK_TRUE, UINT64_MAX);
