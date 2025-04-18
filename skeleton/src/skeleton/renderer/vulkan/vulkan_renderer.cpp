@@ -3,6 +3,7 @@
 #include "skeleton/renderer/vulkan/vulkan_renderer.hpp"
 #include "skeleton/renderer/vulkan/vulkan_core.hpp"
 
+#include <chrono>
 #include <vector>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -87,9 +88,11 @@ void VulkanRenderer::RenderFrame() {
   
   // TODO(jack): remove test code
   // Upload rotation matrix
-  static float angle = 0.0f;
+  static auto start_time = std::chrono::high_resolution_clock::now();
+  auto current_time = std::chrono::high_resolution_clock::now();
+  float angle = std::chrono::duration<float, std::chrono::seconds::period>(current_time - start_time).count();
   glm::mat4 rotation_matrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0, 0, 1));
-  angle += 0.002f;
+
   for (const auto& ub : uniform_buffers_) {
     std::memcpy(ub.second.mapped_memory[current_frame], glm::value_ptr(rotation_matrix), sizeof(glm::mat4));
   }
