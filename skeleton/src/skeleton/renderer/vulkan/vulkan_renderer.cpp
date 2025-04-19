@@ -93,6 +93,9 @@ void VulkanRenderer::RenderFrame() {
   static uint32_t current_frame = 0;
   current_frame = (current_frame + 1) % kMaxFramesInFlight;
 
+  // Wait for the previous frame to finish, if necessary
+  vkWaitForFences(device_, 1, &in_flight_fences_[current_frame], VK_TRUE, UINT64_MAX);
+
   // TODO(jack): remove test code
   // Upload rotation matrix
   static auto start_time = std::chrono::high_resolution_clock::now();
@@ -101,9 +104,6 @@ void VulkanRenderer::RenderFrame() {
   glm::mat4 rotation_matrix = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0, 0, 1));
   std::memcpy(uniform_buffers_[kUboBindingModelMatrix].mapped_memory[current_frame],
               glm::value_ptr(rotation_matrix), sizeof(glm::mat4));
-
-  // Wait for the previous frame to finish, if necessary
-  vkWaitForFences(device_, 1, &in_flight_fences_[current_frame], VK_TRUE, UINT64_MAX);
 
   // Acquire an image from the swapchain
   uint32_t image_index;
