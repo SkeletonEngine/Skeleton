@@ -5,7 +5,7 @@
 
 #include <functional>
 #include <string>
-#include "skeleton/application_settings.hpp"
+#include "skeleton/window/window_backend.hpp"
 
 struct GLFWwindow;
 
@@ -13,30 +13,29 @@ namespace Skeleton {
 
 class Window {
  public:
-  explicit Window(const ApplicationSettings& settings);
-  ~Window();
+  virtual ~Window() { };
 
  public:
-  /* Should be called once per frame */
-  void PollEvents() const;
-
-  /* Returns true if the window has not yet recieved a close event or platform equivalent */
-  bool IsOpen() const;
-
-  /* Allows renderer to handle framebuffer resize events */
-  void RegisterFramebufferSizeCallback(std::function<void(int width, int height)> callback);
+  virtual WindowBackend GetBackend() const = 0;
 
  public:
-  GLFWwindow* GetGlfwWindowHandle() const;
-  int GetFramebufferWidth() const;
-  int GetFramebufferHeight() const;
+  // To be called by the engine once per frame
+  virtual void PollEvents() const = 0;
 
  public:
-  void SetTitle(const std::string& title);
+  // To allow the renderer to respond to framebuffer resize events
+  virtual void RegisterFramebufferSizeCallback(std::function<void(int width, int height)> callback) = 0;
 
- private:
-  GLFWwindow* glfw_window_;
-  std::function<void(int width, int height)> framebuffer_size_callback_;
+ public:
+  // Returns true if the window has not yet recieved a close event or platform equivalent
+  virtual bool IsOpen() const = 0;
+
+ public:
+  virtual int GetFramebufferWidth() const = 0;
+  virtual int GetFramebufferHeight() const = 0;
+
+ public:
+  virtual void SetTitle(const std::string& title) = 0;
 };
 
 }  // namespace Skeleton

@@ -1,6 +1,6 @@
 // Copyright 2024-2025 SkeletonEngine
 
-#include "skeleton/window/window.hpp"
+#include "skeleton/window/glfw/glfw_window.hpp"
 #include "skeleton/core/core.hpp"
 
 #include <string>
@@ -8,10 +8,10 @@
 
 namespace Skeleton {
 
-Window::Window(const ApplicationSettings& settings) {
+GlfwWindow::GlfwWindow(RendererBackend renderer_backend) {
   SK_CHECK(glfwInit());
 
-  switch (settings.renderer.backend) {
+  switch (renderer_backend) {
     case RendererBackend::kOpenGl: {
       glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
       glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -33,47 +33,47 @@ Window::Window(const ApplicationSettings& settings) {
   /* Register callbacks */
   glfwSetWindowUserPointer(glfw_window_, this);
   glfwSetFramebufferSizeCallback(glfw_window_, [](GLFWwindow* w, int width, int height) {
-    Window* window = static_cast<Window*>(glfwGetWindowUserPointer(w));
+    GlfwWindow* window = static_cast<GlfwWindow*>(glfwGetWindowUserPointer(w));
     if (window->framebuffer_size_callback_) {
       window->framebuffer_size_callback_(width, height);
     }
   });
 }
 
-Window::~Window() {
+GlfwWindow::~GlfwWindow() {
   glfwDestroyWindow(glfw_window_);
   glfwTerminate();
 }
 
-void Window::PollEvents() const {
+void GlfwWindow::PollEvents() const {
   glfwPollEvents();
 }
 
-bool Window::IsOpen() const {
+bool GlfwWindow::IsOpen() const {
   return !glfwWindowShouldClose(glfw_window_);
 }
 
-void Window::RegisterFramebufferSizeCallback(std::function<void(int width, int height)> callback) {
+void GlfwWindow::RegisterFramebufferSizeCallback(std::function<void(int width, int height)> callback) {
   framebuffer_size_callback_ = callback;
 }
 
-GLFWwindow* Window::GetGlfwWindowHandle() const {
+GLFWwindow* GlfwWindow::GetNativeWindowHandle() const {
   return glfw_window_;
 }
 
-int Window::GetFramebufferWidth() const {
+int GlfwWindow::GetFramebufferWidth() const {
   int width, height;
   glfwGetFramebufferSize(glfw_window_, &width, &height);
   return width;
 }
 
-int Window::GetFramebufferHeight() const {
+int GlfwWindow::GetFramebufferHeight() const {
   int width, height;
   glfwGetFramebufferSize(glfw_window_, &width, &height);
   return height;
 }
 
-void Window::SetTitle(const std::string& title) {
+void GlfwWindow::SetTitle(const std::string& title) {
   glfwSetWindowTitle(glfw_window_, title.c_str());
 }
 

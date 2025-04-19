@@ -16,13 +16,20 @@ source_group("src/skeleton/core" FILES ${SKELETON_SRC_CORE_FILES})
 
 set(SKELETON_SRC_WINDOW_FILES
   src/skeleton/window/window.hpp
-  src/skeleton/window/window.cpp
+  src/skeleton/window/window_backend.hpp
 )
 source_group("src/skeleton/window" FILES ${SKELETON_SRC_WINDOW_FILES})
+
+set(SKELETON_SRC_WINDOW_GLFW_FILES
+  src/skeleton/window/glfw/glfw_window.hpp
+  src/skeleton/window/glfw/glfw_window.cpp
+)
+source_group("src/skeleton/window/glfw" FILES ${SKELETON_SRC_WINDOW_GLFW_FILES})
 
 set(SKELETON_FILES
   ${SKELETON_FILES}
   ${SKELETON_SRC_FILES}
   ${SKELETON_SRC_CORE_FILES}
   ${SKELETON_SRC_WINDOW_FILES}
+  ${SKELETON_SRC_WINDOW_GLFW_FILES}
 )
