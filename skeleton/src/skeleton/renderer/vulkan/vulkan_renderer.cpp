@@ -11,7 +11,7 @@
 namespace Skeleton::Vulkan {
 
 VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* window)
-: window_(window), vsync_(settings.renderer.vsync) {
+: window_(window), vsync_(settings.renderer.vsync), projection_matrix_dirty_(kMaxFramesInFlight, true) {
   CreateInstance();
 #ifdef SK_BUILD_DEBUG
   CreateDebugMessenger();
@@ -30,30 +30,22 @@ VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* wind
   CreateSyncObjects();
   CreateMesh();
 
-  // TODO(jack): remove test code
-  // Calculate and upload the camera view/projection matrix
-  auto calc_camera_matrix = [&](int width, int height) {
-    glm::mat4 view_matrix       = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -1.0f));
-    glm::mat4 projection_matrix = glm::perspectiveFov(
-      glm::radians(90.0f), static_cast<float>(width), static_cast<float>(height), 0.1f, 1000.0f);
-    glm::mat4 camera_matrix = projection_matrix * view_matrix;
-    for (size_t i = 0; i < kMaxFramesInFlight; ++i) {
-      std::memcpy(uniform_buffers_[kUboBindingCameraMatrix].mapped_memory[i],
-                  glm::value_ptr(camera_matrix), sizeof(glm::mat4));
-    }
-  };
-
   // Register a callback so that we are notified when the client window is resized
   // When that happens, we will need to recreate the swapchain
   // We also need to recalculate the projection matrix in case the aspect ratio of the window has changed
   auto on_window_resize = [&](int width, int height) {
     window_framebuffer_resized_ = true;
     window_minimized_ = (width == 0 || height == 0);
-    calc_camera_matrix(width, height);
+
+    // Calculate the projection matrix, then mark all camera matrices as dirty so they will be updated
+    CalcProjectionMatrix();
+    for (size_t i = 0; i < kMaxFramesInFlight; ++i) {
+      projection_matrix_dirty_[i] = true;
+    }
   };
 
   window->RegisterFramebufferSizeCallback(on_window_resize);
-  calc_camera_matrix(window_->GetFramebufferWidth(), window_->GetFramebufferHeight());
+  CalcProjectionMatrix();
 }
 
 VulkanRenderer::~VulkanRenderer() {
@@ -105,6 +97,16 @@ void VulkanRenderer::RenderFrame() {
   std::memcpy(uniform_buffers_[kUboBindingModelMatrix].mapped_memory[current_frame],
               glm::value_ptr(rotation_matrix), sizeof(glm::mat4));
 
+  // TODO(jack): remove test code
+  // If the camera matrix is dirty for the current frame, upload it
+  if (projection_matrix_dirty_[current_frame]) {
+    glm::mat4 view_matrix       = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+    glm::mat4 camera_matrix = projection_matrix_ * view_matrix;
+    std::memcpy(uniform_buffers_[kUboBindingCameraMatrix].mapped_memory[current_frame],
+                glm::value_ptr(camera_matrix), sizeof(glm::mat4));
+    projection_matrix_dirty_[current_frame] = false;
+  };
+
   // Acquire an image from the swapchain
   uint32_t image_index;
   VkResult image_acquire_result = vkAcquireNextImageKHR(
@@ -149,6 +151,12 @@ void VulkanRenderer::RenderFrame() {
   present_info.pSwapchains        = swapchains;
   present_info.pImageIndices      = &image_index;
   vkQueuePresentKHR(present_queue_, &present_info);
+}
+
+void VulkanRenderer::CalcProjectionMatrix() {
+  projection_matrix_ = glm::perspectiveFov(glm::radians(90.0f),
+    static_cast<float>(window_->GetFramebufferWidth()),
+    static_cast<float>(window_->GetFramebufferHeight()), 0.1f, 1000.0f);
 }
 
 }  // namespace Skeleton::Vulkan

@@ -6,6 +6,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <glm/glm.hpp>
 #include "skeleton/application_settings.hpp"
 #include "skeleton/renderer/renderer.hpp"
 #include "skeleton/window/window.hpp"
@@ -68,6 +69,9 @@ class VulkanRenderer : public Renderer {
                                VmaAllocation* allocation, VkBufferUsageFlagBits usage);
 
  private:
+  void CalcProjectionMatrix();
+
+ private:
   /* Constants */
   const size_t kMaxFramesInFlight = 2;
 
@@ -105,6 +109,8 @@ class VulkanRenderer : public Renderer {
   std::vector<VkFence>     in_flight_fences_;
   bool                     window_framebuffer_resized_ = false;
   bool                     window_minimized_           = false;
+  glm::mat4                projection_matrix_;
+  std::vector<bool>        projection_matrix_dirty_;
   VkBuffer                 vertex_buffer_   = VK_NULL_HANDLE;
   VmaAllocation            vertex_buffer_allocation_ = VK_NULL_HANDLE;
   VkBuffer                 index_buffer_   = VK_NULL_HANDLE;
@@ -121,7 +127,7 @@ class VulkanRenderer : public Renderer {
     std::vector<VkBuffer>        buffers;
     std::vector<VmaAllocation>   allocations;
     std::vector<void*>           mapped_memory;
-    uint32_t                     size;
+    uint32_t                     size = 0;
   };
   std::unordered_map<uint32_t, UniformBuffer>   uniform_buffers_;
 
