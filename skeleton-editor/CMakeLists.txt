@@ -11,5 +11,8 @@ target_compile_features(skeleton-editor PRIVATE cxx_std_20)
 
 target_link_libraries(skeleton-editor PRIVATE skeleton)
 
+add_subdirectory(vendor/ocornut/imgui)
+target_link_libraries(skeleton-editor PRIVATE imgui)
+
 set_target_properties(skeleton-editor PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 set_target_properties(skeleton-editor PROPERTIES XCODE_GENERATE_SCHEME TRUE XCODE_SCHEME_WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
