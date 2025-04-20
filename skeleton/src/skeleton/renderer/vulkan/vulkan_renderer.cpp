@@ -37,9 +37,11 @@ VulkanRenderer::VulkanRenderer(Window* window) : window_(window), projection_mat
     window_minimized_ = (width == 0 || height == 0);
 
     // Calculate the projection matrix, then mark all camera matrices as dirty so they will be updated
-    CalcProjectionMatrix();
-    for (size_t i = 0; i < kMaxFramesInFlight; ++i) {
-      projection_matrix_dirty_[i] = true;
+    if (!window_minimized_) {
+      CalcProjectionMatrix();
+      for (size_t i = 0; i < kMaxFramesInFlight; ++i) {
+        projection_matrix_dirty_[i] = true;
+      }
     }
   };
 
