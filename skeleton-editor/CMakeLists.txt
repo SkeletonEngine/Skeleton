@@ -6,8 +6,26 @@ set(SKELETON_EDITOR_SRC_FILES
 )
 source_group("src/skeleton-editor" FILES ${SKELETON_EDITOR_SRC_FILES})
 
-add_executable(skeleton-editor ${SKELETON_EDITOR_SRC_FILES})
+set(SKELETON_EDITOR_RENDERER_OPENGL_FILES
+  src/skeleton-editor/renderer/opengl/opengl_editor_renderer.hpp
+  src/skeleton-editor/renderer/opengl/opengl_editor_renderer.cpp
+)
+source_group("src/skeleton-editor/renderer/opengl" FILES ${SKELETON_EDITOR_RENDERER_OPENGL_FILES})
+
+set(SKELETON_EDITOR_RENDERER_VULKAN_FILES
+  src/skeleton-editor/renderer/vulkan/vulkan_editor_renderer.hpp
+  src/skeleton-editor/renderer/vulkan/vulkan_editor_renderer.cpp
+)
+source_group("src/skeleton-editor/renderer/vulkan" FILES ${SKELETON_EDITOR_RENDERER_VULKAN_FILES})
+
+add_executable(skeleton-editor
+  ${SKELETON_EDITOR_SRC_FILES}
+  ${SKELETON_EDITOR_RENDERER_OPENGL_FILES}
+  ${SKELETON_EDITOR_RENDERER_VULKAN_FILES}
+)
 target_compile_features(skeleton-editor PRIVATE cxx_std_20)
+
+target_include_directories(skeleton-editor PRIVATE src)
 
 target_link_libraries(skeleton-editor PRIVATE skeleton)
 

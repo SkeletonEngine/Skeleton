@@ -1,9 +1,9 @@
 // Copyright 2024-2025 SkeletonEngine
 
-#include <skeleton/skeleton.hpp>
-#include <skeleton/window/glfw/glfw_window.hpp>
-#include <skeleton/renderer/opengl/opengl_renderer.hpp>
-#include <skeleton/renderer/vulkan/vulkan_renderer.hpp>
+#include "skeleton/skeleton.hpp"
+#include "skeleton/window/glfw/glfw_window.hpp"
+#include "skeleton-editor/renderer/opengl/opengl_editor_renderer.hpp"
+#include "skeleton-editor/renderer/vulkan/vulkan_editor_renderer.hpp"
 
 int main() {
   Skeleton::RendererBackend backend = Skeleton::RendererBackend::kVulkan;
@@ -12,8 +12,8 @@ int main() {
 
   Skeleton::Renderer* renderer;
   switch (backend) {
-    case Skeleton::RendererBackend::kOpenGl: renderer = new Skeleton::OpenGl::OpenGlRenderer(window); break;
-    case Skeleton::RendererBackend::kVulkan: renderer = new Skeleton::Vulkan::VulkanRenderer(window); break;
+    case Skeleton::RendererBackend::kOpenGl: renderer = new Skeleton::OpenGl::OpenGlEditorRenderer(window); break;
+    case Skeleton::RendererBackend::kVulkan: renderer = new Skeleton::Vulkan::VulkanEditorRenderer(window); break;
     default: break;
   }
 

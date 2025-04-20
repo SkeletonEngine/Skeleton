@@ -25,4 +25,3 @@ class OpenGlRenderer : public Renderer {
 };
 
 }  // namespace Skeleton::OpenGl
-
