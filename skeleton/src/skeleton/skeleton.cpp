@@ -9,27 +9,11 @@
 
 namespace Skeleton {
 
-void StartApplication(const ApplicationSettings& settings) {
-  Window* window = new GlfwWindow(settings.renderer.backend);
-
-  Renderer* renderer;
-  switch (settings.renderer.backend) {
-    case RendererBackend::kOpenGl: renderer = new OpenGl::OpenGlRenderer(settings, window); break;
-    case RendererBackend::kVulkan: renderer = new Vulkan::VulkanRenderer(settings, window); break;
-    default:
-      SK_DEBUGBREAK();
-      return;
-  }
-
-  window->SetTitle(renderer->GetRendererString());
-
+void StartApplication(Window* window, Renderer* renderer) {
   while (window->IsOpen()) {
     window->PollEvents();
     renderer->RenderFrame();
   }
-
-  delete renderer;
-  delete window;
 }
 
 }  // namespace Skeleton

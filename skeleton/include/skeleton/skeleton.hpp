@@ -3,10 +3,11 @@
 #pragma once
 #include "skeleton/core/core.hpp"
 
-#include "skeleton/application_settings.hpp"
+#include "skeleton/window/window.hpp"
+#include "skeleton/renderer/renderer.hpp"
 
 namespace Skeleton {
 
-void StartApplication(const ApplicationSettings& settings = {});
+void StartApplication(Window* window, Renderer* renderer);
 
 }  // namespace Skeleton

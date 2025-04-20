@@ -10,8 +10,7 @@
 
 namespace Skeleton::Vulkan {
 
-VulkanRenderer::VulkanRenderer(const ApplicationSettings& settings, Window* window)
-: window_(window), vsync_(settings.renderer.vsync), projection_matrix_dirty_(kMaxFramesInFlight, true) {
+VulkanRenderer::VulkanRenderer(Window* window) : window_(window), projection_matrix_dirty_(kMaxFramesInFlight, true) {
   CreateInstance();
 #ifdef SK_BUILD_DEBUG
   CreateDebugMessenger();

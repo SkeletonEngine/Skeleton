@@ -1,7 +1,8 @@
 set(SKELETON_RENDERER_VULKAN_FILES
-  src/skeleton/renderer/vulkan/vulkan_check.hpp
+  include/skeleton/renderer/vulkan/vulkan_renderer.hpp
+  include/skeleton/renderer/vulkan/vulkan_check.hpp
+  include/skeleton/renderer/vulkan/vulkan_core.hpp
   src/skeleton/renderer/vulkan/vulkan_command_pool.cpp
-  src/skeleton/renderer/vulkan/vulkan_core.hpp
   src/skeleton/renderer/vulkan/vulkan_debug_messenger.cpp
   src/skeleton/renderer/vulkan/vulkan_device.cpp
   src/skeleton/renderer/vulkan/vulkan_device_local_buffer.cpp
@@ -13,7 +14,6 @@ set(SKELETON_RENDERER_VULKAN_FILES
   src/skeleton/renderer/vulkan/vulkan_instance.cpp
   src/skeleton/renderer/vulkan/vulkan_memory_allocator.cpp
   src/skeleton/renderer/vulkan/vulkan_mesh.cpp
-  src/skeleton/renderer/vulkan/vulkan_renderer.hpp
   src/skeleton/renderer/vulkan/vulkan_renderer.cpp
   src/skeleton/renderer/vulkan/vulkan_renderer_string.cpp
   src/skeleton/renderer/vulkan/vulkan_render_command_buffers.cpp

@@ -5,7 +5,6 @@
 
 #include <string>
 
-#include "skeleton/application_settings.hpp"
 #include "skeleton/renderer/renderer.hpp"
 #include "skeleton/window/window.hpp"
 
@@ -13,7 +12,10 @@ namespace Skeleton::OpenGl {
 
 class OpenGlRenderer : public Renderer {
  public:
-  OpenGlRenderer(const ApplicationSettings& settings, Window* window);
+  OpenGlRenderer(Window* window);
+
+ public:
+  virtual RendererBackend GetBackend() const override { return RendererBackend::kOpenGl; }
 
  public:
   virtual void RenderFrame() override;

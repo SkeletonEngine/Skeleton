@@ -7,7 +7,7 @@
 
 namespace Skeleton::OpenGl {
 
-OpenGlRenderer::OpenGlRenderer(const ApplicationSettings& settings, Window* window) {
+OpenGlRenderer::OpenGlRenderer(Window* window) {
 }
 
 void OpenGlRenderer::RenderFrame() {

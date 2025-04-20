@@ -7,7 +7,6 @@
 #include <unordered_map>
 #include <vector>
 #include <glm/glm.hpp>
-#include "skeleton/application_settings.hpp"
 #include "skeleton/renderer/renderer.hpp"
 #include "skeleton/window/window.hpp"
 
@@ -15,8 +14,11 @@ namespace Skeleton::Vulkan {
 
 class VulkanRenderer : public Renderer {
  public:
-  VulkanRenderer(const ApplicationSettings& settings, Window* window);
+  VulkanRenderer(Window* window);
   virtual ~VulkanRenderer();
+
+ public:
+  virtual RendererBackend GetBackend() const override { return RendererBackend::kVulkan; }
 
  public:
   virtual void RenderFrame() override;

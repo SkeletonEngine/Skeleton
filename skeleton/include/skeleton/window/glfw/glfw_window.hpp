@@ -5,7 +5,7 @@
 
 #include <functional>
 #include <string>
-#include "skeleton/application_settings.hpp"
+#include "skeleton/renderer/renderer_backend.hpp"
 #include "skeleton/window/window.hpp"
 
 struct GLFWwindow;

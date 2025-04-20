@@ -4,12 +4,16 @@
 #include "skeleton/core/core.hpp"
 
 #include <string>
+#include "skeleton/renderer/renderer_backend.hpp"
 
 namespace Skeleton {
 
 class Renderer {
  public:
   virtual ~Renderer() { }
+
+ public:
+  virtual RendererBackend GetBackend() const = 0;
 
  public:
   virtual void RenderFrame() = 0;
