@@ -41,3 +41,6 @@ target_link_libraries(imgui PRIVATE glfw)
 target_link_libraries(imgui PRIVATE volk)
 
 target_include_directories(imgui PUBLIC imgui)
+target_include_directories(imgui PUBLIC .)
+
+target_compile_definitions(imgui PUBLIC IMGUI_IMPL_VULKAN_USE_VOLK)

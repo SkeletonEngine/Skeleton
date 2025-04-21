@@ -10,6 +10,13 @@ namespace Skeleton::Vulkan {
 class VulkanEditorRenderer : public VulkanRenderer {
  public:
   VulkanEditorRenderer(Window* window);
+  virtual ~VulkanEditorRenderer();
+
+ public:
+  virtual void RenderFrame() override;
+
+ private:
+  VkDescriptorPool imgui_descriptor_pool_;
 };
 
 }  // namespace Skeleton::OpenGl

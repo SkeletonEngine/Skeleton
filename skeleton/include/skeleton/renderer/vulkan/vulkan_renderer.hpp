@@ -23,6 +23,10 @@ class VulkanRenderer : public Renderer {
  public:
   virtual void RenderFrame() override;
 
+ protected:
+  void BeginFrame();
+  void EndFrame();
+
  public:
   virtual std::string GetRendererString() const override;
 
@@ -63,10 +67,16 @@ class VulkanRenderer : public Renderer {
   void PopulateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT* to_populate);
 #endif  // SK_BUILD_DEBUG
 
+ protected:
+  void BeginRenderCommandBuffer();
+  void RenderMesh();
+  void EndRenderCommandBuffer();
+
  private:
-  void RecordRenderCommandBuffer(VkCommandBuffer command_buffer, uint32_t image_index, uint32_t current_frame);
   VkCommandBuffer BeginSingleUseCommandBuffer();
   void EndSingleUseCommandBuffer(VkCommandBuffer command_buffer);
+
+ private:
   void CreateDeviceLocalBuffer(const void* data, VkDeviceSize size, VkBuffer* buffer,
                                VmaAllocation* allocation, VkBufferUsageFlagBits usage);
 
@@ -75,7 +85,7 @@ class VulkanRenderer : public Renderer {
 
  private:
   /* Constants */
-  const size_t kMaxFramesInFlight = 2;
+  const uint32_t kMaxFramesInFlight = 2;
 
   enum {
     kUboBindingCameraMatrix = 0,
@@ -86,7 +96,7 @@ class VulkanRenderer : public Renderer {
   /* Non-owning pointer to the window */
   Window* window_;
 
- private:
+ protected:
   /* Objects owned by the renderer */
   VkAllocationCallbacks*   allocator_       = VK_NULL_HANDLE;
   VmaAllocator             vma_allocator_   = VK_NULL_HANDLE;
@@ -98,6 +108,7 @@ class VulkanRenderer : public Renderer {
   VkSurfaceKHR             surface_         = VK_NULL_HANDLE;
   VkSwapchainKHR           swapchain_       = VK_NULL_HANDLE;
   std::vector<VkImage>     swapchain_images_;
+  uint32_t                 swapchain_min_image_count_;
   VkExtent2D               swapchain_extent_;
   VkFormat                 swapchain_image_format_;
   std::vector<VkImageView> swapchain_image_views_;
@@ -132,6 +143,10 @@ class VulkanRenderer : public Renderer {
     uint32_t                     size = 0;
   };
   std::unordered_map<uint32_t, UniformBuffer>   uniform_buffers_;
+
+  // Transient, keeps track of the acquired image indicex and the current frame-in-flight during rendering a frame
+  uint32_t image_index_   = 0;
+  uint32_t current_frame_ = 0;
 
  private:
 #ifdef SK_BUILD_DEBUG

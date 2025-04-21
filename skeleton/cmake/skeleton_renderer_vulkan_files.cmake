@@ -2,11 +2,11 @@ set(SKELETON_RENDERER_VULKAN_FILES
   include/skeleton/renderer/vulkan/vulkan_renderer.hpp
   include/skeleton/renderer/vulkan/vulkan_check.hpp
   include/skeleton/renderer/vulkan/vulkan_core.hpp
+  include/skeleton/renderer/vulkan/vulkan_device_queue_families.hpp
   src/skeleton/renderer/vulkan/vulkan_command_pool.cpp
   src/skeleton/renderer/vulkan/vulkan_debug_messenger.cpp
   src/skeleton/renderer/vulkan/vulkan_device.cpp
   src/skeleton/renderer/vulkan/vulkan_device_local_buffer.cpp
-  src/skeleton/renderer/vulkan/vulkan_device_queue_families.hpp
   src/skeleton/renderer/vulkan/vulkan_device_queue_families.cpp
   src/skeleton/renderer/vulkan/vulkan_extensions.hpp
   src/skeleton/renderer/vulkan/vulkan_extensions.cpp

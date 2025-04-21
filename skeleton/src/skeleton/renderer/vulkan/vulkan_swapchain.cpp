@@ -24,6 +24,7 @@ void VulkanRenderer::CreateSwapchain() {
 
   /* We request one more image than the minimum to reduce the probability that we end up having to wait on the
      driver to complete operations to resume rendering. */
+  swapchain_min_image_count_ = swapchain_support.capabilities.minImageCount;
   uint32_t image_count = swapchain_support.capabilities.minImageCount + 1;
   /* Make sure we don't exceed the max image count supported by the GPU */
   if (swapchain_support.capabilities.maxImageCount > 0 && image_count > swapchain_support.capabilities.maxImageCount) {
