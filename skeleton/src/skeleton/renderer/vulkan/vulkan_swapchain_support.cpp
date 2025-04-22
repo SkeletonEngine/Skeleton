@@ -37,9 +37,10 @@ bool SwapchainSupportDetails::IsAdequate() const {
 }
 
 VkSurfaceFormatKHR SwapchainSupportDetails::ChooseSurfaceFormat() const {
-  /* Iterate over the list looking for SRGB, since this results in more accurate percieved colors */
+  // We're using VK_FORMAT_B8G8R8A8_UNORM for compatibility with imgui in the editor, as well as
+  // for parity with OpenGl and other backends
   for (const auto& format : formats) {
-    if (format.format == VK_FORMAT_B8G8R8A8_SRGB && format.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR) {
+    if (format.format == VK_FORMAT_B8G8R8A8_UNORM && format.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR) {
       return format;
     }
   }
