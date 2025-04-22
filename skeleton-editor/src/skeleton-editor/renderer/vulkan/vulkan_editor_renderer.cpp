@@ -40,7 +40,7 @@ VulkanEditorRenderer::VulkanEditorRenderer(Window* window) : VulkanRenderer(wind
   DeviceQueueFamilies queue_families(physical_device_, surface_);
 
   ImGui_ImplVulkan_InitInfo init_info = { };
-  init_info.ApiVersion      = VK_API_VERSION_1_0;
+  init_info.ApiVersion      = SK_VK_API_VERSION;
   init_info.Instance        = instance_;
   init_info.PhysicalDevice  = physical_device_;
   init_info.Device          = device_;
