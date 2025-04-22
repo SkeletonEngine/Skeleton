@@ -59,6 +59,8 @@ VulkanEditorRenderer::VulkanEditorRenderer(Window* window) : VulkanRenderer(wind
 }
 
 VulkanEditorRenderer::~VulkanEditorRenderer() {
+  vkDeviceWaitIdle(device_);
+
   ImGui_ImplVulkan_Shutdown();
   vkDestroyDescriptorPool(device_, imgui_descriptor_pool_, allocator_);
   ImGui_ImplGlfw_Shutdown();
