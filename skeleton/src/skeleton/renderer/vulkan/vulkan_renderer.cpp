@@ -78,7 +78,7 @@ void VulkanRenderer::RenderFrame() {
 
   BeginFrame();
   BeginRenderCommandBuffer();
-  RenderMesh();
+  PerformSceneRenderPass();
   EndRenderCommandBuffer();
   EndFrame();
 }

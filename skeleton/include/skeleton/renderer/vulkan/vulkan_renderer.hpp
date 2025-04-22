@@ -69,8 +69,8 @@ class VulkanRenderer : public Renderer {
 
  protected:
   void BeginRenderCommandBuffer();
-  void RenderMesh();
   void EndRenderCommandBuffer();
+  void PerformSceneRenderPass();
 
  private:
   VkCommandBuffer BeginSingleUseCommandBuffer();

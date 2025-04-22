@@ -15,6 +15,8 @@ source_group("src/skeleton-editor/renderer/opengl" FILES ${SKELETON_EDITOR_RENDE
 set(SKELETON_EDITOR_RENDERER_VULKAN_FILES
   src/skeleton-editor/renderer/vulkan/vulkan_editor_renderer.hpp
   src/skeleton-editor/renderer/vulkan/vulkan_editor_renderer.cpp
+  src/skeleton-editor/renderer/vulkan/vulkan_editor_renderer_descriptor_pool.cpp
+  src/skeleton-editor/renderer/vulkan/vulkan_editor_renderer_render_pass.cpp
 )
 source_group("src/skeleton-editor/renderer/vulkan" FILES ${SKELETON_EDITOR_RENDERER_VULKAN_FILES})
 

@@ -16,7 +16,17 @@ class VulkanEditorRenderer : public VulkanRenderer {
   virtual void RenderFrame() override;
 
  private:
+  void PerformImguiRenderPass();
+
+ private:
+  void CreateImguiDescriptorPool();
+  void DestroyImguiDescriptorPool();
+  void CreateImguiRenderPass();
+  void DestroyImguiRenderPass();
+
+ private:
   VkDescriptorPool imgui_descriptor_pool_;
+  VkRenderPass     imgui_render_pass_;
 };
 
 }  // namespace Skeleton::OpenGl
