@@ -37,8 +37,10 @@ VulkanEditorRenderer::VulkanEditorRenderer(Window* window) : VulkanRenderer(wind
   pool_info.pPoolSizes    = pool_sizes;
   VK_CHECK(vkCreateDescriptorPool(device_, &pool_info, allocator_, &imgui_descriptor_pool_));
 
+  // Query queue families to find graphics family index
   DeviceQueueFamilies queue_families(physical_device_, surface_);
 
+  // Fill in all the Vulkan objects that imgui will use
   ImGui_ImplVulkan_InitInfo init_info = { };
   init_info.ApiVersion      = SK_VK_API_VERSION;
   init_info.Instance        = instance_;
@@ -59,8 +61,10 @@ VulkanEditorRenderer::VulkanEditorRenderer(Window* window) : VulkanRenderer(wind
 }
 
 VulkanEditorRenderer::~VulkanEditorRenderer() {
+  // Wait for frames to finish rendering before allowing imgui to destroy its Vulkan objects
   vkDeviceWaitIdle(device_);
 
+  // Destroy imgui Vulkan objects in reverse order of creation
   ImGui_ImplVulkan_Shutdown();
   vkDestroyDescriptorPool(device_, imgui_descriptor_pool_, allocator_);
   ImGui_ImplGlfw_Shutdown();
