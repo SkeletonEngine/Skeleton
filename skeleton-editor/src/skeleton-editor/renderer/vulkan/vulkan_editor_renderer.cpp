@@ -75,6 +75,7 @@ void VulkanEditorRenderer::RenderFrame() {
   ImGui::ShowDemoWindow();
   ImGui::Render();
 
+  // Now we perform the actual Vulkan commands
   BeginFrame();
   BeginRenderCommandBuffer();
   PerformSceneRenderPass();
