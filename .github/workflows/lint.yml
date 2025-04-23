@@ -1,4 +1,4 @@
-# GitHub Action to run cpplint on all pushes and pull requests
+# GitHub Action to run cpplint on all pushes and pull requests 
 
 name: lint
 on: [push, pull_request]
