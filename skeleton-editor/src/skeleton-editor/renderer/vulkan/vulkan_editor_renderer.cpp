@@ -8,6 +8,7 @@
 #include <imgui/backends/imgui_impl_vulkan.h>
 #include "skeleton/window/glfw/glfw_window.hpp"
 #include "skeleton/renderer/vulkan/vulkan_device_queue_families.hpp"
+#include "skeleton-editor/gui/dockspace.hpp"
 
 namespace Skeleton::Vulkan {
 
@@ -15,9 +16,9 @@ VulkanEditorRenderer::VulkanEditorRenderer(const RendererSettings& settings)
     : VulkanRenderer(settings, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL) {
   // The editor uses imgui, so we have to set it up
   // First, create the context
-  IMGUI_CHECKVERSION();
   ImGui::CreateContext();
   ImGui::GetIO().IniFilename = nullptr;
+  ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
   // Init Imgui with GLFW - Imgui needs the GLFWwindow*
   GlfwWindow* glfw_window = dynamic_cast<GlfwWindow*>(settings.window);
@@ -92,33 +93,8 @@ void VulkanEditorRenderer::RenderFrame() {
   ImGui_ImplVulkan_NewFrame();
   ImGui_ImplGlfw_NewFrame();
   ImGui::NewFrame();
-  ImGui::ShowDemoWindow();
-
-  // Blit the scene framebuffer to an Imgui window
-  ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 0 });
-  ImGui::Begin("Viewport");
-  // Keep track of the previous size of the window so we can resize the framebuffers when needed
-  ImVec2 size = ImGui::GetContentRegionAvail();
-  // If the size has changed, mark the framebuffers to be resized and projection matrices to be recalculated
-  if (editor_viewport_extent_.width != size.x || editor_viewport_extent_.height != size.y) {
-    editor_viewport_extent_.width  = static_cast<uint32_t>(size.x);
-    editor_viewport_extent_.height = static_cast<uint32_t>(size.y);
-    editor_viewport_minimized_ = editor_viewport_extent_.width == 0 || editor_viewport_extent_.height == 0;
-    if (!editor_viewport_minimized_) {
-      for (size_t i = 0; i < swapchain_images_.size(); ++i) {
-        editor_viewport_framebuffers_dirty_[i] = true;
-      }
-      for (uint32_t i = 0; i < kMaxFramesInFlight; ++i) {
-        projection_matrix_dirty_[i] = true;
-      }
-    }
-  }
-  if (!editor_viewport_framebuffers_dirty_[image_index_]) {
-    ImGui::Image((ImTextureID)editor_viewport_descriptor_sets_[image_index_], size);
-  }
-  ImGui::End();
-  ImGui::PopStyleVar();
-
+  DrawDockspace();
+  DrawViewport();
   ImGui::Render();
 
   // Now we perform the actual Vulkan commands

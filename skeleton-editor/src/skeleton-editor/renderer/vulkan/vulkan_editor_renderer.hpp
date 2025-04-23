@@ -21,6 +21,9 @@ class VulkanEditorRenderer : public VulkanRenderer {
   void PerformImguiRenderPass();
 
  private:
+  void DrawViewport();
+
+ private:
   void CreateImguiDescriptorPool();
   void DestroyImguiDescriptorPool();
   void CreateImguiRenderPass();
