@@ -14,7 +14,7 @@ namespace Skeleton::Vulkan {
 
 class VulkanRenderer : public Renderer {
  public:
-  VulkanRenderer(Window* window, VkImageLayout final_layout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
+  explicit VulkanRenderer(Window* window, VkImageLayout final_layout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
   virtual ~VulkanRenderer();
 
  public:

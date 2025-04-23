@@ -14,8 +14,7 @@ void VulkanRenderer::CreateWindowSurface() {
   if (window_->GetBackend() == WindowBackend::kGlfw) {
     GlfwWindow* glfw_window = dynamic_cast<GlfwWindow*>(window_);
     VK_CHECK(glfwCreateWindowSurface(instance_, glfw_window->GetNativeWindowHandle(), allocator_, &surface_));
-  }
-  else {
+  } else {
     // When we support other window systems, we'll need to add code to create surfaces with them here
     SK_DEBUGBREAK();
   }

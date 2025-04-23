@@ -16,18 +16,18 @@ void VulkanRenderer::CreateRenderPass() {
   color_attachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
   color_attachment.initialLayout  = VK_IMAGE_LAYOUT_UNDEFINED;
   color_attachment.finalLayout    = final_image_layout_;
-              
+
   VkAttachmentReference color_attachment_ref { };
   color_attachment_ref.attachment = 0;
   color_attachment_ref.layout     = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-              
+
   // Indices into the pColorAttachments array correspond to layout directives in the fragment shader, e.g.
   // layout (location = 0) out vec4 o_color;
   VkSubpassDescription subpass { };
   subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
   subpass.colorAttachmentCount = 1;
   subpass.pColorAttachments = &color_attachment_ref;
-              
+
   // Create subpass dependency to take care of image layout transition
   VkSubpassDependency dependency { };
   dependency.srcSubpass    = VK_SUBPASS_EXTERNAL;
@@ -36,7 +36,7 @@ void VulkanRenderer::CreateRenderPass() {
   dependency.srcAccessMask = 0;
   dependency.dstStageMask  = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
   dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-              
+
   // Create the render pass
   VkRenderPassCreateInfo render_pass_info { VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO };
   render_pass_info.attachmentCount = 1;
@@ -45,7 +45,7 @@ void VulkanRenderer::CreateRenderPass() {
   render_pass_info.pSubpasses      = &subpass;
   render_pass_info.dependencyCount = 1;
   render_pass_info.pDependencies   = &dependency;
-              
+
   VK_CHECK(vkCreateRenderPass(device_, &render_pass_info, allocator_, &render_pass_));
 }
 

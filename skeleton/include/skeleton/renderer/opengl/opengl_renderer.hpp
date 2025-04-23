@@ -12,7 +12,7 @@ namespace Skeleton::OpenGl {
 
 class OpenGlRenderer : public Renderer {
  public:
-  OpenGlRenderer(Window* window);
+  explicit OpenGlRenderer(Window* window);
 
  public:
   virtual RendererBackend GetBackend() const override { return RendererBackend::kOpenGl; }

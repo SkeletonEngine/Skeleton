@@ -13,7 +13,7 @@ namespace Skeleton {
 
 class Window {
  public:
-  virtual ~Window() { };
+  virtual ~Window() { }
 
  public:
   virtual WindowBackend GetBackend() const = 0;

@@ -116,7 +116,7 @@ void VulkanRenderer::BeginFrame() {
     std::memcpy(uniform_buffers_[kUboBindingCameraMatrix].mapped_memory[current_frame_],
                 glm::value_ptr(camera_matrix), sizeof(glm::mat4));
     projection_matrix_dirty_[current_frame_] = false;
-  };
+  }
 
   // Acquire an image from the swapchain
   VkResult image_acquire_result = vkAcquireNextImageKHR(

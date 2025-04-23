@@ -39,10 +39,10 @@ void VulkanRenderer::PerformSceneRenderPass() {
   render_pass_info.clearValueCount = 1;
   render_pass_info.pClearValues = &clear_color;
   vkCmdBeginRenderPass(render_command_buffers_[current_frame_], &render_pass_info, VK_SUBPASS_CONTENTS_INLINE);
-         
+
   // Bind the pipeline
   vkCmdBindPipeline(render_command_buffers_[current_frame_], VK_PIPELINE_BIND_POINT_GRAPHICS, graphics_pipeline_);
-         
+
   // Set dynamic viewport and scissor
   VkViewport viewport { };
   viewport.x = 0.0f;
@@ -52,7 +52,7 @@ void VulkanRenderer::PerformSceneRenderPass() {
   viewport.minDepth = 0.0f;
   viewport.maxDepth = 1.0f;
   vkCmdSetViewport(render_command_buffers_[current_frame_], 0, 1, &viewport);
-         
+
   VkRect2D scissor { };
   scissor.offset = { 0, 0 };
   scissor.extent = *render_target_extent_;
@@ -68,8 +68,8 @@ void VulkanRenderer::PerformSceneRenderPass() {
 
   // Bind descriptor sets
   for (const auto& uniform_buffer : uniform_buffers_) {
-    vkCmdBindDescriptorSets(render_command_buffers_[current_frame_], VK_PIPELINE_BIND_POINT_GRAPHICS, graphics_pipeline_layout_,
-                            0, 1, &descriptor_sets_[current_frame_], 0, nullptr);
+    vkCmdBindDescriptorSets(render_command_buffers_[current_frame_], VK_PIPELINE_BIND_POINT_GRAPHICS,
+                            graphics_pipeline_layout_, 0, 1, &descriptor_sets_[current_frame_], 0, nullptr);
   }
 
   // Issue draw command

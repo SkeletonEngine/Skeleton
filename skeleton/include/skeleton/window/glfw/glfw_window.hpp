@@ -14,7 +14,7 @@ namespace Skeleton {
 
 class GlfwWindow : public Window {
  public:
-  GlfwWindow(RendererBackend renderer_backend);
+  explicit GlfwWindow(RendererBackend renderer_backend);
   virtual ~GlfwWindow();
 
  public:
