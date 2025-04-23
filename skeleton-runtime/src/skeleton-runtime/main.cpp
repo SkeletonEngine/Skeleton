@@ -9,11 +9,14 @@ int main() {
   Skeleton::RendererBackend backend = Skeleton::RendererBackend::kVulkan;
 
   Skeleton::Window* window = new Skeleton::GlfwWindow(backend);
+  Skeleton::RendererSettings renderer_settings;
+  renderer_settings.window = window;
+  renderer_settings.vsync  = true;
 
   Skeleton::Renderer* renderer;
   switch (backend) {
-    case Skeleton::RendererBackend::kOpenGl: renderer = new Skeleton::OpenGl::OpenGlRenderer(window); break;
-    case Skeleton::RendererBackend::kVulkan: renderer = new Skeleton::Vulkan::VulkanRenderer(window); break;
+    case Skeleton::RendererBackend::kOpenGl: renderer = new Skeleton::OpenGl::OpenGlRenderer(renderer_settings); break;
+    case Skeleton::RendererBackend::kVulkan: renderer = new Skeleton::Vulkan::VulkanRenderer(renderer_settings); break;
     default: break;
   }
 
