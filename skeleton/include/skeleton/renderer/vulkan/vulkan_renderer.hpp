@@ -8,13 +8,14 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include "skeleton/renderer/renderer.hpp"
+#include "skeleton/renderer/renderer_settings.hpp"
 #include "skeleton/window/window.hpp"
 
 namespace Skeleton::Vulkan {
 
 class VulkanRenderer : public Renderer {
  public:
-  explicit VulkanRenderer(Window* window, VkImageLayout final_layout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
+  explicit VulkanRenderer(const RendererSettings& settings, VkImageLayout final_layout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
   virtual ~VulkanRenderer();
 
  public:

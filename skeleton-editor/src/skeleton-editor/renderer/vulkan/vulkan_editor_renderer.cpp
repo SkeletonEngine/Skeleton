@@ -11,8 +11,8 @@
 
 namespace Skeleton::Vulkan {
 
-VulkanEditorRenderer::VulkanEditorRenderer(Window* window)
-    : VulkanRenderer(window, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL) {
+VulkanEditorRenderer::VulkanEditorRenderer(const RendererSettings& settings)
+    : VulkanRenderer(settings, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL) {
   // The editor uses imgui, so we have to set it up
   // First, create the context
   IMGUI_CHECKVERSION();
@@ -20,7 +20,7 @@ VulkanEditorRenderer::VulkanEditorRenderer(Window* window)
   ImGui::GetIO().IniFilename = nullptr;
 
   // Init Imgui with GLFW - Imgui needs the GLFWwindow*
-  GlfwWindow* glfw_window = dynamic_cast<GlfwWindow*>(window);
+  GlfwWindow* glfw_window = dynamic_cast<GlfwWindow*>(settings.window);
   ImGui_ImplGlfw_InitForVulkan(glfw_window->GetNativeWindowHandle(), true);
 
   // Create necessary resources for Imgui - a descriptor pool and a render pass

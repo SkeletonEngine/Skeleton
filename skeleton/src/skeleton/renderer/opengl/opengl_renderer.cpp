@@ -11,12 +11,15 @@
 
 namespace Skeleton::OpenGl {
 
-OpenGlRenderer::OpenGlRenderer(Window* window) {
-  glfwMakeContextCurrent(dynamic_cast<GlfwWindow*>(window)->GetNativeWindowHandle());
+OpenGlRenderer::OpenGlRenderer(const RendererSettings& settings) {
+  glfw_window_ = dynamic_cast<GlfwWindow*>(settings.window)->GetNativeWindowHandle();
+  glfwMakeContextCurrent(glfw_window_);
   gladLoadGL(glfwGetProcAddress);
 }
 
 void OpenGlRenderer::RenderFrame() {
+  glClear(GL_COLOR_BUFFER_BIT);
+  glfwSwapBuffers(glfw_window_);
 }
 
 std::string OpenGlRenderer::GetRendererString() const {

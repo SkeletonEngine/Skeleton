@@ -5,7 +5,7 @@
 
 namespace Skeleton::OpenGl {
 
-OpenGlEditorRenderer::OpenGlEditorRenderer(Window* window) : OpenGlRenderer(window) {
+OpenGlEditorRenderer::OpenGlEditorRenderer(const RendererSettings& settings) : OpenGlRenderer(settings) {
 }
 
 }  // namespace Skeleton::OpenGl

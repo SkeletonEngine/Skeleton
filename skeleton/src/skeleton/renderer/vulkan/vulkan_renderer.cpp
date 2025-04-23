@@ -10,8 +10,9 @@
 
 namespace Skeleton::Vulkan {
 
-VulkanRenderer::VulkanRenderer(Window* window, VkImageLayout final_layout)
-    : window_(window), projection_matrix_dirty_(kMaxFramesInFlight, true), final_image_layout_(final_layout) {
+VulkanRenderer::VulkanRenderer(const RendererSettings& settings, VkImageLayout final_layout)
+    : window_(settings.window), projection_matrix_dirty_(kMaxFramesInFlight, true), final_image_layout_(final_layout),
+      vsync_(settings.vsync) {
   CreateInstance();
 #ifdef SK_BUILD_DEBUG
   CreateDebugMessenger();
@@ -45,7 +46,7 @@ VulkanRenderer::VulkanRenderer(Window* window, VkImageLayout final_layout)
     }
   };
 
-  window->RegisterFramebufferSizeCallback(on_window_resize);
+  settings.window->RegisterFramebufferSizeCallback(on_window_resize);
 }
 
 VulkanRenderer::~VulkanRenderer() {

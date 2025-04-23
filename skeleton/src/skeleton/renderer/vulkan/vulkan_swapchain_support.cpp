@@ -50,19 +50,13 @@ VkSurfaceFormatKHR SwapchainSupportDetails::ChooseSurfaceFormat() const {
 }
 
 VkPresentModeKHR SwapchainSupportDetails::ChoosePresentMode(bool vsync) const {
-  // If vsync has been requested, our first preference is VK_PRESENT_MODE_IMMEDIATE_KHR
-  if (vsync && std::count(present_modes.begin(), present_modes.end(), VK_PRESENT_MODE_IMMEDIATE_KHR)) {
+  // If vsync has not been requested, our first preference is VK_PRESENT_MODE_IMMEDIATE_KHR
+  if (!vsync && std::count(present_modes.begin(), present_modes.end(), VK_PRESENT_MODE_IMMEDIATE_KHR)) {
     return VK_PRESENT_MODE_IMMEDIATE_KHR;
   }
 
-  // If vsync has been requested or VK_PRESENT_MODE_IMMEDIATE_KHR isn't available,
-  //   our next preference is VK_PRESENT_MODE_MAILBOX_KHR
-  if (std::count(present_modes.begin(), present_modes.end(), VK_PRESENT_MODE_MAILBOX_KHR)) {
-    return VK_PRESENT_MODE_MAILBOX_KHR;
-  }
-
-  // If we can't use VK_PRESENT_MODE_MAILBOX_KHR we'll fall back to VK_PRESENT_MODE_FIFO_KHR,
-  // which is guaranteed to be available
+  // If vsync was requested or we can't use VK_PRESENT_MODE_MAILBOX_KHR we'll
+  // fall back to VK_PRESENT_MODE_FIFO_KHR, which is guaranteed to be available
   return VK_PRESENT_MODE_FIFO_KHR;
 }
 

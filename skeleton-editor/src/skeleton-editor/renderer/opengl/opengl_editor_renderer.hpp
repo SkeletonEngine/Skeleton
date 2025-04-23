@@ -4,12 +4,13 @@
 #include "skeleton/core/core.hpp"
 
 #include "skeleton/renderer/opengl/opengl_renderer.hpp"
+#include "skeleton/renderer/renderer_settings.hpp"
 
 namespace Skeleton::OpenGl {
 
 class OpenGlEditorRenderer : public OpenGlRenderer {
  public:
-  explicit OpenGlEditorRenderer(Window* window);
+  explicit OpenGlEditorRenderer(const RendererSettings& settings);
 };
 
 }  // namespace Skeleton::OpenGl

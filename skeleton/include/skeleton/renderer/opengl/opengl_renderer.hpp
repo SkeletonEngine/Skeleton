@@ -6,13 +6,16 @@
 #include <string>
 
 #include "skeleton/renderer/renderer.hpp"
+#include "skeleton/renderer/renderer_settings.hpp"
 #include "skeleton/window/window.hpp"
+
+struct GLFWwindow;
 
 namespace Skeleton::OpenGl {
 
 class OpenGlRenderer : public Renderer {
  public:
-  explicit OpenGlRenderer(Window* window);
+  explicit OpenGlRenderer(const RendererSettings& settings);
 
  public:
   virtual RendererBackend GetBackend() const override { return RendererBackend::kOpenGl; }
@@ -22,6 +25,9 @@ class OpenGlRenderer : public Renderer {
 
  public:
   virtual std::string GetRendererString() const override;
+
+ private:
+  GLFWwindow* glfw_window_;
 };
 
 }  // namespace Skeleton::OpenGl

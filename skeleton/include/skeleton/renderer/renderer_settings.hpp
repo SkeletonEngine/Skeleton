@@ -4,11 +4,12 @@
 #include "skeleton/core/core.hpp"
 
 #include "skeleton/renderer/renderer_backend.hpp"
+#include "skeleton/window/window.hpp"
 
 namespace Skeleton {
 
 struct RendererSettings {
-  RendererBackend backend = RendererBackend::kVulkan;
+  Window*         window;
   bool            vsync   = true;
 };
 

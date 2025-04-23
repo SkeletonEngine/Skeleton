@@ -11,31 +11,31 @@
 namespace Skeleton::Vulkan {
 
 void VulkanRenderer::CreateSwapchain() {
-  /* Query the physical device and surface and choose the surface format and present mode for the swapchain */
+  // Query the physical device and surface and choose the surface format and present mode for the swapchain
   SwapchainSupportDetails swapchain_support(physical_device_, surface_);
   VkSurfaceFormatKHR surface_format = swapchain_support.ChooseSurfaceFormat();
   VkPresentModeKHR present_mode = swapchain_support.ChoosePresentMode(vsync_);
 
-  /* Store the image format for later */
+  // Store the image format for later
   swapchain_image_format_ = surface_format.format;
 
-  /* Choose the swap extent (resolution) of the swapchain images we'll be rendering to */
+  // Choose the swap extent (resolution) of the swapchain images we'll be rendering to
   swapchain_extent_ = swapchain_support.ChooseExtent(window_);
 
-  /* We request one more image than the minimum to reduce the probability that we end up having to wait on the
-     driver to complete operations to resume rendering. */
+  // We request one more image than the minimum to reduce the probability that we end up having to wait on the
+  // driver to complete operations to resume rendering
   swapchain_min_image_count_ = swapchain_support.capabilities.minImageCount;
   uint32_t image_count = swapchain_support.capabilities.minImageCount + 1;
-  /* Make sure we don't exceed the max image count supported by the GPU */
+  // Make sure we don't exceed the max image count supported by the GPU
   if (swapchain_support.capabilities.maxImageCount > 0 && image_count > swapchain_support.capabilities.maxImageCount) {
     image_count = swapchain_support.capabilities.maxImageCount;
   }
 
-  /* Query device queue family indices so that we can figure out the swapchain sharing mode */
+  // Query device queue family indices so that we can figure out the swapchain sharing mode
   DeviceQueueFamilies indices(physical_device_, surface_);
   uint32_t queue_family_indices[] = { indices.GraphicsFamilyIndex(), indices.PresentFamilyIndex() };
 
-  /* Create the swapchain */
+  // Create the swapchain
   VkSwapchainCreateInfoKHR swapchain_info { VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR };
   swapchain_info.surface          = surface_;
   swapchain_info.minImageCount    = image_count;
@@ -50,8 +50,8 @@ void VulkanRenderer::CreateSwapchain() {
   swapchain_info.clipped          = VK_TRUE;
   swapchain_info.oldSwapchain     = VK_NULL_HANDLE;
 
-  /* To avoid having to manage ownership transitions, we use VK_SHARING_MODE_CONCURRENT 
-     for GPUs with separate graphics and compute queues */
+  // To avoid having to manage ownership transitions, we use VK_SHARING_MODE_CONCURRENT 
+  // for GPUs with separate graphics and compute queues
   if (indices.GraphicsFamilyIndex() != indices.PresentFamilyIndex()) {
     swapchain_info.imageSharingMode      = VK_SHARING_MODE_CONCURRENT;
     swapchain_info.queueFamilyIndexCount = 2;
@@ -62,7 +62,7 @@ void VulkanRenderer::CreateSwapchain() {
 
   VK_CHECK(vkCreateSwapchainKHR(device_, &swapchain_info, allocator_, &swapchain_));
 
-  /* Retrieve the swapchain images - no need to delete them, they are created and deleted as part of the swapchain */
+  // Retrieve the swapchain images - no need to delete them, they are created and deleted as part of the swapchain
   vkGetSwapchainImagesKHR(device_, swapchain_, &image_count, nullptr);
   swapchain_images_.resize(image_count);
   vkGetSwapchainImagesKHR(device_, swapchain_, &image_count, swapchain_images_.data());

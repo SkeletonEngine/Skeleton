@@ -5,12 +5,13 @@
 
 #include <vector>
 #include "skeleton/renderer/vulkan/vulkan_renderer.hpp"
+#include "skeleton/renderer/renderer_settings.hpp"
 
 namespace Skeleton::Vulkan {
 
 class VulkanEditorRenderer : public VulkanRenderer {
  public:
-  explicit VulkanEditorRenderer(Window* window);
+  explicit VulkanEditorRenderer(const RendererSettings& settings);
   virtual ~VulkanEditorRenderer();
 
  public:
