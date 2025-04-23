@@ -50,7 +50,7 @@ void VulkanRenderer::CreateSwapchain() {
   swapchain_info.clipped          = VK_TRUE;
   swapchain_info.oldSwapchain     = VK_NULL_HANDLE;
 
-  // To avoid having to manage ownership transitions, we use VK_SHARING_MODE_CONCURRENT 
+  // To avoid having to manage ownership transitions, we use VK_SHARING_MODE_CONCURRENT
   // for GPUs with separate graphics and compute queues
   if (indices.GraphicsFamilyIndex() != indices.PresentFamilyIndex()) {
     swapchain_info.imageSharingMode      = VK_SHARING_MODE_CONCURRENT;
