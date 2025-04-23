@@ -32,7 +32,6 @@ void VulkanEditorRenderer::DrawViewport() {
   }
   ImGui::End();
   ImGui::PopStyleVar();
-  
 }
 
 }  // namespace Skeleton::Vulkan
