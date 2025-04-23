@@ -24,6 +24,8 @@ set(SPIRV_CROSS_CLI FALSE)
 add_subdirectory(vendor/khronosgroup/spirv-cross)
 target_link_libraries(skeleton PRIVATE spirv-cross-glsl)
 
+add_subdirectory(vendor/dav1dde/glad)
+target_link_libraries(skeleton PRIVATE glad)
 add_subdirectory(vendor/gpuopen/vulkan-memory-allocator)
 target_link_libraries(skeleton PUBLIC vulkan-memory-allocator)
 add_subdirectory(vendor/glfw/glfw)
