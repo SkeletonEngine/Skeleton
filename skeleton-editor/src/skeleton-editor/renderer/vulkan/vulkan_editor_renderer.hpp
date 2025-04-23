@@ -9,7 +9,7 @@ namespace Skeleton::Vulkan {
 
 class VulkanEditorRenderer : public VulkanRenderer {
  public:
-  VulkanEditorRenderer(Window* window);
+  explicit VulkanEditorRenderer(Window* window);
   virtual ~VulkanEditorRenderer();
 
  public:
@@ -40,4 +40,4 @@ class VulkanEditorRenderer : public VulkanRenderer {
   std::vector<bool>            editor_viewport_framebuffers_dirty_;
 };
 
-}  // namespace Skeleton::OpenGl
+}  // namespace Skeleton::Vulkan

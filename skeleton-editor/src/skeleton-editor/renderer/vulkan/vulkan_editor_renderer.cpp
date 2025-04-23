@@ -11,7 +11,8 @@
 
 namespace Skeleton::Vulkan {
 
-VulkanEditorRenderer::VulkanEditorRenderer(Window* window) : VulkanRenderer(window, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL) {
+VulkanEditorRenderer::VulkanEditorRenderer(Window* window)
+    : VulkanRenderer(window, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL) {
   // The editor uses imgui, so we have to set it up
   // First, create the context
   IMGUI_CHECKVERSION();
@@ -92,7 +93,7 @@ void VulkanEditorRenderer::RenderFrame() {
   ImGui_ImplGlfw_NewFrame();
   ImGui::NewFrame();
   ImGui::ShowDemoWindow();
-      
+
   // Blit the scene framebuffer to an Imgui window
   ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 0 });
   ImGui::Begin("Viewport");
@@ -117,7 +118,7 @@ void VulkanEditorRenderer::RenderFrame() {
   }   
   ImGui::End();
   ImGui::PopStyleVar();
-      
+
   ImGui::Render();
 
   // Now we perform the actual Vulkan commands

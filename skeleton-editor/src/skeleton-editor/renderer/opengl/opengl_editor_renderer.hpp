@@ -9,7 +9,7 @@ namespace Skeleton::OpenGl {
 
 class OpenGlEditorRenderer : public OpenGlRenderer {
  public:
-  OpenGlEditorRenderer(Window* window);
+  explicit OpenGlEditorRenderer(Window* window);
 };
 
 }  // namespace Skeleton::OpenGl
