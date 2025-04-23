@@ -11,7 +11,8 @@ void VulkanEditorRenderer::CreateImguiDescriptorPool() {
   // Imgui needs its own descriptor pool
   // The pool needs to be big enough to allocate the minimum descriptors for Imgui to work internally, plus one for
   // each framebuffer we will be blitting to an Imgui window as an image
-  uint32_t descriptor_count = IMGUI_IMPL_VULKAN_MINIMUM_IMAGE_SAMPLER_POOL_SIZE + static_cast<uint32_t>(swapchain_images_.size());
+  uint32_t descriptor_count = IMGUI_IMPL_VULKAN_MINIMUM_IMAGE_SAMPLER_POOL_SIZE
+                            + static_cast<uint32_t>(swapchain_images_.size());
   VkDescriptorPoolSize pool_sizes[] = {
     { VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, descriptor_count },
   };

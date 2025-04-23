@@ -21,7 +21,7 @@ void VulkanEditorRenderer::CreateImguiRenderPass() {
   color_attachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
   color_attachment.initialLayout  = VK_IMAGE_LAYOUT_UNDEFINED;
   color_attachment.finalLayout    = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
-        
+
   VkAttachmentReference color_attachment_ref { };
   color_attachment_ref.attachment = 0;
   color_attachment_ref.layout     = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
@@ -50,7 +50,7 @@ void VulkanEditorRenderer::CreateImguiRenderPass() {
   render_pass_info.pSubpasses      = &subpass;
   render_pass_info.dependencyCount = 1;
   render_pass_info.pDependencies   = &dependency;
-             
+
   VK_CHECK(vkCreateRenderPass(device_, &render_pass_info, allocator_, &imgui_render_pass_));
 }
 

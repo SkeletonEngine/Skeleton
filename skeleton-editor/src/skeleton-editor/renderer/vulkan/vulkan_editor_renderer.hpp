@@ -3,6 +3,7 @@
 #pragma once
 #include "skeleton/core/core.hpp"
 
+#include <vector>
 #include "skeleton/renderer/vulkan/vulkan_renderer.hpp"
 
 namespace Skeleton::Vulkan {

@@ -111,11 +111,11 @@ void VulkanEditorRenderer::RenderFrame() {
       for (uint32_t i = 0; i < kMaxFramesInFlight; ++i) {
         projection_matrix_dirty_[i] = true;
       }
-    } 
-  }   
+    }
+  }
   if (!editor_viewport_framebuffers_dirty_[image_index_]) {
     ImGui::Image((ImTextureID)editor_viewport_descriptor_sets_[image_index_], size);
-  }   
+  }
   ImGui::End();
   ImGui::PopStyleVar();
 
@@ -152,10 +152,10 @@ void VulkanEditorRenderer::PerformImguiRenderPass() {
   render_pass_info.clearValueCount = 1;
   render_pass_info.pClearValues = &clear_color;
   vkCmdBeginRenderPass(render_command_buffers_[current_frame_], &render_pass_info, VK_SUBPASS_CONTENTS_INLINE);
-            
+
   // Bind the pipeline
   vkCmdBindPipeline(render_command_buffers_[current_frame_], VK_PIPELINE_BIND_POINT_GRAPHICS, graphics_pipeline_);
-            
+
   // Set dynamic viewport and scissor
   VkViewport viewport { };
   viewport.x = 0.0f;
@@ -165,21 +165,21 @@ void VulkanEditorRenderer::PerformImguiRenderPass() {
   viewport.minDepth = 0.0f;
   viewport.maxDepth = 1.0f;
   vkCmdSetViewport(render_command_buffers_[current_frame_], 0, 1, &viewport);
-            
+
   VkRect2D scissor { };
   scissor.offset = { 0, 0 };
   scissor.extent = swapchain_extent_;
   vkCmdSetScissor(render_command_buffers_[current_frame_], 0, 1, &scissor);
-            
+
   // Bind the vertex buffer
   VkBuffer vertex_buffers[] = { vertex_buffer_ };
   VkDeviceSize offsets[] = { 0 };
   vkCmdBindVertexBuffers(render_command_buffers_[current_frame_], 0, 1, vertex_buffers, offsets);
-            
+
   // Tell imgui to actually do the Vulkan stuff it needs to do to render the gui
   ImDrawData* draw_data = ImGui::GetDrawData();
   ImGui_ImplVulkan_RenderDrawData(draw_data, render_command_buffers_[current_frame_]);
-            
+
   // End the render pass
   vkCmdEndRenderPass(render_command_buffers_[current_frame_]);
 }
