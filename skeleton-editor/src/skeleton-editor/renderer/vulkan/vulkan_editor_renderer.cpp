@@ -11,7 +11,7 @@
 
 namespace Skeleton::Vulkan {
 
-VulkanEditorRenderer::VulkanEditorRenderer(Window* window) : VulkanRenderer(window) {
+VulkanEditorRenderer::VulkanEditorRenderer(Window* window) : VulkanRenderer(window, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL) {
   // The editor uses imgui, so we have to set it up
   // First, create the context
   IMGUI_CHECKVERSION();
@@ -25,6 +25,10 @@ VulkanEditorRenderer::VulkanEditorRenderer(Window* window) : VulkanRenderer(wind
   // Create necessary resources for Imgui - a descriptor pool and a render pass
   CreateImguiDescriptorPool();
   CreateImguiRenderPass();
+
+  // Set the scene render pass to render to the viewport framebuffers
+  render_target_framebuffers_ = &editor_viewport_framebuffers_;
+  render_target_extent_       = &editor_viewport_extent_;
 
   // Init Imgui with Vulkan backend - Imgui needs a whole load of Vulkan objects
   // It has its own descriptor pool and render pass, other than that we can pass
@@ -46,13 +50,28 @@ VulkanEditorRenderer::VulkanEditorRenderer(Window* window) : VulkanRenderer(wind
   init_info.Allocator       = allocator_;
   init_info.CheckVkResultFn = [](VkResult r) { VK_CHECK(r); };
   ImGui_ImplVulkan_Init(&init_info);
+
+  // We need to init Imgui for Vulkan before creating the framebuffers so that Imgui can allocate descriptor sets
+  editor_viewport_images_.resize(swapchain_images_.size());
+  editor_viewport_image_allocations_.resize(swapchain_images_.size());
+  editor_viewport_image_views_.resize(swapchain_images_.size());
+  editor_viewport_samplers_.resize(swapchain_images_.size());
+  editor_viewport_descriptor_sets_.resize(swapchain_images_.size());
+  editor_viewport_framebuffers_.resize(swapchain_images_.size());
+  editor_viewport_framebuffers_dirty_.resize(swapchain_images_.size(), true);
+  for (size_t i = 0; i < swapchain_images_.size(); ++i) {
+    CreateViewportFramebuffer(i);
+  }
 }
 
 VulkanEditorRenderer::~VulkanEditorRenderer() {
   // Wait for frames to finish rendering before allowing imgui to destroy its Vulkan objects
   vkDeviceWaitIdle(device_);
 
-  // Destroy imgui Vulkan objects in reverse order of creation
+  // Destroy Imgui Vulkan objects in reverse order of creation
+  for (size_t i = 0; i < swapchain_images_.size(); ++i) {
+    DestroyViewportFramebuffer(i);
+  }
   ImGui_ImplVulkan_Shutdown();
   DestroyImguiRenderPass();
   DestroyImguiDescriptorPool();
@@ -66,19 +85,56 @@ void VulkanEditorRenderer::RenderFrame() {
     return;
   }
 
-  // Render Imgui menus
+  // Render Imgui
   // None of this actually touches the GPU, it just creates vertex
   // buffers, etc. to be used later by ImGui_ImplVulkan_RenderDrawData
   ImGui_ImplVulkan_NewFrame();
   ImGui_ImplGlfw_NewFrame();
   ImGui::NewFrame();
   ImGui::ShowDemoWindow();
+      
+  // Blit the scene framebuffer to an Imgui window
+  ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, { 0, 0 });
+  ImGui::Begin("Viewport");
+  // Keep track of the previous size of the window so we can resize the framebuffers when needed
+  ImVec2 size = ImGui::GetContentRegionAvail();
+  // If the size has changed, mark the framebuffers to be resized and projection matrices to be recalculated
+  if (editor_viewport_extent_.width != size.x || editor_viewport_extent_.height != size.y) {
+    editor_viewport_extent_.width  = static_cast<uint32_t>(size.x);
+    editor_viewport_extent_.height = static_cast<uint32_t>(size.y);
+    editor_viewport_minimized_ = editor_viewport_extent_.width == 0 || editor_viewport_extent_.height == 0;
+    if (!editor_viewport_minimized_) {
+      for (size_t i = 0; i < swapchain_images_.size(); ++i) {
+        editor_viewport_framebuffers_dirty_[i] = true;
+      }
+      for (uint32_t i = 0; i < kMaxFramesInFlight; ++i) {
+        projection_matrix_dirty_[i] = true;
+      }
+    } 
+  }   
+  if (!editor_viewport_framebuffers_dirty_[image_index_]) {
+    ImGui::Image((ImTextureID)editor_viewport_descriptor_sets_[image_index_], size);
+  }   
+  ImGui::End();
+  ImGui::PopStyleVar();
+      
   ImGui::Render();
 
   // Now we perform the actual Vulkan commands
   BeginFrame();
+
+  // BeginFrame performs synchronization, so we are now safe to delete and
+  // recreate framebuffers if they are the wrong size for the Imgui window
+  if (editor_viewport_framebuffers_dirty_[image_index_]) {
+    DestroyViewportFramebuffer(image_index_);
+    CreateViewportFramebuffer(image_index_);
+    editor_viewport_framebuffers_dirty_[image_index_] = false;
+  }
+
   BeginRenderCommandBuffer();
-  PerformSceneRenderPass();
+  if (!editor_viewport_minimized_) {
+    PerformSceneRenderPass();
+  }
   PerformImguiRenderPass();
   EndRenderCommandBuffer();
   EndFrame();
@@ -91,7 +147,7 @@ void VulkanEditorRenderer::PerformImguiRenderPass() {
   render_pass_info.framebuffer = swapchain_framebuffers_[image_index_];
   render_pass_info.renderArea.offset = { 0, 0 };
   render_pass_info.renderArea.extent = swapchain_extent_;
-  VkClearValue clear_color = {{{ 0.2f, 0.4f, 0.6f, 1.0f }}};
+  VkClearValue clear_color = {{{ 0.0f, 0.0f, 0.0f, 1.0f }}};
   render_pass_info.clearValueCount = 1;
   render_pass_info.pClearValues = &clear_color;
   vkCmdBeginRenderPass(render_command_buffers_[current_frame_], &render_pass_info, VK_SUBPASS_CONTENTS_INLINE);

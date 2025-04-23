@@ -14,7 +14,7 @@ namespace Skeleton::Vulkan {
 
 class VulkanRenderer : public Renderer {
  public:
-  VulkanRenderer(Window* window);
+  VulkanRenderer(Window* window, VkImageLayout final_layout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
   virtual ~VulkanRenderer();
 
  public:
@@ -80,10 +80,7 @@ class VulkanRenderer : public Renderer {
   void CreateDeviceLocalBuffer(const void* data, VkDeviceSize size, VkBuffer* buffer,
                                VmaAllocation* allocation, VkBufferUsageFlagBits usage);
 
- private:
-  void CalcProjectionMatrix();
-
- private:
+ protected:
   /* Constants */
   const uint32_t kMaxFramesInFlight = 2;
 
@@ -115,6 +112,7 @@ class VulkanRenderer : public Renderer {
   std::vector<VkFramebuffer> swapchain_framebuffers_;
   bool                     vsync_           = true;
   VkRenderPass             render_pass_     = VK_NULL_HANDLE;
+  VkImageLayout            final_image_layout_;
   VkCommandPool            command_pool_    = VK_NULL_HANDLE;
   std::vector<VkCommandBuffer> render_command_buffers_;
   std::vector<VkSemaphore> image_available_semaphores_;
@@ -122,7 +120,6 @@ class VulkanRenderer : public Renderer {
   std::vector<VkFence>     in_flight_fences_;
   bool                     window_framebuffer_resized_ = false;
   bool                     window_minimized_           = false;
-  glm::mat4                projection_matrix_;
   std::vector<bool>        projection_matrix_dirty_;
   VkBuffer                 vertex_buffer_   = VK_NULL_HANDLE;
   VmaAllocation            vertex_buffer_allocation_ = VK_NULL_HANDLE;
@@ -147,6 +144,11 @@ class VulkanRenderer : public Renderer {
   // Transient, keeps track of the acquired image indicex and the current frame-in-flight during rendering a frame
   uint32_t image_index_   = 0;
   uint32_t current_frame_ = 0;
+
+ protected:
+  // Derived classes can alter these to render the final scene to a texture instead of directly to the swapchain
+  std::vector<VkFramebuffer>* render_target_framebuffers_ = &swapchain_framebuffers_;
+  VkExtent2D*                 render_target_extent_       = &swapchain_extent_;
 
  private:
 #ifdef SK_BUILD_DEBUG

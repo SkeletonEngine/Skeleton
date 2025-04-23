@@ -6,7 +6,7 @@
 namespace Skeleton::Vulkan {
 
 void VulkanRenderer::CreateSwapchainFramebuffers() {
-  /* Create one framebuffer for each swapchain image view */
+  // Create one framebuffer for each swapchain image view
   swapchain_framebuffers_.resize(swapchain_image_views_.size());
   for (size_t i = 0; i < swapchain_image_views_.size(); ++i) {
     VkImageView attachments[] = {

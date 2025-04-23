@@ -6,8 +6,6 @@
 namespace Skeleton::Vulkan {
 
 void VulkanRenderer::CreateRenderPass() {
-  // For testing purposes we just have one generic render pass that renders to a framebuffer
-              
   // We're rendering to a single framebuffer with just one color attachment
   VkAttachmentDescription color_attachment { };
   color_attachment.format         = swapchain_image_format_;
@@ -17,7 +15,7 @@ void VulkanRenderer::CreateRenderPass() {
   color_attachment.stencilLoadOp  = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
   color_attachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
   color_attachment.initialLayout  = VK_IMAGE_LAYOUT_UNDEFINED;
-  color_attachment.finalLayout    = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;
+  color_attachment.finalLayout    = final_image_layout_;
               
   VkAttachmentReference color_attachment_ref { };
   color_attachment_ref.attachment = 0;

@@ -32,9 +32,9 @@ void VulkanRenderer::PerformSceneRenderPass() {
   // Begin the render pass
   VkRenderPassBeginInfo render_pass_info { VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO };
   render_pass_info.renderPass  = render_pass_;
-  render_pass_info.framebuffer = swapchain_framebuffers_[image_index_];
+  render_pass_info.framebuffer = (*render_target_framebuffers_)[image_index_];
   render_pass_info.renderArea.offset = { 0, 0 };
-  render_pass_info.renderArea.extent = swapchain_extent_;
+  render_pass_info.renderArea.extent = *render_target_extent_;
   VkClearValue clear_color = {{{ 0.2f, 0.4f, 0.6f, 1.0f }}};
   render_pass_info.clearValueCount = 1;
   render_pass_info.pClearValues = &clear_color;
@@ -47,15 +47,15 @@ void VulkanRenderer::PerformSceneRenderPass() {
   VkViewport viewport { };
   viewport.x = 0.0f;
   viewport.y = 0.0f;
-  viewport.width = static_cast<float>(swapchain_extent_.width);
-  viewport.height = static_cast<float>(swapchain_extent_.height);
+  viewport.width = static_cast<float>(render_target_extent_->width);
+  viewport.height = static_cast<float>(render_target_extent_->height);
   viewport.minDepth = 0.0f;
   viewport.maxDepth = 1.0f;
   vkCmdSetViewport(render_command_buffers_[current_frame_], 0, 1, &viewport);
          
   VkRect2D scissor { };
   scissor.offset = { 0, 0 };
-  scissor.extent = swapchain_extent_;
+  scissor.extent = *render_target_extent_;
   vkCmdSetScissor(render_command_buffers_[current_frame_], 0, 1, &scissor);
 
   // Bind the vertex buffer
