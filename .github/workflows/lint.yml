@@ -11,4 +11,6 @@ jobs:
       with:
         python-version: 3.x
     - run: pip install cpplint
-    - run: scripts/lint.sh
+    - run: scripts/lint/lint-skeleton.sh
+    - run: scripts/lint/lint-skeleton-editor.sh
+    - run: scripts/lint/lint-skeleton-runtime.sh
