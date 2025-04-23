@@ -6,7 +6,7 @@
 #include "skeleton-editor/renderer/vulkan/vulkan_editor_renderer.hpp"
 
 int main() {
-  Skeleton::RendererBackend backend = Skeleton::RendererBackend::kVulkan;
+  Skeleton::WindowSettings window_settings;
   window_settings.backend          = Skeleton::WindowBackend::kGlfw;
   window_settings.renderer_backend = Skeleton::RendererBackend::kVulkan;
   window_settings.open_maximized   = true;
@@ -17,8 +17,12 @@ int main() {
   renderer_settings.vsync  = false;
   Skeleton::Renderer* renderer;
   switch (window_settings.renderer_backend) {
-    case Skeleton::RendererBackend::kOpenGl: renderer = new Skeleton::OpenGl::OpenGlEditorRenderer(renderer_settings); break;
-    case Skeleton::RendererBackend::kVulkan: renderer = new Skeleton::Vulkan::VulkanEditorRenderer(renderer_settings); break;
+    case Skeleton::RendererBackend::kOpenGl:
+      renderer = new Skeleton::OpenGl::OpenGlEditorRenderer(renderer_settings);
+      break;
+    case Skeleton::RendererBackend::kVulkan:
+      renderer = new Skeleton::Vulkan::VulkanEditorRenderer(renderer_settings);
+      break;
     default: break;
   }
 
