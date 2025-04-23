@@ -16,6 +16,7 @@ source_group("src/skeleton/core" FILES ${SKELETON_SRC_CORE_FILES})
 set(SKELETON_SRC_WINDOW_FILES
   include/skeleton/window/window.hpp
   include/skeleton/window/window_backend.hpp
+  include/skeleton/window/window_settings.hpp
 )
 source_group("src/skeleton/window" FILES ${SKELETON_SRC_WINDOW_FILES})
 

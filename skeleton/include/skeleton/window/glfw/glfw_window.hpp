@@ -7,6 +7,7 @@
 #include <string>
 #include "skeleton/renderer/renderer_backend.hpp"
 #include "skeleton/window/window.hpp"
+#include "skeleton/window/window_settings.hpp"
 
 struct GLFWwindow;
 
@@ -14,7 +15,7 @@ namespace Skeleton {
 
 class GlfwWindow : public Window {
  public:
-  explicit GlfwWindow(RendererBackend renderer_backend);
+  explicit GlfwWindow(const WindowSettings& settings);
   virtual ~GlfwWindow();
 
  public:

@@ -8,10 +8,10 @@
 
 namespace Skeleton {
 
-GlfwWindow::GlfwWindow(RendererBackend renderer_backend) {
+GlfwWindow::GlfwWindow(const WindowSettings& settings) {
   SK_CHECK(glfwInit());
 
-  switch (renderer_backend) {
+  switch (settings.renderer_backend) {
     case RendererBackend::kOpenGl: {
       glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
       glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -25,6 +25,10 @@ GlfwWindow::GlfwWindow(RendererBackend renderer_backend) {
       glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
       break;
     }
+  }
+
+  if (settings.open_maximized) {
+    glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
   }
 
   glfw_window_ = glfwCreateWindow(1280, 720, "Skeleton", NULL, NULL);
