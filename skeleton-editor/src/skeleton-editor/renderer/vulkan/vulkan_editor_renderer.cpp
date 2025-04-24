@@ -9,6 +9,7 @@
 #include "skeleton/window/glfw/glfw_window.hpp"
 #include "skeleton/renderer/vulkan/vulkan_device_queue_families.hpp"
 #include "skeleton-editor/gui/dockspace.hpp"
+#include "skeleton-editor/gui/scene_graph_panel.hpp"
 
 namespace Skeleton::Vulkan {
 
@@ -95,6 +96,7 @@ void VulkanEditorRenderer::RenderFrame() {
   ImGui::NewFrame();
   DrawDockspace();
   DrawViewport();
+  DrawSceneGraphPanel();
   ImGui::Render();
 
   // Now we perform the actual Vulkan commands

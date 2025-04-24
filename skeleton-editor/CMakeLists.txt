@@ -9,6 +9,8 @@ source_group("src/skeleton-editor" FILES ${SKELETON_EDITOR_SRC_FILES})
 set(SKELETON_EDITOR_SRC_GUI_FILES
   src/skeleton-editor/gui/dockspace.hpp
   src/skeleton-editor/gui/dockspace.cpp
+  src/skeleton-editor/gui/scene_graph_panel.hpp
+  src/skeleton-editor/gui/scene_graph_panel.cpp
 )
 source_group("src/skeleton-editor/gui" FILES ${SKELETON_EDITOR_SRC_GUI_FILES})
 
