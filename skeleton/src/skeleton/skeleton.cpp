@@ -17,12 +17,12 @@ void StartApplication(Window* window, Renderer* renderer) {
   entt::entity node1 = CreateEmptyEntity(&scene, root, "Node 1");
   entt::entity node2 = CreateEmptyEntity(&scene, root, "Node 2");
   entt::entity node3 = CreateEmptyEntity(&scene, root, "Node 3");
-                   
+
   entt::entity node4 = CreateEmptyEntity(&scene, node2, "Node 4");
   entt::entity node5 = CreateEmptyEntity(&scene, node2, "Node 5");
-                   
+
   entt::entity node6 = CreateEmptyEntity(&scene, node3, "Node 6");
-                   
+
   entt::entity node7 = CreateEmptyEntity(&scene, node6, "Node 7");
 
   renderer->SetScene(&scene, root);

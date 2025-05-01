@@ -1,8 +1,9 @@
 // Copyright 2024-2025 SkeletonEngine
 
-#include "skeleton/skeleton.hpp"
+#pragma once
 #include "skeleton/core/core.hpp"
 
+#include <string>
 #include <entt/entt.hpp>
 
 namespace Skeleton {

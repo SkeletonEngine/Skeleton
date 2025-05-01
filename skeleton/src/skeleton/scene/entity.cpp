@@ -1,8 +1,9 @@
 // Copyright 2024-2025 SkeletonEngine
 
-#include "skeleton/skeleton.hpp"
+#include "skeleton/scene/entity.hpp"
 #include "skeleton/core/core.hpp"
 
+#include <string>
 #include <entt/entt.hpp>
 #include "skeleton/scene/components/components.hpp"
 
