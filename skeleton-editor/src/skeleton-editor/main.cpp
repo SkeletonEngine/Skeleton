@@ -1,5 +1,6 @@
 // Copyright 2024-2025 SkeletonEngine
 
+#include <entt/entt.hpp>
 #include "skeleton/skeleton.hpp"
 #include "skeleton/window/glfw/glfw_window.hpp"
 #include "skeleton-editor/renderer/opengl/opengl_editor_renderer.hpp"

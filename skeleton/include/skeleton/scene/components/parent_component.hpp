@@ -7,6 +7,8 @@
 
 namespace Skeleton {
 
-void DrawSceneGraphPanel(entt::registry* scene, entt::entity root);
+struct ParentComponent {
+  entt::entity parent;
+};
 
 }  // namespace Skeleton

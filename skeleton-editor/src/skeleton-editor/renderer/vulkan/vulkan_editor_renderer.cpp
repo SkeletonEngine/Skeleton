@@ -96,7 +96,7 @@ void VulkanEditorRenderer::RenderFrame() {
   ImGui::NewFrame();
   DrawDockspace();
   DrawViewport();
-  DrawSceneGraphPanel();
+  DrawSceneGraphPanel(scene_, root_);
   ImGui::Render();
 
   // Now we perform the actual Vulkan commands

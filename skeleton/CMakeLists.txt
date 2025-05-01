@@ -24,16 +24,22 @@ set(SPIRV_CROSS_CLI FALSE)
 add_subdirectory(vendor/khronosgroup/spirv-cross)
 target_link_libraries(skeleton PRIVATE spirv-cross-glsl)
 
-add_subdirectory(vendor/dav1dde/glad)
-target_link_libraries(skeleton PRIVATE glad)
-add_subdirectory(vendor/gpuopen/vulkan-memory-allocator)
-target_link_libraries(skeleton PUBLIC vulkan-memory-allocator)
 add_subdirectory(vendor/glfw/glfw)
 target_link_libraries(skeleton PRIVATE glfw)
 add_subdirectory(vendor/g-truc/glm)
 target_link_libraries(skeleton PUBLIC glm)
+add_subdirectory(vendor/skypjack/entt)
+target_link_libraries(skeleton PUBLIC EnTT)
+
+# OpenGl Dependencies
+add_subdirectory(vendor/dav1dde/glad)
+target_link_libraries(skeleton PRIVATE glad)
+
+# Vulkan Dependencies
 add_subdirectory(vendor/zeux/volk)
 target_link_libraries(skeleton PUBLIC volk)
+add_subdirectory(vendor/gpuopen/vulkan-memory-allocator)
+target_link_libraries(skeleton PUBLIC vulkan-memory-allocator)
 
 include(cmake/skeleton_shader_compile_target.cmake)
 add_dependencies(skeleton skeleton-shaders)

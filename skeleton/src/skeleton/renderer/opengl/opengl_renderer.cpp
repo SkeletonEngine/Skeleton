@@ -31,4 +31,7 @@ std::string OpenGlRenderer::GetRendererString() const {
   return ss.str();
 }
 
+void OpenGlRenderer::SetScene(entt::registry* scene, entt::entity root) {
+}
+
 }  // namespace Skeleton::OpenGl

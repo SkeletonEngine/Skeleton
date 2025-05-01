@@ -4,7 +4,7 @@
 #include "skeleton/core/core.hpp"
 
 #include <string>
-
+#include <entt/entt.hpp>
 #include "skeleton/renderer/renderer.hpp"
 #include "skeleton/renderer/renderer_settings.hpp"
 #include "skeleton/window/window.hpp"
@@ -25,6 +25,9 @@ class OpenGlRenderer : public Renderer {
 
  public:
   virtual std::string GetRendererString() const override;
+
+ public:
+  virtual void SetScene(entt::registry* scene, entt::entity root) override;
 
  private:
   GLFWwindow* glfw_window_;

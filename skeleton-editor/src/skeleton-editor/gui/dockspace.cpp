@@ -13,7 +13,7 @@ void DrawDockspace() {
   static bool dockspace_setup = false;
   if (!dockspace_setup) {
     ImGuiID viewport = ImGui::DockBuilderAddNode(dockspace, 0);
-    ImGuiID scene_graph_panel = ImGui::DockBuilderSplitNode(viewport, ImGuiDir_Right, 0.25f, &scene_graph_panel, &viewport);
+    ImGuiID scene_graph_panel = ImGui::DockBuilderSplitNode(viewport, ImGuiDir_Left, 0.25f, &scene_graph_panel, &viewport);
     ImGui::DockBuilderDockWindow("Viewport", viewport);
     ImGui::DockBuilderDockWindow("Scene Graph", scene_graph_panel);
     dockspace_setup = true;

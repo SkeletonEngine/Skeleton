@@ -6,6 +6,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <entt/entt.hpp>
 #include <glm/glm.hpp>
 #include "skeleton/renderer/renderer.hpp"
 #include "skeleton/renderer/renderer_settings.hpp"
@@ -31,6 +32,9 @@ class VulkanRenderer : public Renderer {
 
  public:
   virtual std::string GetRendererString() const override;
+
+ public:
+  virtual void SetScene(entt::registry* scene, entt::entity root) override;
 
  private:
   void CreateInstance();
@@ -91,12 +95,14 @@ class VulkanRenderer : public Renderer {
     kUboBindingModelMatrix  = 1,
   };
 
- private:
-  /* Non-owning pointer to the window */
-  Window* window_;
+ protected:
+  // Non-owning pointers
+  Window*         window_;
+  entt::registry* scene_;
+  entt::entity    root_;
 
  protected:
-  /* Objects owned by the renderer */
+  // Objects owned by the renderer
   VkAllocationCallbacks*   allocator_       = VK_NULL_HANDLE;
   VmaAllocator             vma_allocator_   = VK_NULL_HANDLE;
   VkInstance               instance_        = VK_NULL_HANDLE;

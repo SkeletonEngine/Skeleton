@@ -3,10 +3,12 @@
 #pragma once
 #include "skeleton/core/core.hpp"
 
-#include <entt/entt.hpp>
+#include <string>
 
 namespace Skeleton {
 
-void DrawSceneGraphPanel(entt::registry* scene, entt::entity root);
+struct NameComponent {
+  std::string name;
+};
 
 }  // namespace Skeleton

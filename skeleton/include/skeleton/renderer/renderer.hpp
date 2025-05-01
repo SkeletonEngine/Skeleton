@@ -4,6 +4,7 @@
 #include "skeleton/core/core.hpp"
 
 #include <string>
+#include <entt/entt.hpp>
 #include "skeleton/renderer/renderer_backend.hpp"
 
 namespace Skeleton {
@@ -20,6 +21,9 @@ class Renderer {
 
  public:
   virtual std::string GetRendererString() const = 0;
+
+ public:
+  virtual void SetScene(entt::registry* scene, entt::entity root) = 0;
 };
 
 }  // namespace Skeleton

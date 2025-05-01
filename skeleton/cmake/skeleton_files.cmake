@@ -26,10 +26,26 @@ set(SKELETON_SRC_WINDOW_GLFW_FILES
 )
 source_group("src/skeleton/window/glfw" FILES ${SKELETON_SRC_WINDOW_GLFW_FILES})
 
+set(SKELETON_SRC_SCENE_FILES
+  src/skeleton/scene/entity.hpp
+  src/skeleton/scene/entity.cpp
+)
+source_group("src/skeleton/scene" FILES ${SKELETON_SRC_SCENE_FILES})
+
+set(SKELETON_SRC_SCENE_COMPONENTS_FILES
+  include/skeleton/scene/components/components.hpp
+  include/skeleton/scene/components/children_component.hpp
+  include/skeleton/scene/components/name_component.hpp
+  include/skeleton/scene/components/parent_component.hpp
+)
+source_group("src/skeleton/scene/components" FILES ${SKELETON_SRC_SCENE_COMPONENTS_FILES})
+
 set(SKELETON_FILES
   ${SKELETON_FILES}
   ${SKELETON_SRC_FILES}
   ${SKELETON_SRC_CORE_FILES}
   ${SKELETON_SRC_WINDOW_FILES}
   ${SKELETON_SRC_WINDOW_GLFW_FILES}
+  ${SKELETON_SRC_SCENE_FILES}
+  ${SKELETON_SRC_SCENE_COMPONENTS_FILES}
 )

@@ -162,4 +162,9 @@ void VulkanRenderer::EndFrame() {
   vkQueuePresentKHR(present_queue_, &present_info);
 }
 
+void VulkanRenderer::SetScene(entt::registry* scene, entt::entity root) {
+  scene_ = scene;
+  root_  = root;
+}
+
 }  // namespace Skeleton::Vulkan
