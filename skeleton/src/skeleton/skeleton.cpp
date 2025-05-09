@@ -12,6 +12,7 @@ namespace Skeleton {
 void StartApplication(Window* window, Renderer* renderer) {
   entt::registry scene;
   entt::entity root = CreateEmptyEntity(&scene, entt::null, "Root");
+  scene.emplace<ClearColorComponent>(root, Color(0x91b1b5ff));
 
   // TODO(jack): Remove test code
   entt::entity node1 = CreateEmptyEntity(&scene, root, "Node 1");

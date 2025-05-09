@@ -6,6 +6,8 @@ set(SKELETON_RENDERER_FILES
 source_group("src/skeleton/renderer" FILES ${SKELETON_RENDERER_FILES})
 
 set(SKELETON_RENDERER_COMMON_FILES
+  include/skeleton/renderer/common/color.hpp
+  src/skeleton/renderer/common/color.cpp
   src/skeleton/renderer/common/spv_file.hpp
   src/skeleton/renderer/common/spv_file.cpp
 )

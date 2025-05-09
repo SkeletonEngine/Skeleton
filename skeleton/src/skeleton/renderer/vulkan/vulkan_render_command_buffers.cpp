@@ -3,6 +3,8 @@
 #include "skeleton/renderer/vulkan/vulkan_renderer.hpp"
 #include "skeleton/renderer/vulkan/vulkan_core.hpp"
 
+#include "skeleton/scene/components/components.hpp"
+
 namespace Skeleton::Vulkan {
 
 void VulkanRenderer::CreateRenderCommandBuffer() {
@@ -35,9 +37,10 @@ void VulkanRenderer::PerformSceneRenderPass() {
   render_pass_info.framebuffer = (*render_target_framebuffers_)[image_index_];
   render_pass_info.renderArea.offset = { 0, 0 };
   render_pass_info.renderArea.extent = *render_target_extent_;
-  VkClearValue clear_color = {{{ 0.2f, 0.4f, 0.6f, 1.0f }}};
+  const Color& clear_color = scene_->get<ClearColorComponent>(root_).color;
+  VkClearValue clear_value = {{{ clear_color.r, clear_color.g, clear_color.b, clear_color.a }}};
   render_pass_info.clearValueCount = 1;
-  render_pass_info.pClearValues = &clear_color;
+  render_pass_info.pClearValues = &clear_value;
   vkCmdBeginRenderPass(render_command_buffers_[current_frame_], &render_pass_info, VK_SUBPASS_CONTENTS_INLINE);
 
   // Bind the pipeline
