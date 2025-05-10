@@ -7,8 +7,6 @@
 
 namespace Skeleton {
 
-entt::entity GetSelectedEntity();
-
-void DrawSceneGraphPanel(entt::registry* scene, entt::entity root);
+void DrawEntityPropertiesPanel(entt::registry* scene);
 
 }  // namespace Skeleton

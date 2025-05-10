@@ -9,16 +9,24 @@
 
 namespace Skeleton {
 
+static entt::entity selected_entity_ = entt::null;
+
+entt::entity GetSelectedEntity() {
+  return selected_entity_;
+}
+
 static void DrawNode(entt::registry* scene, entt::entity entity) {
   const std::string& name = scene->get<NameComponent>(entity).name;
-  if (ImGui::TreeNodeEx(name.c_str(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_DrawLinesToNodes)) {
-    // Display ClearColorComponent if it exists
-    // TODO(jack): Move into inspector panel
-    if (scene->any_of<ClearColorComponent>(entity)) {
-      auto& clear_color = scene->get<ClearColorComponent>(entity).color;
-      ImGui::ColorEdit4("Clear Color", clear_color.rgba);
-    }
+  ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DrawLinesToNodes;
+  if (entity == selected_entity_) {
+    flags |= ImGuiTreeNodeFlags_Selected;
+  }
 
+  if (ImGui::TreeNodeEx(name.c_str(), flags)) {      
+    if (ImGui::IsItemClicked()) {
+      selected_entity_ = entity;
+    }
+    
     // Display all children of the current node
     const auto& children = scene->get<ChildrenComponent>(entity).children;
     for (const auto& child : children) {

@@ -15,8 +15,11 @@ void DrawDockspace() {
     ImGuiID viewport = ImGui::DockBuilderAddNode(dockspace, 0);
     ImGuiID scene_graph_panel = ImGui::DockBuilderSplitNode(
       viewport, ImGuiDir_Left, 0.25f, &scene_graph_panel, &viewport);
+    ImGuiID entity_properties_panel = ImGui::DockBuilderSplitNode(
+      scene_graph_panel, ImGuiDir_Down, 0.5f, &entity_properties_panel, &scene_graph_panel);
     ImGui::DockBuilderDockWindow("Viewport", viewport);
     ImGui::DockBuilderDockWindow("Scene Graph", scene_graph_panel);
+    ImGui::DockBuilderDockWindow("Entity Properties", entity_properties_panel);
     dockspace_setup = true;
   }
 }
