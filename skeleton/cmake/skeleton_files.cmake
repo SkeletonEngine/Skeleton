@@ -27,7 +27,7 @@ set(SKELETON_SRC_WINDOW_GLFW_FILES
 source_group("src/skeleton/window/glfw" FILES ${SKELETON_SRC_WINDOW_GLFW_FILES})
 
 set(SKELETON_SRC_SCENE_FILES
-  src/skeleton/scene/entity.hpp
+  include/skeleton/scene/entity.hpp
   src/skeleton/scene/entity.cpp
 )
 source_group("src/skeleton/scene" FILES ${SKELETON_SRC_SCENE_FILES})
