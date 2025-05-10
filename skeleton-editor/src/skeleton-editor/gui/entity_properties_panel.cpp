@@ -5,6 +5,7 @@
 
 #include <string>
 #include <imgui/imgui.h>
+#include <imgui/misc/cpp/imgui_stdlib.h>
 #include "skeleton/scene/components/components.hpp"
 #include "skeleton-editor/gui/scene_graph_panel.hpp"
 
@@ -21,7 +22,7 @@ void DrawEntityPropertiesPanel(entt::registry* scene) {
 
   // Display NameComponent
   auto& name = scene->get<NameComponent>(entity).name;
-  ImGui::Text("%s", name.c_str());
+  ImGui::InputText("Name", &name);
   ImGui::Separator();
 
   // Display ClearColorComponent if it exists

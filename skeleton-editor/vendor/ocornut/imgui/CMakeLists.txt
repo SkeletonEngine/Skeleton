@@ -12,6 +12,8 @@ set(IMGUI_CORE_FILES
   imgui/imstb_rectpack.h
   imgui/imstb_textedit.h
   imgui/imstb_truetype.h
+  imgui/misc/cpp/imgui_stdlib.h
+  imgui/misc/cpp/imgui_stdlib.cpp
 )
 
 set(IMGUI_GLFW_FILES
