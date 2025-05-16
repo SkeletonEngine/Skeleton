@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 project(skeleton)
 
+include(cmake/skeleton_version_header.cmake)
 include(cmake/skeleton_files.cmake)
 include(cmake/skeleton_renderer_files.cmake)
 include(cmake/skeleton_renderer_opengl_files.cmake)
@@ -46,3 +47,4 @@ target_link_libraries(skeleton PUBLIC vulkan-memory-allocator)
 
 include(cmake/skeleton_shader_compile_target.cmake)
 add_dependencies(skeleton skeleton-shaders)
+add_dependencies(skeleton skeleton-version-header)
