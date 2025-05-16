@@ -1,6 +1,6 @@
 // Copyright 2024-2025 SkeletonEngine
 
-#include "editor_preferences.hpp"
+#include "skeleton-editor/common/editor_preferences.hpp"
 #include "skeleton/core/core.hpp"
 
 namespace Skeleton {

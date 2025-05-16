@@ -56,8 +56,7 @@ void DrawEntityPropertiesPanel(entt::registry* scene) {
 
       ImGui::SliderInt("FOV", &fov_degrees, kMinFovDegrees, kMaxFovDegrees, fov_label);
       camera.fov = glm::radians(static_cast<float>(fov_degrees));
-    }
-    else {
+    } else {
       ImGui::SliderFloat("FOV", &camera.fov, kMinFovRadians, kMaxFovRadians, "%.2f radians");
     }
   }
