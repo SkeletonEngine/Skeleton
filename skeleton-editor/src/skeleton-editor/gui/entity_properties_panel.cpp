@@ -26,7 +26,7 @@ void DrawEntityPropertiesPanel(entt::registry* scene) {
 
   // Display UuidComponent
   auto& uuid = scene->get<UuidComponent>(entity).uuid;
-  ImGui::Text("%s", uuids::to_string(uuid).c_str());
+  ImGui::TextDisabled("%s", uuids::to_string(uuid).c_str());
   ImGui::Separator();
 
   // Display ClearColorComponent if it exists
