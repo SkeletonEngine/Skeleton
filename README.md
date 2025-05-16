@@ -1,12 +1,6 @@
-# 💀 Skeleton
+# 💀 Skeleton [![lint](https://github.com/SkeletonEngine/Skeleton/actions/workflows/lint.yml/badge.svg?branch=dev)](https://github.com/SkeletonEngine/Skeleton/actions/workflows/lint.yml)
 
 A WIP game engine
-
-=====
-
-[![lint](https://github.com/SkeletonEngine/Skeleton/actions/workflows/lint.yml/badge.svg?branch=dev)](https://github.com/SkeletonEngine/Skeleton/actions/workflows/lint.yml)
-
-=====
 
 ## TODO
 
