@@ -30,11 +30,12 @@ function(get_git_version VERSION_MAJOR VERSION_MINOR VERSION_PATCH)
   else()
     set(${VERSION_PATCH} "0" PARENT_SCOPE)
   endif()
+  
+  message("The semantic version inferred from git tags and commit history is v${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 endfunction()
 
 # Display the version information
 get_git_version(VERSION_MAJOR VERSION_MINOR VERSION_PATCH)
-message("The semantic version inferred from git tags and commit history is v${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
 # Define a custom command to generate the version header
 add_custom_command(
@@ -42,7 +43,6 @@ add_custom_command(
   COMMAND ${CMAKE_COMMAND} -E configure_file
     "${CMAKE_CURRENT_SOURCE_DIR}/include/skeleton/core/version.hpp.in"
     "${CMAKE_CURRENT_SOURCE_DIR}/include/skeleton/core/version.hpp"
-  DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}"
   VERBATIM
 )
 
