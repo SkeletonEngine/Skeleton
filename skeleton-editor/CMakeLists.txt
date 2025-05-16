@@ -6,11 +6,19 @@ set(SKELETON_EDITOR_SRC_FILES
 )
 source_group("src/skeleton-editor" FILES ${SKELETON_EDITOR_SRC_FILES})
 
+set(SKELETON_EDITOR_SRC_COMMON_FILES
+  src/skeleton-editor/common/editor_preferences.hpp
+  src/skeleton-editor/common/editor_preferences.cpp
+)
+source_group("src/skeleton-editor/common" FILES ${SKELETON_EDITOR_SRC_COMMON_FILES})
+
 set(SKELETON_EDITOR_SRC_GUI_FILES
   src/skeleton-editor/gui/dockspace.hpp
   src/skeleton-editor/gui/dockspace.cpp
   src/skeleton-editor/gui/entity_properties_panel.hpp
   src/skeleton-editor/gui/entity_properties_panel.cpp
+  src/skeleton-editor/gui/menu_bar.hpp
+  src/skeleton-editor/gui/menu_bar.cpp
   src/skeleton-editor/gui/scene_graph_panel.hpp
   src/skeleton-editor/gui/scene_graph_panel.cpp
 )
@@ -34,6 +42,7 @@ source_group("src/skeleton-editor/renderer/vulkan" FILES ${SKELETON_EDITOR_RENDE
 
 add_executable(skeleton-editor
   ${SKELETON_EDITOR_SRC_FILES}
+  ${SKELETON_EDITOR_SRC_COMMON_FILES}
   ${SKELETON_EDITOR_SRC_GUI_FILES}
   ${SKELETON_EDITOR_RENDERER_OPENGL_FILES}
   ${SKELETON_EDITOR_RENDERER_VULKAN_FILES}

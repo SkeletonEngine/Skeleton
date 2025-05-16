@@ -10,6 +10,7 @@
 #include "skeleton/renderer/vulkan/vulkan_device_queue_families.hpp"
 #include "skeleton-editor/gui/dockspace.hpp"
 #include "skeleton-editor/gui/entity_properties_panel.hpp"
+#include "skeleton-editor/gui/menu_bar.hpp"
 #include "skeleton-editor/gui/scene_graph_panel.hpp"
 
 namespace Skeleton::Vulkan {
@@ -96,6 +97,7 @@ void VulkanEditorRenderer::RenderFrame() {
   ImGui_ImplGlfw_NewFrame();
   ImGui::NewFrame();
   DrawDockspace();
+  DrawMenuBar();
   DrawViewport();
   DrawSceneGraphPanel(scene_, root_);
   DrawEntityPropertiesPanel(scene_);

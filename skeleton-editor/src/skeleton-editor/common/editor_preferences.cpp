@@ -1,0 +1,10 @@
+// Copyright 2024-2025 SkeletonEngine
+
+#include "editor_preferences.hpp"
+#include "skeleton/core/core.hpp"
+
+namespace Skeleton {
+
+bool g_use_degrees = false;
+
+}  // namespace Skeleton
