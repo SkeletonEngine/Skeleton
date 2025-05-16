@@ -7,6 +7,7 @@
 #include <sstream>
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
+#include "skeleton/core/version.hpp"
 #include "skeleton/window/glfw/glfw_window.hpp"
 
 namespace Skeleton::OpenGl {

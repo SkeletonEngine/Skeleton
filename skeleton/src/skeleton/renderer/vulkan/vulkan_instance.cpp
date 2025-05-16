@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <GLFW/glfw3.h>
+#include "skeleton/core/version.hpp"
 #include "skeleton/renderer/vulkan/vulkan_extensions.hpp"
 
 namespace Skeleton::Vulkan {
