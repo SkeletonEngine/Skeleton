@@ -1,4 +1,4 @@
-# Skeleton
+# 💀 Skeleton
 
 A WIP game engine
 
