@@ -35,6 +35,8 @@ add_subdirectory(vendor/g-truc/glm)
 target_link_libraries(skeleton PUBLIC glm)
 add_subdirectory(vendor/mariusbancilla/stduuid)
 target_link_libraries(skeleton PUBLIC stduuid)
+add_subdirectory(vendor/nlohmann/json)
+target_link_libraries(skeleton PUBLIC nlohmann_json)
 add_subdirectory(vendor/skypjack/entt)
 target_link_libraries(skeleton PUBLIC EnTT)
 

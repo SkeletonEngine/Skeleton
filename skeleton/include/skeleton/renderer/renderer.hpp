@@ -23,7 +23,7 @@ class Renderer {
   virtual std::string GetRendererString() const = 0;
 
  public:
-  virtual void SetScene(entt::registry* scene, entt::entity root) = 0;
+  virtual void SetScene(entt::registry* scene) = 0;
 };
 
 }  // namespace Skeleton

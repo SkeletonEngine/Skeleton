@@ -5,22 +5,13 @@
 
 #include <entt/entt.hpp>
 #include "skeleton/scene/components/components.hpp"
-#include "skeleton/scene/entity.hpp"
+#include "skeleton/scene/scene_serializer.hpp"
 
 namespace Skeleton {
 
 void StartApplication(Window* window, Renderer* renderer) {
-  entt::registry scene;
-  entt::entity root = CreateEmptyEntity(&scene, entt::null, "3D Scene");
-  scene.emplace<ClearColorComponent>(root, Color(0x91b1b5ff));
-
-  // TODO(jack): Add actual functionality to the camera node
-  entt::entity camera = CreateEmptyEntity(&scene, root, "Camera");
-
-  // TODO(jack): Add actual functionality to the model node
-  entt::entity square = CreateEmptyEntity(&scene, root, "Square Model");
-
-  renderer->SetScene(&scene, root);
+  entt::registry scene = LoadScene("skeleton/res/scenes/3d-scene-template.skscene");
+  renderer->SetScene(&scene);
 
   while (window->IsOpen()) {
     window->PollEvents();

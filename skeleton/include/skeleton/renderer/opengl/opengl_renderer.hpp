@@ -27,7 +27,7 @@ class OpenGlRenderer : public Renderer {
   virtual std::string GetRendererString() const override;
 
  public:
-  virtual void SetScene(entt::registry* scene, entt::entity root) override;
+  virtual void SetScene(entt::registry* scene) override;
 
  private:
   GLFWwindow* glfw_window_;
