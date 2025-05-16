@@ -37,10 +37,10 @@ Color::Color(const std::initializer_list<float>& color) {
 }
 
 uint32_t Color::AsUint32() const {
-  return (static_cast<uint32_t>(r * 255) << 24) |
-         (static_cast<uint32_t>(g * 255) << 16) |
-         (static_cast<uint32_t>(b * 255) << 8)  |
-         (static_cast<uint32_t>(a * 255));
+  return (static_cast<uint32_t>(r * 255.0f) << 24) |
+         (static_cast<uint32_t>(g * 255.0f) << 16) |
+         (static_cast<uint32_t>(b * 255.0f) << 8)  |
+         (static_cast<uint32_t>(a * 255.0f));
 }
 
 }  // namespace Skeleton
