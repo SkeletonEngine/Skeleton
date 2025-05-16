@@ -3,7 +3,6 @@
 #include "skeleton-editor/gui/entity_properties_panel.hpp"
 #include "skeleton/core/core.hpp"
 
-#include <sstream>
 #include <string>
 #include <imgui/imgui.h>
 #include <imgui/misc/cpp/imgui_stdlib.h>
@@ -49,7 +48,13 @@ void DrawEntityPropertiesPanel(entt::registry* scene) {
 
     if (g_use_degrees) {
       int fov_degrees = static_cast<int>(glm::degrees(camera.fov));
-      ImGui::SliderInt("FOV", &fov_degrees, kMinFovDegrees, kMaxFovDegrees, "%d degrees");
+
+      const char* fov_label = "%d degrees";
+      if (fov_degrees == 110) {
+        fov_label = "Quake Pro";
+      }
+
+      ImGui::SliderInt("FOV", &fov_degrees, kMinFovDegrees, kMaxFovDegrees, fov_label);
       camera.fov = glm::radians(static_cast<float>(fov_degrees));
     }
     else {
