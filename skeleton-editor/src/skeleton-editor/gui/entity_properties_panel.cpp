@@ -23,6 +23,10 @@ void DrawEntityPropertiesPanel(entt::registry* scene) {
   // Display NameComponent
   auto& name = scene->get<NameComponent>(entity).name;
   ImGui::InputText("Name", &name);
+
+  // Display UuidComponent
+  auto& uuid = scene->get<UuidComponent>(entity).uuid;
+  ImGui::Text("%s", uuids::to_string(uuid).c_str());
   ImGui::Separator();
 
   // Display ClearColorComponent if it exists

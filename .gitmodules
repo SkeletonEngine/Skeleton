@@ -19,3 +19,6 @@
 [submodule "skeleton/vendor/skypjack/entt"]
 	path = skeleton/vendor/skypjack/entt
 	url = https://github.com/skypjack/entt
+[submodule "skeleton/vendor/mariusbancilla/stduuid"]
+	path = skeleton/vendor/mariusbancilla/stduuid
+	url = https://github.com/mariusbancila/stduuid

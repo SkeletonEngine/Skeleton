@@ -24,10 +24,13 @@ set(SPIRV_CROSS_CLI FALSE)
 add_subdirectory(vendor/khronosgroup/spirv-cross)
 target_link_libraries(skeleton PRIVATE spirv-cross-glsl)
 
+# Common Dependencies
 add_subdirectory(vendor/glfw/glfw)
 target_link_libraries(skeleton PRIVATE glfw)
 add_subdirectory(vendor/g-truc/glm)
 target_link_libraries(skeleton PUBLIC glm)
+add_subdirectory(vendor/mariusbancilla/stduuid)
+target_link_libraries(skeleton PUBLIC stduuid)
 add_subdirectory(vendor/skypjack/entt)
 target_link_libraries(skeleton PUBLIC EnTT)
 

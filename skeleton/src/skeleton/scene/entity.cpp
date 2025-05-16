@@ -13,6 +13,7 @@ entt::entity CreateEmptyEntity(entt::registry* scene, entt::entity parent, const
   entt::entity e = scene->create();
 
   // Add common components
+  scene->emplace<UuidComponent>(e, uuids::uuid_system_generator{}());
   scene->emplace<NameComponent>(e, name);
   scene->emplace<ChildrenComponent>(e);
   scene->emplace<ParentComponent>(e, parent);
