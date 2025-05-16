@@ -37,10 +37,8 @@ function(get_git_version VERSION_MAJOR VERSION_MINOR VERSION_PATCH)
 endfunction()
 
 get_git_version(VERSION_MAJOR VERSION_MINOR VERSION_PATCH)
-message("The semantic version inferred from git tags and commit history is v${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
 if (NOT DEFINED SRCDIR)
-  message("SRCDIR is not defined, using CMAKE_SOURCE_DIR instead")
   set(SRCDIR ${CMAKE_SOURCE_DIR})
 endif()
 
