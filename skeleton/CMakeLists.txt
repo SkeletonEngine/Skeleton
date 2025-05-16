@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.21)
 project(skeleton)
 
+# Run command to generate version header file when running cmake to generate project files
+# This ensures that the version.hpp that will be generated can be found when including the list of files
+include(cmake/skeleton_version_header_command.cmake)
+
 include(cmake/skeleton_files.cmake)
 include(cmake/skeleton_renderer_files.cmake)
 include(cmake/skeleton_renderer_opengl_files.cmake)

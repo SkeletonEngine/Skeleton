@@ -1,2 +1,5 @@
 build/**
 .vscode/**
+
+# This file is generated from a template by cmake, no need to commit it
+skeleton/include/skeleton/core/version.hpp
