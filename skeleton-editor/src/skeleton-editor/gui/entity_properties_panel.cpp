@@ -1,6 +1,6 @@
 // Copyright 2024-2025 SkeletonEngine
 
-#include "skeleton-editor/gui/scene_graph_panel.hpp"
+#include "skeleton-editor/gui/entity_properties_panel.hpp"
 #include "skeleton/core/core.hpp"
 
 #include <string>

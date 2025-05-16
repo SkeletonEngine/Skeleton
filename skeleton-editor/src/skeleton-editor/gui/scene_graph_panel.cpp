@@ -37,12 +37,14 @@ static void DrawNode(entt::registry* scene, entt::entity entity, bool entity_is_
   ImGui::PushID(id_++);
 
   const std::string& name = scene->get<NameComponent>(entity).name;
-  ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DrawLinesToNodes;
+  ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_DefaultOpen
+                           | ImGuiTreeNodeFlags_OpenOnArrow
+                           | ImGuiTreeNodeFlags_DrawLinesToNodes;
   if (entity == selected_entity_) {
     flags |= ImGuiTreeNodeFlags_Selected;
   }
 
-  if (ImGui::TreeNodeEx(name.c_str(), flags)) {      
+  if (ImGui::TreeNodeEx(name.c_str(), flags)) {
     if (ImGui::IsItemClicked(ImGuiMouseButton_Left)) {
       selected_entity_ = entity;
     }
