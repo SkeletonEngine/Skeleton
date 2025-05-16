@@ -168,10 +168,9 @@ void VulkanRenderer::SetScene(entt::registry* scene) {
 
   // Create a view over the scene and grab the root entity
   // The root entity will be the only entity whose parent is entt::null
-  entt::entity root = entt::null;
   scene->view<ParentComponent>().each([&](const auto entity, const auto& parent_component) {
     if (parent_component.parent == entt::null) {
-      root = entity;
+      root_ = entity;
     }
   });
 }

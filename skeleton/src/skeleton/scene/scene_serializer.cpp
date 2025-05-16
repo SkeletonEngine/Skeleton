@@ -39,6 +39,7 @@ entt::registry LoadScene(const std::string& path) {
   file >> json;
   file.close();
 
+  // Recursively deserialize the scene
   entt::registry scene;
   DeserializeNode(scene, json, entt::null);
   return scene;
