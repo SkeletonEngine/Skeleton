@@ -8,6 +8,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "skeleton/scene/components/components.hpp"
+#include "skeleton/scene/scene.hpp"
 
 namespace Skeleton::Vulkan {
 
@@ -165,14 +166,7 @@ void VulkanRenderer::EndFrame() {
 
 void VulkanRenderer::SetScene(entt::registry* scene) {
   scene_ = scene;
-
-  // Create a view over the scene and grab the root entity
-  // The root entity will be the only entity whose parent is entt::null
-  scene->view<ParentComponent>().each([&](const auto entity, const auto& parent_component) {
-    if (parent_component.parent == entt::null) {
-      root_ = entity;
-    }
-  });
+  root_  = GetRootNode(scene);
 }
 
 }  // namespace Skeleton::Vulkan

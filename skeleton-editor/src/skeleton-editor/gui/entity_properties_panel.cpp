@@ -34,6 +34,22 @@ void DrawEntityPropertiesPanel(entt::registry* scene) {
   if (scene->any_of<ClearColorComponent>(entity)) {
     auto& clear_color = scene->get<ClearColorComponent>(entity).color;
     ImGui::ColorEdit4("Clear Color", clear_color.rgba);
+    ImGui::Separator();
+  }
+
+  // Display CurrentCameraComponent if it exists
+  if (scene->any_of<CurrentCameraComponent>(entity)) {
+    entt::entity current_camera = scene->get<CurrentCameraComponent>(entity).current_camera;
+
+    // Display name of the current camera
+    auto& name = scene->get<NameComponent>(current_camera).name;
+    ImGui::Text("%s", name.c_str());
+
+    // Display uuid of the current camera
+    auto& uuid = scene->get<UuidComponent>(current_camera).uuid;
+    ImGui::TextDisabled("%s", uuids::to_string(uuid).c_str());
+
+    ImGui::Separator();
   }
 
   // Display CameraComponent if it exists
@@ -59,6 +75,8 @@ void DrawEntityPropertiesPanel(entt::registry* scene) {
     } else {
       ImGui::SliderFloat("FOV", &camera.fov, kMinFovRadians, kMaxFovRadians, "%.2f radians");
     }
+
+    ImGui::Separator();
   }
 
   ImGui::End();

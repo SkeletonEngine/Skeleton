@@ -30,6 +30,8 @@ set(SKELETON_SRC_SCENE_FILES
   include/skeleton/scene/entity.hpp
   include/skeleton/scene/scene_serializer.hpp
   src/skeleton/scene/entity.cpp
+  src/skeleton/scene/scene.hpp
+  src/skeleton/scene/scene.cpp
   src/skeleton/scene/scene_serializer.cpp
 )
 source_group("src/skeleton/scene" FILES ${SKELETON_SRC_SCENE_FILES})
