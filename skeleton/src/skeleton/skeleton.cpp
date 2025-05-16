@@ -10,7 +10,7 @@
 namespace Skeleton {
 
 void StartApplication(Window* window, Renderer* renderer) {
-  entt::registry scene = LoadScene("skeleton/res/scenes/3d-scene-template.skscene");
+  entt::registry scene = LoadScene("skeleton/res/scenes/template-3d.skscene");
   renderer->SetScene(&scene);
 
   while (window->IsOpen()) {

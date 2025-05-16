@@ -1,0 +1,17 @@
+{
+  "name" : "3D Scene",
+  "clear_color" : {
+    "r" : 0.592,
+    "g" : 0.376,
+    "b" : 0.710,
+    "a" : 1.0
+  },
+  "children" : [
+    {
+      "name" : "Camera"
+    },
+    {
+      "name" : "Square"
+    }
+  ]
+}

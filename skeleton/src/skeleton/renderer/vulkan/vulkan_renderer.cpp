@@ -165,7 +165,7 @@ void VulkanRenderer::EndFrame() {
 
 void VulkanRenderer::SetScene(entt::registry* scene) {
   scene_ = scene;
-  
+
   // Create a view over the scene and grab the root entity
   // The root entity will be the only entity whose parent is entt::null
   entt::entity root = entt::null;
