@@ -11,20 +11,14 @@ namespace Skeleton {
 
 void StartApplication(Window* window, Renderer* renderer) {
   entt::registry scene;
-  entt::entity root = CreateEmptyEntity(&scene, entt::null, "Root");
+  entt::entity root = CreateEmptyEntity(&scene, entt::null, "3D Scene");
   scene.emplace<ClearColorComponent>(root, Color(0x91b1b5ff));
 
-  // TODO(jack): Remove test code
-  entt::entity node1 = CreateEmptyEntity(&scene, root, "Node 1");
-  entt::entity node2 = CreateEmptyEntity(&scene, root, "Node 2");
-  entt::entity node3 = CreateEmptyEntity(&scene, root, "Node 3");
+  // TODO(jack): Add actual functionality to the camera node
+  entt::entity camera = CreateEmptyEntity(&scene, root, "Camera");
 
-  entt::entity node4 = CreateEmptyEntity(&scene, node2, "Node 4");
-  entt::entity node5 = CreateEmptyEntity(&scene, node2, "Node 5");
-
-  entt::entity node6 = CreateEmptyEntity(&scene, node3, "Node 6");
-
-  entt::entity node7 = CreateEmptyEntity(&scene, node6, "Node 7");
+  // TODO(jack): Add actual functionality to the model node
+  entt::entity square = CreateEmptyEntity(&scene, root, "Square Model");
 
   renderer->SetScene(&scene, root);
 
