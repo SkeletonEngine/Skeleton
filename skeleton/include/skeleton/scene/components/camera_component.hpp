@@ -10,12 +10,9 @@ namespace Skeleton {
 struct CameraComponent {
   float fov;
   float aspect_ratio;
-  bool fixed_aspect_ratio;
+  bool  fixed_aspect_ratio;
   float clip_near;
   float clip_far;
-  glm::vec3 translation;
-  glm::vec3 rotation;
-  glm::mat4 cached_transform;
 };
 
 }  // namespace Skeleton

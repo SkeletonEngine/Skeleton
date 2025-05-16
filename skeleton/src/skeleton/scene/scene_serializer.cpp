@@ -16,6 +16,15 @@ static void DeserializeNode(entt::registry& scene, const nlohmann::json& json, e
   std::string name = json["name"];
   entt::entity entity = CreateEmptyEntity(&scene, parent, name);
 
+  if (json.contains("camera")) {
+    auto& camera = json["camera"];
+    CameraComponent camera_component;
+    camera_component.fov = camera["fov"];
+    camera_component.clip_near = camera["clip_near"];
+    camera_component.clip_far = camera["clip_far"];
+    scene.emplace<CameraComponent>(entity, camera_component);
+  }
+
   if (json.contains("clear_color")) {
     float r = json["clear_color"]["r"];
     float g = json["clear_color"]["g"];
