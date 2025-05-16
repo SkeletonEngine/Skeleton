@@ -5,6 +5,6 @@
 
 namespace Skeleton {
 
-bool g_use_degrees = false;
+bool g_use_degrees = true;
 
 }  // namespace Skeleton
