@@ -8,7 +8,7 @@
 namespace Skeleton {
 
 struct ParentComponent {
-  entt::entity parent;
+  const entt::entity parent;
 };
 
 }  // namespace Skeleton
