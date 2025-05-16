@@ -36,6 +36,7 @@ source_group("src/skeleton/scene" FILES ${SKELETON_SRC_SCENE_FILES})
 
 set(SKELETON_SRC_SCENE_COMPONENTS_FILES
   include/skeleton/scene/components/components.hpp
+  include/skeleton/scene/components/camera_component.hpp
   include/skeleton/scene/components/children_component.hpp
   include/skeleton/scene/components/clear_color_component.hpp
   include/skeleton/scene/components/name_component.hpp

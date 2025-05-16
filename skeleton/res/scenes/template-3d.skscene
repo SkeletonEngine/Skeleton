@@ -8,7 +8,26 @@
   },
   "children" : [
     {
-      "name" : "Camera"
+      "name" : "Camera",
+      "camera" : {
+        "fov" : 1.5708,
+        "aspect_ratio" : 1.778,
+        "fixed_aspect_ratio" : false,
+        "clip" : [
+          0.1,
+          1000.0
+        ],
+        "translation" : [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        "rotation" : [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
     },
     {
       "name" : "Square"

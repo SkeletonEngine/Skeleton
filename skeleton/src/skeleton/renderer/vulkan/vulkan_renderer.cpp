@@ -109,10 +109,10 @@ void VulkanRenderer::BeginFrame() {
   // TODO(jack): remove test code
   // If the camera matrix is dirty for the current frame, calculate it and upload it
   if (projection_matrix_dirty_[current_frame_]) {
-    glm::mat4 projection_matrix = glm::perspectiveFov(glm::radians(90.0f),
-                                                      static_cast<float>(render_target_extent_->width),
-                                                      static_cast<float>(render_target_extent_->height),
-                                                      0.1f, 1000.0f);
+    glm::mat4 projection_matrix = glm::perspective(glm::radians(90.0f),
+                                                   static_cast<float>(render_target_extent_->width) /
+                                                   static_cast<float>(render_target_extent_->height),
+                                                   0.1f, 1000.0f);
     glm::mat4 view_matrix       = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -1.0f));
     glm::mat4 camera_matrix = projection_matrix * view_matrix;
     std::memcpy(uniform_buffers_[kUboBindingCameraMatrix].mapped_memory[current_frame_],
