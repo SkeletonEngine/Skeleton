@@ -3,8 +3,8 @@
 #pragma once
 
 #define SK_VERSION_MAJOR 0
-#define SK_VERSION_MINOR 0
-#define SK_VERSION_PATCH 0
+#define SK_VERSION_MINOR 1
+#define SK_VERSION_PATCH 4
 
 #define SK_STRINGIFY_HELPER(x) #x
 #define SK_VERSION_STRING_IMPL(major, minor, patch) \
