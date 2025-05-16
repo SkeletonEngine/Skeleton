@@ -97,7 +97,7 @@ void VulkanEditorRenderer::RenderFrame() {
   ImGui_ImplGlfw_NewFrame();
   ImGui::NewFrame();
   DrawDockspace();
-  DrawMenuBar();
+  DrawMenuBar(scene_);
   DrawViewport();
   DrawSceneGraphPanel(scene_, root_);
   DrawEntityPropertiesPanel(scene_);

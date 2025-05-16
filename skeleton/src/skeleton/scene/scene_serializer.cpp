@@ -54,7 +54,16 @@ entt::registry LoadScene(const std::string& path) {
   return scene;
 }
 
+void SerializeNode(entt::registry& scene, const nlohmann::json& json) {
+}
+
 void SaveScene(const std::string& path, entt::registry* scene) {
+  nlohmann::json json;
+  SerializeNode(*scene, json);
+
+  std::ofstream file(path);
+  file << json.dump(2);
+  file.close();
 }
 
 }  // namespace Skeleton

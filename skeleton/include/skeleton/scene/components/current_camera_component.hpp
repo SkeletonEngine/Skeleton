@@ -7,6 +7,8 @@
 
 namespace Skeleton {
 
-void DrawMenuBar(entt::registry* scene);
+struct CurrentCameraComponent {
+  const entt::entity current_camera;
+};
 
 }  // namespace Skeleton

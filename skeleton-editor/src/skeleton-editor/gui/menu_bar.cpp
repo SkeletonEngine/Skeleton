@@ -3,17 +3,21 @@
 #include "skeleton-editor/gui/menu_bar.hpp"
 #include "skeleton/core/core.hpp"
 
+#include <entt/entt.hpp>
 #include <imgui/imgui.h>
+#include "skeleton/scene/scene_serializer.hpp"
 #include "skeleton-editor/common/editor_preferences.hpp"
 
 namespace Skeleton {
 
-void DrawMenuBar() {
+void DrawMenuBar(entt::registry* scene) {
   ImGui::BeginMainMenuBar();
 
   if (ImGui::BeginMenu("File")) {
     ImGui::MenuItem("Open Scene");
-    ImGui::MenuItem("Save Scene");
+    if (ImGui::MenuItem("Save Scene")) {
+      SaveScene("user-data/user-scene.skscene", scene);
+    }
     ImGui::EndMenu();
   }
 
