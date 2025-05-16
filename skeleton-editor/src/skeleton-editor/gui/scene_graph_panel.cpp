@@ -53,14 +53,24 @@ static void DrawNode(entt::registry* scene, entt::entity entity, bool entity_is_
     ImGui::SameLine();
     ImGui::Dummy({ ImGui::GetContentRegionAvail().x - 40, 0 });
     ImGui::SameLine();
+
+    // Add new child button
     if (ImGui::Button("+")) {
       marked_for_new_child_ = entity;
     }
 
+    // Delete node button
+    // Don't allow deleting the root node
     if (!entity_is_root) {
       ImGui::SameLine();
       if (ImGui::Button("-")) {
         marked_for_deletion_ = entity;
+
+        // Deselect the entity to prevent the properties panel from trying to
+        // display properties of a deleted entity
+        if (selected_entity_ == entity) {
+          selected_entity_ = entt::null;
+        }
       }
     }
 
