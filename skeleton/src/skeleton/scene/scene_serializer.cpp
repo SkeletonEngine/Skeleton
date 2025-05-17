@@ -51,6 +51,25 @@ static void DeserializeNode(entt::registry& scene, const nlohmann::json& json, e
     scene.emplace<ClearColorComponent>(entity, Color(r, g, b, a));
   }
 
+  if (json.contains("translation")) {
+    auto& translation = json["translation"];
+    TranslationComponent translation_component;
+    translation_component.translation.x = translation[0];
+    translation_component.translation.y = translation[1];
+    translation_component.translation.z = translation[2];
+    scene.emplace<TranslationComponent>(entity, translation_component);
+  }
+
+  if (json.contains("rotation")) {
+    auto& rotation = json["rotation"];
+    RotationComponent rotation_component;
+    rotation_component.rotation.x = rotation[0];
+    rotation_component.rotation.y = rotation[1];
+    rotation_component.rotation.z = rotation[2];
+    scene.emplace<RotationComponent>(entity, rotation_component);
+  }
+
+
   if (json.contains("children")) {
     for (const auto& child : json["children"]) {
       DeserializeNode(scene, child, entity);
@@ -103,6 +122,26 @@ void SerializeNode(entt::registry& scene, nlohmann::json& json, entt::entity ent
     json["clear_color"]["a"] = clear_color.a;
   }
 
+  if (scene.any_of<CurrentCameraComponent>(entity)) {
+    entt::entity camera = scene.get<CurrentCameraComponent>(entity).current_camera;
+    auto& uuid = scene.get<UuidComponent>(camera).uuid;
+    json["current_camera"] = uuids::to_string(uuid);
+  }
+
+  if (scene.any_of<TranslationComponent>(entity)) {
+    auto& translation = scene.get<TranslationComponent>(entity).translation;
+    json["translation"][0] = translation.x;
+    json["translation"][1] = translation.y;
+    json["translation"][2] = translation.z;
+  }
+
+  if (scene.any_of<RotationComponent>(entity)) {
+    auto& rotation = scene.get<RotationComponent>(entity).rotation;
+    json["rotation"][0] = rotation.x;
+    json["rotation"][1] = rotation.y;
+    json["rotation"][2] = rotation.z;
+  }
+
   if (scene.any_of<ChildrenComponent>(entity)) {
     auto& children = scene.get<ChildrenComponent>(entity).children;
     for (const auto& child : children) {
@@ -110,12 +149,6 @@ void SerializeNode(entt::registry& scene, nlohmann::json& json, entt::entity ent
       SerializeNode(scene, child_json, child);
       json["children"].push_back(child_json);
     }
-  }
-
-  if (scene.any_of<CurrentCameraComponent>(entity)) {
-    entt::entity camera = scene.get<CurrentCameraComponent>(entity).current_camera;
-    auto& uuid = scene.get<UuidComponent>(camera).uuid;
-    json["current_camera"] = uuids::to_string(uuid);
   }
 }
 

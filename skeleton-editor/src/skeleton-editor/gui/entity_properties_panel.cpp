@@ -6,6 +6,8 @@
 #include <string>
 #include <imgui/imgui.h>
 #include <imgui/misc/cpp/imgui_stdlib.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "skeleton/scene/components/components.hpp"
 #include "skeleton-editor/common/editor_preferences.hpp"
 #include "skeleton-editor/gui/scene_graph_panel.hpp"
@@ -102,6 +104,22 @@ void DrawEntityPropertiesPanel(entt::registry* scene, entt::entity root) {
       }
     }
 
+    ImGui::Separator();
+  }
+
+  // Display TranslationComponent if it exists
+  if (scene->any_of<TranslationComponent>(entity)) {
+    ImGui::Text("Position");
+    glm::vec3& translation = scene->get<TranslationComponent>(entity).translation;
+    ImGui::DragFloat3("##Position", glm::value_ptr(translation));
+    ImGui::Separator();
+  }
+
+  // Display RotationComponent if it exists
+  if (scene->any_of<RotationComponent>(entity)) {
+    ImGui::Text("Rotation");
+    glm::vec3& rotation = scene->get<RotationComponent>(entity).rotation;
+    ImGui::DragFloat3("##Rotation", glm::value_ptr(rotation));
     ImGui::Separator();
   }
 
