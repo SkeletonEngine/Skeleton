@@ -100,7 +100,7 @@ void VulkanEditorRenderer::RenderFrame() {
   DrawMenuBar(scene_);
   DrawViewport();
   DrawSceneGraphPanel(scene_, root_);
-  DrawEntityPropertiesPanel(scene_);
+  DrawEntityPropertiesPanel(scene_, root_);
   ImGui::Render();
 
   // Now we perform the actual Vulkan commands

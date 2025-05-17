@@ -7,6 +7,6 @@
 
 namespace Skeleton {
 
-void DrawEntityPropertiesPanel(entt::registry* scene);
+void DrawEntityPropertiesPanel(entt::registry* scene, entt::entity root);
 
 }  // namespace Skeleton

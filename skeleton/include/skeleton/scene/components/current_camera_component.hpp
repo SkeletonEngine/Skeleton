@@ -8,7 +8,7 @@
 namespace Skeleton {
 
 struct CurrentCameraComponent {
-  const entt::entity current_camera;
+  entt::entity current_camera;
 };
 
 }  // namespace Skeleton

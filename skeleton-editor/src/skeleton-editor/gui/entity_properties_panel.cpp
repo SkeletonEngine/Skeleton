@@ -12,7 +12,7 @@
 
 namespace Skeleton {
 
-void DrawEntityPropertiesPanel(entt::registry* scene) {
+void DrawEntityPropertiesPanel(entt::registry* scene, entt::entity root) {
   entt::entity entity = GetSelectedEntity();
 
   ImGui::Begin("Entity Properties");
@@ -23,7 +23,7 @@ void DrawEntityPropertiesPanel(entt::registry* scene) {
 
   // Display NameComponent
   auto& name = scene->get<NameComponent>(entity).name;
-  ImGui::InputText("Name", &name);
+  ImGui::InputText("##Name", &name);
 
   // Display UuidComponent
   auto& uuid = scene->get<UuidComponent>(entity).uuid;
@@ -32,35 +32,40 @@ void DrawEntityPropertiesPanel(entt::registry* scene) {
 
   // Display ClearColorComponent if it exists
   if (scene->any_of<ClearColorComponent>(entity)) {
+    ImGui::Text("Clear Color");
     auto& clear_color = scene->get<ClearColorComponent>(entity).color;
-    ImGui::ColorEdit4("Clear Color", clear_color.rgba);
+    ImGui::ColorEdit4("##Clear Color", clear_color.rgba);
     ImGui::Separator();
   }
 
   // Display CurrentCameraComponent if it exists
   if (scene->any_of<CurrentCameraComponent>(entity)) {
-    entt::entity current_camera = scene->get<CurrentCameraComponent>(entity).current_camera;
+    ImGui::Text("Current Camera");
 
-    // Display name of the current camera
-    auto& name = scene->get<NameComponent>(current_camera).name;
-    ImGui::Text("%s", name.c_str());
+    entt::entity current_camera = scene->get<CurrentCameraComponent>(entity).current_camera;
 
     // Display uuid of the current camera
     auto& uuid = scene->get<UuidComponent>(current_camera).uuid;
     ImGui::TextDisabled("%s", uuids::to_string(uuid).c_str());
+
+    // Display name of the current camera
+    auto& name = scene->get<NameComponent>(current_camera).name;
+    ImGui::SameLine();
+    ImGui::Text("(%s)", name.c_str());
 
     ImGui::Separator();
   }
 
   // Display CameraComponent if it exists
   if (scene->any_of<CameraComponent>(entity)) {
+    ImGui::Text("Camera Settings");
     auto& camera = scene->get<CameraComponent>(entity);
 
     // Display FOV in either degrees or radians
-    const int kMinFovDegrees = 30;
-    const int kMaxFovDegrees = 150;
-    const float kMinFovRadians = glm::radians(static_cast<float>(kMinFovDegrees));
-    const float kMaxFovRadians = glm::radians(static_cast<float>(kMaxFovDegrees));
+    constexpr int kMinFovDegrees = 30;
+    constexpr int kMaxFovDegrees = 150;
+    constexpr float kMinFovRadians = glm::radians(static_cast<float>(kMinFovDegrees));
+    constexpr float kMaxFovRadians = glm::radians(static_cast<float>(kMaxFovDegrees));
 
     if (g_use_degrees) {
       int fov_degrees = static_cast<int>(glm::degrees(camera.fov));
@@ -74,6 +79,15 @@ void DrawEntityPropertiesPanel(entt::registry* scene) {
       camera.fov = glm::radians(static_cast<float>(fov_degrees));
     } else {
       ImGui::SliderFloat("FOV", &camera.fov, kMinFovRadians, kMaxFovRadians, "%.2f radians");
+    }
+
+    bool is_current = scene->get<CurrentCameraComponent>(root).current_camera == entity;
+    if (is_current) {
+      ImGui::Text("This Camera is Current");
+    } else {
+      if (ImGui::Button("Make This Camera Current")) {
+        scene->get<CurrentCameraComponent>(root).current_camera = entity;
+      }
     }
 
     ImGui::Separator();
