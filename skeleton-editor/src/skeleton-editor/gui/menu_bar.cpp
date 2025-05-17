@@ -14,7 +14,9 @@ void DrawMenuBar(entt::registry* scene) {
   ImGui::BeginMainMenuBar();
 
   if (ImGui::BeginMenu("File")) {
-    ImGui::MenuItem("Open Scene");
+    if (ImGui::MenuItem("Open Scene")) {
+      *scene = LoadScene("user-data/user-scene.skscene");
+    }
     if (ImGui::MenuItem("Save Scene")) {
       SaveScene("user-data/user-scene.skscene", scene);
     }
