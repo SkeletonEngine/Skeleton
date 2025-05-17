@@ -58,16 +58,11 @@ static void DeserializeNode(entt::registry& scene, const nlohmann::json& json, e
   }
 }
 
-void DeserializeLinks(entt::registry& scene) {
-  // For each entity that has a current camera component, look up the camera entity by its uuid and set this entity to point to it
-  scene.view<CurrentCameraUuidComponent>().each([&](const auto entity, const auto& camera_uuid) {
-    printf("Looking for camera with uuid %s\n", uuids::to_string(camera_uuid.uuid).c_str());
-    scene.view<UuidComponent>().each([&](const auto camera_entity, const auto& uuid) {
-      if (uuid.uuid == camera_uuid.uuid) {
-        scene.emplace<CurrentCameraComponent>(entity, camera_entity);
-        scene.remove<CurrentCameraUuidComponent>(entity);
-      }
-    });
+static void DeserializeLinks(entt::registry& scene) {
+  scene.view<CurrentCameraUuidComponent>().each([&](const auto entity, const auto& uuid) {
+    entt::entity camera = GetNodeByUuid(&scene, uuid.uuid);
+    scene.emplace<CurrentCameraComponent>(entity, camera);
+    scene.remove<CurrentCameraUuidComponent>(entity);
   });
 }
 

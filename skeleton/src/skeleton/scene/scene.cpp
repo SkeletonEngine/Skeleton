@@ -5,6 +5,7 @@
 
 #include <string>
 #include <entt/entt.hpp>
+#include <uuid.h>
 #include "skeleton/scene/components/components.hpp"
 
 namespace Skeleton {
@@ -21,6 +22,18 @@ entt::entity GetRootNode(entt::registry* scene) {
   });
 
   return root;
+}
+
+entt::entity GetNodeByUuid(entt::registry* scene, const uuids::uuid& uuid) {
+  entt::entity result = entt::null;
+
+  scene->view<UuidComponent>().each([&](const auto entity, const auto& other_uuid) {
+    if (uuid == other_uuid.uuid) {
+      result = entity;
+    }
+  });
+
+  return result;
 }
 
 }  // namespace Skeleton
