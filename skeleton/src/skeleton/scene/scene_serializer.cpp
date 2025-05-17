@@ -21,10 +21,12 @@ static void DeserializeNode(entt::registry& scene, const nlohmann::json& json, e
   std::string name = json["name"];
   entt::entity entity = CreateEmptyEntity(&scene, parent, name);
 
-  std::string uuid_string = json["uuid"];
-  uuids::uuid uuid = uuids::uuid::from_string(uuid_string).value();
-  scene.remove<UuidComponent>(entity);
-  scene.emplace<UuidComponent>(entity, uuid);
+  if (json.contains("uuid")) {
+    std::string uuid_string = json["uuid"];
+    uuids::uuid uuid = uuids::uuid::from_string(uuid_string).value();
+    scene.remove<UuidComponent>(entity);
+    scene.emplace<UuidComponent>(entity, uuid);
+  }
 
   if (json.contains("camera")) {
     auto& camera = json["camera"];
