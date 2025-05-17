@@ -4,8 +4,19 @@
       "camera": {
         "clip_far": 1000.0,
         "clip_near": 0.10000000149011612,
-        "fov": 1.5707999467849731
+        "fov": 1.5707963705062866
       },
+      "children": [
+        {
+          "camera": {
+            "clip_far": 1000.0,
+            "clip_near": 0.10000000149011612,
+            "fov": 1.5707963705062866
+          },
+          "name": "Another Camera",
+          "uuid": "1f083592-1947-46f3-a590-d616349d86cf"
+        }
+      ],
       "name": "Camera",
       "uuid": "5c7bb415-4b63-4a88-8ef0-81f0f2e65b67"
     },
@@ -20,7 +31,7 @@
     "g": 0.37599998712539673,
     "r": 0.5920000076293945
   },
+  "current_camera": "5c7bb415-4b63-4a88-8ef0-81f0f2e65b67",
   "name": "3D Scene",
-  "uuid": "33534b89-7a3c-412a-b0df-981fa5472e0c",
-  "current_camera": "5c7bb415-4b63-4a88-8ef0-81f0f2e65b67"
+  "uuid": "33534b89-7a3c-412a-b0df-981fa5472e0c"
 }

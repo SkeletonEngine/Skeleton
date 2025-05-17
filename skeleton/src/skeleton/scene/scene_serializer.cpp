@@ -114,6 +114,12 @@ void SerializeNode(entt::registry& scene, nlohmann::json& json, entt::entity ent
       json["children"].push_back(child_json);
     }
   }
+
+  if (scene.any_of<CurrentCameraComponent>(entity)) {
+    entt::entity camera = scene.get<CurrentCameraComponent>(entity).current_camera;
+    auto& uuid = scene.get<UuidComponent>(camera).uuid;
+    json["current_camera"] = uuids::to_string(uuid);
+  }
 }
 
 void SaveScene(const std::string& path, entt::registry* scene) {
