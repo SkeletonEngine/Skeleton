@@ -75,10 +75,21 @@ void DrawEntityPropertiesPanel(entt::registry* scene, entt::entity root) {
         fov_label = "Quake Pro";
       }
 
-      ImGui::SliderInt("FOV", &fov_degrees, kMinFovDegrees, kMaxFovDegrees, fov_label);
+      if (ImGui::SliderInt("FOV", &fov_degrees, kMinFovDegrees, kMaxFovDegrees, fov_label)) {
+        camera.projection_matrix_dirty = true;
+      }
       camera.fov = glm::radians(static_cast<float>(fov_degrees));
     } else {
-      ImGui::SliderFloat("FOV", &camera.fov, kMinFovRadians, kMaxFovRadians, "%.2f radians");
+      if (ImGui::SliderFloat("FOV", &camera.fov, kMinFovRadians, kMaxFovRadians, "%.2f radians")) {
+        camera.projection_matrix_dirty = true;
+      }
+    }
+
+    if (ImGui::InputFloat("Near Clipping Plane", &camera.clip_near)) {
+      camera.projection_matrix_dirty = true;
+    }
+    if (ImGui::InputFloat("Far Clipping Plane", &camera.clip_far)) {
+      camera.projection_matrix_dirty = true;
     }
 
     bool is_current = scene->get<CurrentCameraComponent>(root).current_camera == entity;
@@ -87,6 +98,7 @@ void DrawEntityPropertiesPanel(entt::registry* scene, entt::entity root) {
     } else {
       if (ImGui::Button("Make This Camera Current")) {
         scene->get<CurrentCameraComponent>(root).current_camera = entity;
+        camera.projection_matrix_dirty = true;
       }
     }
 

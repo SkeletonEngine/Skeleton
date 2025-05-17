@@ -107,13 +107,23 @@ void VulkanRenderer::BeginFrame() {
   std::memcpy(uniform_buffers_[kUboBindingModelMatrix].mapped_memory[current_frame_],
               glm::value_ptr(rotation_matrix), sizeof(glm::mat4));
 
+  // Check the current camera in the ECS. If its fov/aspect/near/far have been altered, it should have been marked with
+  // projection_matrix_dirty = true. If so, we will need to recalculate the projection matrix.
+  entt::entity camera = scene_->get<CurrentCameraComponent>(root_).current_camera;
+  CameraComponent& camera_component = scene_->get<CameraComponent>(camera);
+  if (camera_component.projection_matrix_dirty) {
+    for (size_t i = 0; i < kMaxFramesInFlight; ++i) {
+      projection_matrix_dirty_[i] = true;
+    }
+    camera_component.projection_matrix_dirty = false;
+  }
+
   // TODO(jack): remove test code
   // If the camera matrix is dirty for the current frame, calculate it and upload it
   if (projection_matrix_dirty_[current_frame_]) {
-    glm::mat4 projection_matrix = glm::perspective(glm::radians(90.0f),
-                                                   static_cast<float>(render_target_extent_->width) /
-                                                   static_cast<float>(render_target_extent_->height),
-                                                   0.1f, 1000.0f);
+    glm::mat4 projection_matrix = glm::perspective(camera_component.fov,
+      static_cast<float>(render_target_extent_->width) / static_cast<float>(render_target_extent_->height),
+      camera_component.clip_near, camera_component.clip_far);
     glm::mat4 view_matrix       = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -1.0f));
     glm::mat4 camera_matrix = projection_matrix * view_matrix;
     std::memcpy(uniform_buffers_[kUboBindingCameraMatrix].mapped_memory[current_frame_],
