@@ -42,7 +42,17 @@
     },
     {
       "name": "Square",
-      "uuid": "73eff5a5-53d9-4d20-a6de-fd6005e173a7"
+      "uuid": "73eff5a5-53d9-4d20-a6de-fd6005e173a7",
+      "translation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
     }
   ],
   "clear_color": {

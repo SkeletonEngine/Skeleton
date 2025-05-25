@@ -24,6 +24,12 @@ set(SKELETON_EDITOR_SRC_GUI_FILES
 )
 source_group("src/skeleton-editor/gui" FILES ${SKELETON_EDITOR_SRC_GUI_FILES})
 
+set(SKELETON_EDITOR_SRC_GUI_WIDGETS_FILES
+  src/skeleton-editor/gui/widgets/xyz_control.hpp
+  src/skeleton-editor/gui/widgets/xyz_control.cpp
+)
+source_group("src/skeleton-editor/gui/widgets" FILES ${SKELETON_EDITOR_SRC_GUI_WIDGETS_FILES})
+
 set(SKELETON_EDITOR_RENDERER_OPENGL_FILES
   src/skeleton-editor/renderer/opengl/opengl_editor_renderer.hpp
   src/skeleton-editor/renderer/opengl/opengl_editor_renderer.cpp
@@ -44,6 +50,7 @@ add_executable(skeleton-editor
   ${SKELETON_EDITOR_SRC_FILES}
   ${SKELETON_EDITOR_SRC_COMMON_FILES}
   ${SKELETON_EDITOR_SRC_GUI_FILES}
+  ${SKELETON_EDITOR_SRC_GUI_WIDGETS_FILES}
   ${SKELETON_EDITOR_RENDERER_OPENGL_FILES}
   ${SKELETON_EDITOR_RENDERER_VULKAN_FILES}
 )
