@@ -108,15 +108,20 @@ void DrawEntityPropertiesPanel(entt::registry* scene, entt::entity root) {
     ImGui::Separator();
   }
 
-  // Display TranslationComponent if it exists
-  if (scene->any_of<TranslationComponent>(entity)) {
-    DrawXyzControl("Position", scene->get<TranslationComponent>(entity).translation);
-    ImGui::Separator();
-  }
+  // Dispay Translation, rotation, and scale components under a single section
+  if (scene->any_of<TranslationComponent>(entity) || scene->any_of<RotationComponent>(entity)) {
+    ImGui::Text("Transform");
 
-  // Display RotationComponent if it exists
-  if (scene->any_of<RotationComponent>(entity)) {
-    DrawXyzControl("Rotation", scene->get<RotationComponent>(entity).rotation);
+    // Display TranslationComponent if it exists
+    if (scene->any_of<TranslationComponent>(entity)) {
+      DrawXyzControl("Position", scene->get<TranslationComponent>(entity).translation);
+    }
+  
+    // Display RotationComponent if it exists
+    if (scene->any_of<RotationComponent>(entity)) {
+      DrawXyzControl("Rotation", scene->get<RotationComponent>(entity).rotation);
+    }
+
     ImGui::Separator();
   }
 
