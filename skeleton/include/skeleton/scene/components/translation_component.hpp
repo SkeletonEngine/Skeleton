@@ -9,6 +9,9 @@ namespace Skeleton {
 
 struct TranslationComponent {
   glm::vec3 translation;
+
+  // Should not be visible in the editor
+  bool translation_matrix_dirty = false;
 };
 
 }  // namespace Skeleton

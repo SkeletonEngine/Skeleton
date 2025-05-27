@@ -9,6 +9,9 @@ namespace Skeleton {
 
 struct RotationComponent {
   glm::vec3 rotation;
+
+  // Should not be visible in the editor
+  bool translation_matrix_dirty = false;
 };
 
 }  // namespace Skeleton

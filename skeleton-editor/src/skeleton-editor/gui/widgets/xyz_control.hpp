@@ -7,6 +7,9 @@
 
 namespace Skeleton {
 
-void DrawXyzControl(const char* label, glm::vec3& values, float resetValue = 0.0f);
+// Like ImGui::DragFloat3, but with buttons to reset each axis
+// to a specified value. The buttons are labeled "X", "Y", and "Z".
+// Returns true if any value was changed
+bool DrawXyzControl(const char* label, glm::vec3& values, float reset_value = 0.0f);
 
 }  // namespace Skeleton

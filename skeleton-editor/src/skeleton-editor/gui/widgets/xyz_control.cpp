@@ -9,7 +9,9 @@
 
 namespace Skeleton {
 
-void DrawXyzControl(const char* label, glm::vec3& values, float reset_value) {
+bool DrawXyzControl(const char* label, glm::vec3& values, float reset_value) {
+  bool was_anything_changed = false;
+
   ImGuiIO& io = ImGui::GetIO();
   auto bold_font = io.Fonts->Fonts[0];
 
@@ -27,12 +29,15 @@ void DrawXyzControl(const char* label, glm::vec3& values, float reset_value) {
   ImGui::PushFont(bold_font);
   if (ImGui::Button("X", button_size)) {
     values.x = reset_value;
+    was_anything_changed = true;
   }
   ImGui::PopFont();
   ImGui::PopStyleColor(3);
 
   ImGui::SameLine();
-  ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f");
+  if (ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f")) {
+    was_anything_changed = true;
+  }
   ImGui::PopItemWidth();
   ImGui::SameLine();
 
@@ -42,12 +47,15 @@ void DrawXyzControl(const char* label, glm::vec3& values, float reset_value) {
   ImGui::PushFont(bold_font);
   if (ImGui::Button("Y", button_size)) {
     values.y = reset_value;
+    was_anything_changed = true;
   }
   ImGui::PopFont();
   ImGui::PopStyleColor(3);
 
   ImGui::SameLine();
-  ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f");
+  if (ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f")) {
+    was_anything_changed = true;
+  }
   ImGui::PopItemWidth();
   ImGui::SameLine();
 
@@ -57,12 +65,15 @@ void DrawXyzControl(const char* label, glm::vec3& values, float reset_value) {
   ImGui::PushFont(bold_font);
   if (ImGui::Button("Z", button_size)) {
     values.z = reset_value;
+    was_anything_changed = true;
   }
   ImGui::PopFont();
   ImGui::PopStyleColor(3);
 
   ImGui::SameLine();
-  ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f");
+  if (ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f")) {
+    was_anything_changed = true;
+  }
   ImGui::PopItemWidth();
 
   ImGui::PopStyleVar();
@@ -71,6 +82,8 @@ void DrawXyzControl(const char* label, glm::vec3& values, float reset_value) {
 
   ImGui::SameLine();
   ImGui::Text("%s", label);
+
+  return was_anything_changed;
 }
 
 }  // namespace Skeleton
