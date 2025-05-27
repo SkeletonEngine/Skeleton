@@ -11,4 +11,5 @@
 #include "skeleton/scene/components/parent_component.hpp"
 #include "skeleton/scene/components/rotation_component.hpp"
 #include "skeleton/scene/components/translation_component.hpp"
+#include "skeleton/scene/components/transform_component.hpp"
 #include "skeleton/scene/components/uuid_component.hpp"

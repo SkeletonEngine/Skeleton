@@ -51,6 +51,8 @@ static void DeserializeNode(entt::registry& scene, const nlohmann::json& json, e
     scene.emplace<ClearColorComponent>(entity, Color(r, g, b, a));
   }
 
+  bool has_transform = false;
+
   if (json.contains("translation")) {
     auto& translation = json["translation"];
     TranslationComponent translation_component;
@@ -58,6 +60,7 @@ static void DeserializeNode(entt::registry& scene, const nlohmann::json& json, e
     translation_component.translation.y = translation[1];
     translation_component.translation.z = translation[2];
     scene.emplace<TranslationComponent>(entity, translation_component);
+    has_transform = true;
   }
 
   if (json.contains("rotation")) {
@@ -67,8 +70,15 @@ static void DeserializeNode(entt::registry& scene, const nlohmann::json& json, e
     rotation_component.rotation.y = rotation[1];
     rotation_component.rotation.z = rotation[2];
     scene.emplace<RotationComponent>(entity, rotation_component);
+    has_transform = true;
   }
 
+  if (has_transform) {
+    TransformComponent transform_component;
+    transform_component.transform = glm::mat4(1.0f);  // Initialize to identity matrix
+    transform_component.matrix_dirty = true;  // Mark as dirty to recalculate
+    scene.emplace<TransformComponent>(entity, transform_component);
+  }
 
   if (json.contains("children")) {
     for (const auto& child : json["children"]) {

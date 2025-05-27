@@ -115,14 +115,14 @@ void DrawEntityPropertiesPanel(entt::registry* scene, entt::entity root) {
     // Display TranslationComponent if it exists
     if (scene->any_of<TranslationComponent>(entity)) {
       if (DrawXyzControl("Position", scene->get<TranslationComponent>(entity).translation)) {
-        scene->get<TranslationComponent>(entity).translation_matrix_dirty = true;
+        scene->get<TransformComponent>(entity).matrix_dirty = true;
       }
     }
 
     // Display RotationComponent if it exists
     if (scene->any_of<RotationComponent>(entity)) {
       if (DrawXyzControl("Rotation", scene->get<RotationComponent>(entity).rotation)) {
-        scene->get<RotationComponent>(entity).translation_matrix_dirty = true;
+        scene->get<TransformComponent>(entity).matrix_dirty = true;
       }
     }
 
