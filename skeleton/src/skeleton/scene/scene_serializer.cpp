@@ -76,7 +76,7 @@ static void DeserializeNode(entt::registry& scene, const nlohmann::json& json, e
   if (json.contains("model")) {
     ModelPathComponent model_path;
     model_path.path = json["model"];
-    scene.emplace<ModelPathComponent>(entity, model_path)
+    scene.emplace<ModelPathComponent>(entity, model_path);
   }
 
   if (has_transform) {
