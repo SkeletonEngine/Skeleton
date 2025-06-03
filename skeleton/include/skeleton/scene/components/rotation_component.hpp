@@ -8,7 +8,7 @@
 namespace Skeleton {
 
 struct RotationComponent {
-  glm::vec3 rotation;
+  glm::vec3 rotation { 0.0f, 0.0f, 0.0f };
 };
 
 }  // namespace Skeleton

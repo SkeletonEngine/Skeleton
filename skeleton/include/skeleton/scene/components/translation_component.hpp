@@ -8,7 +8,7 @@
 namespace Skeleton {
 
 struct TranslationComponent {
-  glm::vec3 translation;
+  glm::vec3 translation { 0.0f, 0.0f, 0.0f };
 };
 
 }  // namespace Skeleton
