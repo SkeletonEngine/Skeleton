@@ -73,6 +73,12 @@ static void DeserializeNode(entt::registry& scene, const nlohmann::json& json, e
     has_transform = true;
   }
 
+  if (json.contains("model")) {
+    ModelPathComponent model_path;
+    model_path.path = json["model"];
+    scene.emplace<ModelPathComponent>(entity, model_path)
+  }
+
   if (has_transform) {
     TransformComponent transform_component;
     transform_component.transform = glm::mat4(1.0f);  // Initialize to identity matrix
