@@ -97,8 +97,8 @@ static void DeserializeLinks(entt::registry& scene) {
   scene.view<CurrentCameraUuidComponent>().each([&](const auto entity, const auto& uuid) {
     entt::entity camera = GetNodeByUuid(&scene, uuid.uuid);
     scene.emplace<CurrentCameraComponent>(entity, camera);
-    scene.remove<CurrentCameraUuidComponent>(entity);
   });
+  scene.clear<CurrentCameraUuidComponent>();
 }
 
 entt::registry LoadScene(const std::string& path) {
