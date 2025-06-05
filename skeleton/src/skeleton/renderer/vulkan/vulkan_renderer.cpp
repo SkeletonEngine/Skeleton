@@ -31,7 +31,6 @@ VulkanRenderer::VulkanRenderer(const RendererSettings& settings, VkImageLayout f
   CreateCommandPool();
   CreateRenderCommandBuffer();
   CreateSyncObjects();
-  CreateMesh();
 
   // Register a callback so that we are notified when the client window is resized
   // When that happens, we will need to recreate the swapchain
@@ -54,7 +53,10 @@ VulkanRenderer::VulkanRenderer(const RendererSettings& settings, VkImageLayout f
 VulkanRenderer::~VulkanRenderer() {
   vkDeviceWaitIdle(device_);
 
-  DestroyMesh();
+  for (auto& mesh : meshes_) {
+    delete mesh.second;
+  }
+
   DestroySyncObjects();
   DestroyRenderCommandBuffer();
   DestroyCommandPool();
@@ -177,6 +179,18 @@ void VulkanRenderer::EndFrame() {
 void VulkanRenderer::SetScene(entt::registry* scene) {
   scene_ = scene;
   root_  = GetRootNode(scene);
+
+  // Load all models defined in the ECS
+  for (auto [entity, path] : scene_->view<ModelPathComponent>().each()) {
+    meshes_.emplace(mesh_id_counter_++, new VulkanMesh(path.path, this));
+
+    ModelComponent model_component;
+    model_component.model_id = mesh_id_counter_;
+    scene_->emplace<ModelComponent>(entity, model_component);
+
+    loaded_mesh_paths_.emplace(path.path);
+  }
+  scene_->clear<ModelPathComponent>();
 }
 
 }  // namespace Skeleton::Vulkan

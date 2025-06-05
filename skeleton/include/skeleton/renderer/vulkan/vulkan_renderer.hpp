@@ -3,6 +3,7 @@
 #pragma once
 #include "skeleton/renderer/vulkan/vulkan_core.hpp"
 
+#include <set>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -10,17 +11,21 @@
 #include <glm/glm.hpp>
 #include "skeleton/renderer/renderer.hpp"
 #include "skeleton/renderer/renderer_settings.hpp"
+#include "skeleton/renderer/vulkan/vulkan_mesh.hpp"
 #include "skeleton/window/window.hpp"
 
 namespace Skeleton::Vulkan {
 
 class VulkanRenderer : public Renderer {
  public:
+  // We can define a final layout for the image created by the main render pass. This is
+  // to allow extending this class and rendering the final image to a texture
   explicit VulkanRenderer(const RendererSettings& settings,
                           VkImageLayout final_layout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR);
   virtual ~VulkanRenderer();
 
  public:
+  // Basically RTTI
   virtual RendererBackend GetBackend() const override { return RendererBackend::kVulkan; }
 
  public:
@@ -63,8 +68,6 @@ class VulkanRenderer : public Renderer {
   void DestroySyncObjects();
   void CreateVmaAllocator();
   void DestroyVmaAllocator();
-  void CreateMesh();
-  void DestroyMesh();
 
  private:
 #ifdef SK_BUILD_DEBUG
@@ -82,12 +85,13 @@ class VulkanRenderer : public Renderer {
   VkCommandBuffer BeginSingleUseCommandBuffer();
   void EndSingleUseCommandBuffer(VkCommandBuffer command_buffer);
 
- private:
+ public:
   void CreateDeviceLocalBuffer(const void* data, VkDeviceSize size, VkBuffer* buffer,
                                VmaAllocation* allocation, VkBufferUsageFlagBits usage);
+  void DestroyBuffer(VkBuffer buffer, VmaAllocation allocation);
 
  protected:
-  /* Constants */
+  // Constants
   const uint32_t kMaxFramesInFlight = 2;
 
   enum {
@@ -129,11 +133,11 @@ class VulkanRenderer : public Renderer {
   bool                     window_framebuffer_resized_ = false;
   bool                     window_minimized_           = false;
   std::vector<bool>        projection_matrix_dirty_;
-  VkBuffer                 vertex_buffer_   = VK_NULL_HANDLE;
-  VmaAllocation            vertex_buffer_allocation_ = VK_NULL_HANDLE;
-  VkBuffer                 index_buffer_   = VK_NULL_HANDLE;
-  VmaAllocation            index_buffer_allocation_ = VK_NULL_HANDLE;
-  uint32_t                 index_count_    = 0;
+
+  // Map of loaded meshes
+  uint32_t                                  mesh_id_counter_ = 0;
+  std::set<std::string>                     loaded_mesh_paths_;
+  std::unordered_map<uint32_t, VulkanMesh*> meshes_;
 
   // Per-pipeline objects
   VkPipeline                   graphics_pipeline_ = VK_NULL_HANDLE;

@@ -61,22 +61,16 @@ void VulkanRenderer::PerformSceneRenderPass() {
   scissor.extent = *render_target_extent_;
   vkCmdSetScissor(render_command_buffers_[current_frame_], 0, 1, &scissor);
 
-  // Bind the vertex buffer
-  VkBuffer vertex_buffers[] = { vertex_buffer_ };
-  VkDeviceSize offsets[] = { 0 };
-  vkCmdBindVertexBuffers(render_command_buffers_[current_frame_], 0, 1, vertex_buffers, offsets);
-
-  // Bind the index buffer
-  vkCmdBindIndexBuffer(render_command_buffers_[current_frame_], index_buffer_, 0, VK_INDEX_TYPE_UINT16);
-
   // Bind descriptor sets
   for (const auto& uniform_buffer : uniform_buffers_) {
     vkCmdBindDescriptorSets(render_command_buffers_[current_frame_], VK_PIPELINE_BIND_POINT_GRAPHICS,
                             graphics_pipeline_layout_, 0, 1, &descriptor_sets_[current_frame_], 0, nullptr);
   }
 
-  // Issue draw command
-  vkCmdDrawIndexed(render_command_buffers_[current_frame_], index_count_, 1, 0, 0, 0);
+  // Record mesh render commands
+  for (const auto& [id, mesh] : meshes_) {
+    mesh->RecordRenderCommands(render_command_buffers_[current_frame_]);
+  }
 
   // End the render pass
   vkCmdEndRenderPass(render_command_buffers_[current_frame_]);

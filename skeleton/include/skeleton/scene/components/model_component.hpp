@@ -8,7 +8,7 @@
 namespace Skeleton {
 
 struct ModelComponent {
-  uint32_t model_id;
+  uint32_t model_id = -1;
 };
 
 }  // namespace Skeleton

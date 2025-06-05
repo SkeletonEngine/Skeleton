@@ -64,4 +64,8 @@ void VulkanRenderer::CreateDeviceLocalBuffer(const void* data, VkDeviceSize size
   vmaDestroyBuffer(vma_allocator_, staging_buffer, staging_allocation);
 }
 
+void VulkanRenderer::DestroyBuffer(VkBuffer buffer, VmaAllocation allocation) {
+  vmaDestroyBuffer(vma_allocator_, buffer, allocation);
+}
+
 }  // namespace Skeleton::Vulkan

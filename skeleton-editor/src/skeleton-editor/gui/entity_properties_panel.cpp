@@ -129,6 +129,13 @@ void DrawEntityPropertiesPanel(entt::registry* scene, entt::entity root) {
     ImGui::Separator();
   }
 
+  // Display ModelComponent if it exists
+  if (scene->any_of<ModelComponent>(entity)) {
+    ImGui::Text("Model");
+    // TODO
+    ImGui::Separator();
+  }
+
   ImGui::End();
 }
 

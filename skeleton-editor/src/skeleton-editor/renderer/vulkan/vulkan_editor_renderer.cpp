@@ -153,11 +153,6 @@ void VulkanEditorRenderer::PerformImguiRenderPass() {
   scissor.extent = swapchain_extent_;
   vkCmdSetScissor(render_command_buffers_[current_frame_], 0, 1, &scissor);
 
-  // Bind the vertex buffer
-  VkBuffer vertex_buffers[] = { vertex_buffer_ };
-  VkDeviceSize offsets[] = { 0 };
-  vkCmdBindVertexBuffers(render_command_buffers_[current_frame_], 0, 1, vertex_buffers, offsets);
-
   // Tell imgui to actually do the Vulkan stuff it needs to do to render the gui
   ImDrawData* draw_data = ImGui::GetDrawData();
   ImGui_ImplVulkan_RenderDrawData(draw_data, render_command_buffers_[current_frame_]);
