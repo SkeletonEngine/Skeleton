@@ -116,7 +116,7 @@ entt::registry LoadScene(const std::string& path) {
   return scene;
 }
 
-void SerializeNode(entt::registry& scene, nlohmann::json& json, entt::entity entity) {
+static void SerializeNode(entt::registry& scene, nlohmann::json& json, entt::entity entity) {
   auto& name = scene.get<NameComponent>(entity).name;
   json["name"] = name;
 
